@@ -44,16 +44,48 @@ function onServerReady() {
 
 // async function til database TY
 async function onGetTY(request, response) {
-    const dbResult = await db.query('select * from solar_energy_requirements');
-    response.send(dbResult.rows);
-}
-// async function til database TT
-async function onGetTT(request, response) {
     try {
-        const dbResult = await db.query("SELECT * FROM primary_energy WHERE year = '2023.0'");
-        response.json(dbResult.rows);  // Assuming you're using a database like PostgreSQL
-    } catch (error) {
-        console.error('Error executing query:', error);  // Logs the specific error
-        response.status(500).send('Internal server error');
-    } 
+        const dbResult = await db.query(`
+  SELECT 
+    year,
+    'primary' AS energy_type,
+    SUM(energy_consumption) AS total_energy_consumption,
+    100.0 AS renewable_percentage -- 100% for primary to reflect full primary energy
+FROM 
+    primary_energy
+WHERE 
+    country = 'Total World'
+GROUP BY 
+    year
+
+UNION ALL
+
+SELECT 
+    year,
+    'renewable' AS energy_type,
+    SUM(energy_consumption) AS total_energy_consumption,
+    (SUM(energy_consumption) / (
+        SELECT SUM(energy_consumption)
+        FROM primary_energy
+        WHERE country = 'Total World' AND primary_energy.year = renewable_energy.year
+    )) * 100 AS renewable_percentage -- Calculate the renewable percentage of primary energy
+FROM 
+    renewable_energy
+WHERE 
+    country = 'Total World'
+GROUP BY 
+    year
+ORDER BY 
+    year;
+
+
+
+        `);
+        response.json(dbResult.rows); // Send the data to the frontend
+    } catch (err) {
+        console.error('Error fetching data from database', err);
+        response.status(500).send('Internal Server Error');
+    }
 };
+
+
