@@ -28,9 +28,9 @@ server.use(onEachRequest);
 
 // API end-point  TY
 server.get('/api/TY', onGetTY);
+server.get('/api/TT', onGetTT);
 
 server.listen(port, onServerReady);
-
 
  
 function onEachRequest(request, response, next) {
@@ -46,5 +46,14 @@ function onServerReady() {
 async function onGetTY(request, response) {
     const dbResult = await db.query('select * from solar_energy_requirements');
     response.send(dbResult.rows);
+}
+// async function til database TT
+async function onGetTT(request, response) {
+    try {
+        const dbResult = await db.query("SELECT * FROM primary_energy WHERE year = '2023.0'");
+        response.json(dbResult.rows);  // Assuming you're using a database like PostgreSQL
+    } catch (error) {
+        console.error('Error executing query:', error);  // Logs the specific error
+        response.status(500).send('Internal server error');
+    } 
 };
-
