@@ -1,0 +1,24 @@
+#fact-box {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ffffff;
+    color: #333333;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    max-width: 200px;
+    font-family: Arial, sans-serif;
+}
+#fact-box h3 {
+    font-size: 1.2em;
+    margin: 0 0 5px;
+}
+#fact-box p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+.country:hover {
+    background-color: #d3d3d3; /* Light gray on hover */
+    cursor: pointer;
+}
