@@ -1,30 +1,33 @@
-//Fetch data from API and create the chart
-fetch('/api/TY')
-.then(response => response.json())
-.then(data => {
-    // Organize data by year for stacking and adjust for renewable energy on top
-    const groupedData = d3.groups(data, d => d.year).map(([year, values]) => {
-        const obj = { year };
-        let primary = 0;
-        let renewable = 0;
 
-        // Sum up primary and renewable values
-        values.forEach(v => {
-            if (v.energy_type === "primary") primary = v.total_energy_consumption;
-            if (v.energy_type === "renewable") renewable = v.total_energy_consumption;
+
+//Fetch data from API and create the chart
+fetch(`/api/energy-data/${country}`)
+    .then(response => response.json())
+    .then(data => {
+        // Organize data by year for stacking and adjust for renewable energy on top
+        const groupedData = d3.groups(data, d => d.year).map(([year, values]) => {
+            const obj = { year };
+            let primary = 0;
+            let renewable = 0;
+
+            // Sum up primary and renewable values
+            values.forEach(v => {
+                if (v.energy_type === "primary") primary += v.total_energy_consumption;
+                if (v.energy_type === "renewable") renewable += v.total_energy_consumption;
+            });
+
+            // Subtract renewable energy from primary energy to get the non-renewable part
+            obj.nonRenewablePrimary = primary - renewable; // Primary energy excluding renewable energy
+            obj.renewable = renewable; // Renewable energy
+            obj.primary = primary; // Total primary energy (without renewable stacked twice)
+
+            return obj;
         });
 
-        // Subtract renewable energy from primary energy to get the non-renewable part
-        obj.nonRenewablePrimary = primary - renewable; // Primary energy excluding renewable energy
-        obj.renewable = renewable; // Renewable energy
-        obj.primary = primary; // Total primary energy (without renewable stacked twice)
-
-        return obj;
-    });
-
-    createStackedChart(groupedData);
-})
-.catch(error => console.error("Error fetching data:", error));
+        // Call the chart creation function with processed data
+        createStackedChart(groupedData);
+    })
+    .catch(error => console.error("Error fetching data:", error));
 
 // Function to create the chart
 function createStackedChart(data) {
@@ -32,7 +35,7 @@ function createStackedChart(data) {
     const width = 1100 - margin.left - margin.right;
     const height = 700 - margin.top - margin.bottom;
 
-    const svg = d3.select("#chart")
+    const svg = d3.select("#chart2")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -143,4 +146,3 @@ function createStackedChart(data) {
         .style("fill", "#333")
         .text(d => d.charAt(0).toUpperCase() + d.slice(1));
 };
- 
