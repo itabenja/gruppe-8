@@ -1,4 +1,4 @@
-// Fetch data from API and create the chart
+//Fetch data from API and create the chart
 fetch('/api/TY')
 .then(response => response.json())
 .then(data => {
@@ -142,4 +142,5 @@ function createStackedChart(data) {
         .style("font-size", "14px")
         .style("fill", "#333")
         .text(d => d.charAt(0).toUpperCase() + d.slice(1));
-}
+};
+ 
