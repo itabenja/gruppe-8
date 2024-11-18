@@ -5,52 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stacked Bar Chart - Renewable vs Primary Energy</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-
-  <style>
-    .bar {
-      shape-rendering: crispEdges;
-    }
-    .axis-label {
-      font-size: 12px;
-    }
-
-    object{
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
-
-    
-
+  <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+  <!--<script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>-->
+  <!-- Styles -->
+<style>
+  #chartdiv {
+    width: 100%;
+    height: 500px;
+    max-width: 100%;
+  }
   </style>
-=======
-
-</head>
+  </head>
+  
 
 <body>
-
   <header>
-    <h1>World Maps</h1>
-      <ul>¨
-        <li><a href="World Map/">World map</a></li>
-        <li><a href="World Map/globus.html">globus</a></li>
-      </ul>
+    <h1>World Map</h1>
+    
   </header>
-  <object id="myObject" data="World Map/globus.html"></object>
-  <script>
-    const objectElement = document.getElementById('myObject');
-    const embeddedDoc = objectElement.contenDocument || objectElement.contentWindow.document;
+  <div id="chartdiv"></div>
+  
+  
+  <div id="country-data"></div> <!-- Container for country-specific data -->
+ 
 
-    embeddedDoc.body.style.margin = "0";
-    embeddedDoc.body.style.padding = "0";
-  </script>
-=======
     
   <h2>Stacked Bar Chart - Renewable vs Primary Energy Consumption</h2>
   <div id="chart"></div>
+  <br>
+
   <div id="chart2"></div>
   <script src="benja.js"></script>
   <script src="Emilscript.js"></script>
+  <script src="World Map/globus.js"></script>
 </body>
 
 </html>

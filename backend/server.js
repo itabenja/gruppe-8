@@ -89,11 +89,8 @@ ORDER BY
     }
 };
 
-
-
-// Define the endpoint to retrieve energy data dynamically by country
 server.get('/api/energy-data/:country', async (req, res) => {
-    const country = req.params.country;
+    const countryName = req.params.country;
 
     try {
         const dbResult = await db.query(`
@@ -101,7 +98,7 @@ server.get('/api/energy-data/:country', async (req, res) => {
                 primary_energy.year,
                 'primary' AS energy_type,
                 SUM(primary_energy.energy_consumption) AS total_energy_consumption,
-                100.0 AS renewable_percentage -- 100% for primary to reflect full primary energy
+                100.0 AS renewable_percentage
             FROM 
                 primary_energy
             WHERE 
@@ -119,7 +116,7 @@ server.get('/api/energy-data/:country', async (req, res) => {
                     SELECT SUM(primary_energy.energy_consumption)
                     FROM primary_energy
                     WHERE primary_energy.country = $1 AND primary_energy.year = renewable_energy.year
-                )) * 100 AS renewable_percentage -- Calculate the renewable percentage of primary energy
+                )) * 100 AS renewable_percentage
             FROM 
                 renewable_energy
             WHERE 
@@ -128,9 +125,9 @@ server.get('/api/energy-data/:country', async (req, res) => {
                 renewable_energy.year
             ORDER BY 
                 year;
-        `, [country]); // Pass the country parameter here
+        `, [countryName]); // Pass the country parameter here
 
-        res.json(dbResult.rows); // Send the fetched data as JSON to the client
+        res.json(dbResult.rows);
     } catch (err) {
         console.error('Error fetching data from database:', err.message);
         res.status(500).send('Internal Server Error');

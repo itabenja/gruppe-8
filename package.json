@@ -4,14 +4,15 @@
     "main": "backend/server.js",
     "type": "module",
     "scripts": {
+        "create_db": "node db/create_db.js",
         "start": "node backend/server.js",
         "dev": "nodemon backend/server.js"
     },
     "dependencies": {
         "express": "^4.19.2",
         "nodemon": "^3.1.4",
+        "dotenv": "^16.4.5",
         "pg": "^8.12.0",
-        "pg-copy-streams": "^6.0.6",
-        "dotenv": "^16.4.5"
+        "pg-copy-streams": "^6.0.6"
     }
 }
