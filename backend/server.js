@@ -132,4 +132,22 @@ server.get('/api/energy-data/:country', async (req, res) => {
         console.error('Error fetching data from database:', err.message);
         res.status(500).send('Internal Server Error');
     }
+
+    server.get('/api/countries/:countryName', async (req, res) => {
+        const countryName = req.params.countryName;
+        try {
+            const result = await db.query(
+                'SELECT country, current_solar_coverage, missing_solar_coverage, required_additional_solar_capacity, total_energy_consumption, panels_needed, estimated_cost, co2_reduction, land_usage, picture_url FROM solar_energy_requirements_data WHERE country = $1',
+                [countryName]
+            );
+            if (result.rows.length > 0) {
+                res.json(result.rows[0]);
+            } else {
+                res.status(404).send({ error: "Country data not found" });
+            }
+        } catch (error) {
+            console.error("Error fetching country data:", error);
+            res.status(500).send({ error: "Internal Server Error" });
+        }
+    });
 });
