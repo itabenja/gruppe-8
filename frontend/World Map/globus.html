@@ -7,15 +7,32 @@
   <link rel="stylesheet" href="globus.css">
   <!-- AmCharts Resources -->
   <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+  <script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/geodata/continentsLow.js"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script> <!-- Add D3.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div id="chartdiv"></div>
-  <div id="country-data"></div> <!-- Container for country-specific data -->
-  <button id="restartButton">Restart Rotation</button> <!--Restart button-->
-  <script src="globus.js"></script>
+  <!-- Energy Chart Canvas -->
+  <canvas id="energyChart" width="400" height="200"></canvas>
+  
+  <!-- Map Chart Container -->
+  <div id="chartdiv" style="width: 80%; height: 600px; margin: auto;"></div>
+  
+  <!-- Info Container for Country-Specific Data -->
+    <div id="chartInfo"></div>
+  </div>
+  
+  <!-- Restart Button for Rotation -->
+  <button id="restartButton">Restart Rotation</button>
+
+  <!-- Custom JS -->
+  <script src="globus.js"></script> <!-- Your custom JS file for the globe -->
+  
+  <!-- Custom Energy Data Map JS -->
+  
 </body>
 </html>

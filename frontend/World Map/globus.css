@@ -29,3 +29,14 @@
 #restartButton:hover {
     background-color: #0056b3;
 }
+#infoContainer {
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+.tooltip {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
