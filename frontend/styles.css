@@ -21,4 +21,18 @@ th {
   
  
   
-  
+  #fact-box {
+    display: none;
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    width: 300px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: Arial, sans-serif;
+    color: #333;
+    z-index: 1000;
+}
