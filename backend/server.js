@@ -2,26 +2,22 @@ import express from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
 
-console.log('Connecting to the database...');
-const db = new pg.Pool({ 
-    host:     'ep-dawn-cake-a2pb2gce.eu-central-1.aws.neon.tech',
-    port:     5432,
-    database: 'Projekt-renewable energy',
-    user:     'Projekt-renewable energy_owner',
-    password: 'mTBxARibh1t4',
-    ssl: {
-        rejectUnauthorized: false // Allows SSL connection without strict certificate verification
-    }
+dotenv.config();
+console.log('Connecting to database', process.env.PG_DATABASE);
+const db = new pg.Pool({
+    host: process.env.PG_HOST,
+    port: parseInt(process.env.PG_PORT),
+    database: process.env.PG_DATABASE,
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    ssl: process.env.PG_REQUIRE_SSL ? {
+        rejectUnauthorized: false,
+    } : undefined,
 });
+const dbResult = await db.query('select now()');
+console.log('Database connection established on', dbResult.rows[0].now);
 
-try {
-    const dbResult = await db.query('select now() as now');
-    console.log('Database connection established on', dbResult.rows[0].now);
-} catch (err) {
-    console.error('Database connection error', err);
-}
-
-const port = 3000;
+const port = process.env.PORT || 3000;
 const server = express();
 
 server.use(express.static('frontend'));
@@ -30,9 +26,7 @@ server.use(onEachRequest);
 // API end-point  TY
 server.get('/api/TY', onGetTY); 
 
-
 server.listen(port, onServerReady);
-
  
 function onEachRequest(request, response, next) {
     console.log(new Date(), request.method, request.url);

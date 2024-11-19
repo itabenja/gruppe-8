@@ -1,4 +1,4 @@
-/*import pg from 'pg';
+import pg from 'pg';
 import dotenv from 'dotenv';
 import { pipeline } from 'node:stream/promises'
 import fs from 'node:fs'
@@ -20,49 +20,67 @@ const dbResult = await db.query('select now()');
 console.log('Database connection established on', dbResult.rows[0].now);
 
 console.log('Recreating tables...');
-db.query(`
+await db.query(`
 drop table if exists primary_energy;
 drop table if exists renewable_energy;
 drop table if exists solar_energy_requirements;
 drop table if exists solar_energy_requirements_data;
 
 create table primary_energy (
-country text ,
-year ,
-energy_consumption
+country text,
+year text,
+energy_consumption numeric
 );
 
 create table renewable_energy (
 country text ,
-year ,
-energy_consumption
+year text,
+energy_consumption numeric
 );
 
-ceate table solar_energy_requirements (
-country VARCHAR(50), 
-solar_generation_twh NUMERIC, 
-total_energy_gwh NUMERIC, 
-current_solar_percentage NUMERIC, 
-missing_coverage_percentage NUMERIC, 
-required_solar_capacity_mw NUMERIC 
+CREATE TABLE solar_energy_requirements (
+    country VARCHAR(50), 
+    solar_generation_twh NUMERIC, 
+    total_energy_gwh NUMERIC, 
+    current_solar_percentage NUMERIC, 
+    missing_coverage_percentage NUMERIC, 
+    required_solar_capacity_mw NUMERIC
 );
 
 create table solar_energy_requirements_data (
-
+country VARCHAR(50) UNIQUE NOT NULL,
+current_solar_coverage NUMERIC(5, 2),
+missing_solar_coverage NUMERIC(5, 2),
+required_additional_solar_capacity  NUMERIC ,
+total_energy_consumption  NUMERIC,
+panels_needed NUMERIC(20, 2),
+estimated_cost NUMERIC,
+co2_reduction NUMERIC(20, 2),
+land_usage NUMERIC(20, 2)
 );
 
 `);
 console.log('Tables recreated.');
 
 console.log('Copying data from CSV files...');
-copyIntoTable(db, `
-	copy artists (artist_id, stage_name, nationality)
+await copyIntoTable(db, `
+	copy primary_energy (country, year, energy_consumption)
 	from stdin
-	with csv`, 'db/artists.csv');
-copyIntoTable(db, `
-	copy albums (album_id, title, artist_id, release_date, riaa_certificate)
+	with csv header`, 'db/primary_energy_final_all_correct-1.csv');
+await copyIntoTable(db, `
+	copy renewable_energy (country, year, energy_consumption)
 	from stdin
-	with csv header`, 'db/albums.csv');
+	with csv header`, 'db/renewable_energy_final_all_correct.csv');
+
+await copyIntoTable(db, `
+    copy solar_energy_requirements (country, solar_generation_twh, total_energy_gwh, current_solar_percentage, missing_coverage_percentage, required_solar_capacity_mw)
+    from stdin
+    with csv header`, 'db/solar_energy_requirements.csv');
+
+await copyIntoTable(db, `
+    copy solar_energy_requirements_data (country, current_solar_coverage, missing_solar_coverage, required_additional_solar_capacity, total_energy_consumption, panels_needed, estimated_cost, co2_reduction, land_usage)
+    from stdin
+    with csv header`, 'db/solar_energy_requirements_data.csv');
 await db.end();
 console.log('Data copied.');
 
@@ -75,5 +93,4 @@ async function copyIntoTable(db, sql, file) {
 	} finally {
 		client.release();
 	}
-} 
-*/
+};
