@@ -125,7 +125,7 @@ am5.ready(function () {
                 }
 
                 // Adjust zoom level
-                chart.set("zoomLevel", 2.8); // Set the desired zoom level (same as Code 2)
+                chart.set("zoomLevel", 3.5); // Set the desired zoom level (same as Code 2)
             }
         }
     }
@@ -194,20 +194,99 @@ am5.ready(function () {
     const infoContainer = document.createElement("div");
     infoContainer.id = "infoContainer";
     infoContainer.style.position = "absolute";
-    infoContainer.style.top = "10px";
+    infoContainer.style.top = "397px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
-    infoContainer.style.height = "80%";
+    infoContainer.style.height = "75%";
     infoContainer.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
     infoContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
     infoContainer.style.overflowY = "auto";
     infoContainer.style.padding = "20px";
     document.body.appendChild(infoContainer);
 
-    // Function to show pop-up
-    function showPopup(countryName) {
-      let popup = document.getElementById("country-popup");
-      if (!popup) {
+    // Add search bar HTML
+    const searchContainer = document.createElement("div");
+    searchContainer.style.position = "absolute";
+    searchContainer.style.top = "397px";
+    searchContainer.style.left = "650px";
+    searchContainer.style.width = "180px";
+    searchContainer.style.zIndex = "1000";
+
+searchContainer.innerHTML = `
+  <input 
+    type="text" 
+    id="countrySearchInput" 
+    placeholder="Search for a country..." 
+    style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
+  />
+`;
+document.body.appendChild(searchContainer);
+
+// Add search functionality
+document.getElementById("countrySearchInput").addEventListener("input", function (event) {
+    const searchQuery = event.target.value.trim().toLowerCase();
+
+    // Find the country matching the search query
+    const countryDataItem = polygonSeries.dataItems.find(dataItem => {
+        const countryName = dataItem.dataContext.name?.toLowerCase() || "";
+        return countryName.includes(searchQuery);
+    });
+
+    if (countryDataItem) {
+        console.log("Found country:", countryDataItem.dataContext.name);
+
+        // Reset all countries to inactive
+        polygonSeries.dataItems.forEach(dataItem => {
+            const mapPolygon = dataItem.get("mapPolygon");
+            if (mapPolygon) {
+                mapPolygon.set("active", false);
+            }
+        });
+
+        // Set the matching country to active
+        const mapPolygon = countryDataItem.get("mapPolygon");
+        if (mapPolygon) {
+            mapPolygon.set("active", true);
+        }
+
+        // Center and zoom to the found country
+        const countryId = countryDataItem.get("id");
+        centerAndZoomToCountry(countryId);
+        stopRotation();
+    } else {
+        console.log("No match found");
+    }
+});
+
+
+    
+async function fetchCountryData(countryName) {
+    try {
+        // Build the API URL
+        const apiUrl = `/api/countries/${encodeURIComponent(countryName)}`;
+        console.log("Fetching:", apiUrl);
+
+        // Make the request to the server
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data for ${countryName}`);
+        }
+
+        // Parse the JSON response and return it
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching country data:", error);
+        return null;
+    }
+}
+
+
+// Function to show pop-up with fetched data
+async function showPopup(countryName) {
+    let popup = document.getElementById("country-popup");
+
+    // Create the popup if it doesn't exist
+    if (!popup) {
         popup = document.createElement("div");
         popup.id = "country-popup";
         popup.style.position = "fixed";
@@ -222,25 +301,52 @@ am5.ready(function () {
         popup.style.fontFamily = "Arial, sans-serif";
         popup.style.color = "#333";
         document.body.appendChild(popup);
-      }
-
-      popup.innerHTML = `
-        <h3 style="margin: 0; font-size: 18px;">${countryName}</h3>
-        <p>Information about ${countryName}.</p>
-       
-        <button style="margin-top: 10px; padding: 5px 10px; border: none; background: #007BFF; color: white; border-radius: 4px; cursor: pointer;" onclick="closePopup()">Close</button>
-      `;
-
-      popup.style.display = "block";
     }
 
-    // Function to close pop-up
-    window.closePopup = function () {
-      let popup = document.getElementById("country-popup");
-      if (popup) {
+    // Fetch the country data
+    const countryData = await fetchCountryData(countryName);
+
+    if (countryData) {
+        // Populate the popup with the retrieved data
+        popup.innerHTML = `
+            <h3 style="margin: 0; font-size: 18px;">${countryData.country}</h3>
+            <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
+            <p>Missing Solar Coverage: ${countryData.missing_solar_coverage}%</p>
+            <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
+            <p>Panels Needed: ${countryData.panels_needed}</p>
+            <p>Estimated Cost: $${countryData.estimated_cost}</p>
+            <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
+            <p>Land Usage: ${countryData.land_usage} km²</p>
+            <button id="close-popup-btn" style="margin-top: 10px; padding: 5px 10px; border: none; background: #007BFF; color: white; border-radius: 4px; cursor: pointer;">Close</button>
+        `;
+    } else {
+        popup.innerHTML = `
+            <h3 style="margin: 0; font-size: 18px;">${countryName}</h3>
+            <p style="color: red;">Data not available for this country.</p>
+            <button id="close-popup-btn" style="margin-top: 10px; padding: 5px 10px; border: none; background: #007BFF; color: white; border-radius: 4px; cursor: pointer;">Close</button>
+        `;
+    }
+
+    // Display the popup
+    popup.style.display = "block";
+}
+
+// Close popup function
+function closePopup() {
+    const popup = document.getElementById("country-popup");
+    if (popup) {
         popup.style.display = "none";
-      }
-    };
+    }
+}
+
+// Event listener for dynamic close button
+document.addEventListener("click", function (event) {
+    if (event.target && event.target.id === "close-popup-btn") {
+        closePopup();
+    }
+});
+
+
 
     function createStackedChart(data) {
         // Clear existing chart
