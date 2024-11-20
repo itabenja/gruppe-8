@@ -2,12 +2,14 @@ import express from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 console.log('Connecting to the database...');
 const db = new pg.Pool({ 
-    host:     'ep-dawn-cake-a2pb2gce.eu-central-1.aws.neon.tech',
-    port:     5432,
+    host: 'ep-dawn-cake-a2pb2gce.eu-central-1.aws.neon.tech',
+    port: 5432,
     database: 'Projekt-renewable energy',
-    user:     'Projekt-renewable energy_owner',
+    user: 'Projekt-renewable energy_owner',
     password: 'mTBxARibh1t4',
     ssl: {
         rejectUnauthorized: false // Allows SSL connection without strict certificate verification
@@ -27,69 +29,70 @@ const server = express();
 server.use(express.static('frontend'));
 server.use(onEachRequest);
 
-// API end-point  TY
-server.get('/api/TY', onGetTY); 
+// Existing API endpoints
+server.get('/api/TY', onGetTY);
+server.get('/api/energy-data/:country', onGetEnergyData);
+server.get('/api/countries/:countryName', onGetCountryData);
 
+// Add the new `/api/leaderboard` endpoint
+server.get('/api/leaderboard', onGetLeaderboard);
 
 server.listen(port, onServerReady);
 
- 
 function onEachRequest(request, response, next) {
     console.log(new Date(), request.method, request.url);
     next();
-} 
+}
 
 function onServerReady() {
     console.log('Webserver running on port', port);
-} 
+}
 
-// async function til database TY
+// Async function for /api/TY
 async function onGetTY(request, response) {
     try {
         const dbResult = await db.query(`
-  SELECT 
-    year,
-    'primary' AS energy_type,
-    SUM(energy_consumption) AS total_energy_consumption,
-    100.0 AS renewable_percentage -- 100% for primary to reflect full primary energy
-FROM 
-    primary_energy
-WHERE 
-    country = 'Total World'
-GROUP BY 
-    year
+            SELECT 
+                year,
+                'primary' AS energy_type,
+                SUM(energy_consumption) AS total_energy_consumption,
+                100.0 AS renewable_percentage
+            FROM 
+                primary_energy
+            WHERE 
+                country = 'Total World'
+            GROUP BY 
+                year
 
-UNION ALL
+            UNION ALL
 
-SELECT 
-    year,
-    'renewable' AS energy_type,
-    SUM(energy_consumption) AS total_energy_consumption,
-    (SUM(energy_consumption) / (
-        SELECT SUM(energy_consumption)
-        FROM primary_energy
-        WHERE country = 'Total World' AND primary_energy.year = renewable_energy.year
-    )) * 100 AS renewable_percentage -- Calculate the renewable percentage of primary energy
-FROM 
-    renewable_energy
-WHERE 
-    country = 'Total World'
-GROUP BY 
-    year
-ORDER BY 
-    year;
-
-
-
+            SELECT 
+                year,
+                'renewable' AS energy_type,
+                SUM(energy_consumption) AS total_energy_consumption,
+                (SUM(energy_consumption) / (
+                    SELECT SUM(energy_consumption)
+                    FROM primary_energy
+                    WHERE country = 'Total World' AND primary_energy.year = renewable_energy.year
+                )) * 100 AS renewable_percentage
+            FROM 
+                renewable_energy
+            WHERE 
+                country = 'Total World'
+            GROUP BY 
+                year
+            ORDER BY 
+                year;
         `);
-        response.json(dbResult.rows); // Send the data to the frontend
+        response.json(dbResult.rows);
     } catch (err) {
         console.error('Error fetching data from database', err);
         response.status(500).send('Internal Server Error');
     }
-};
+}
 
-server.get('/api/energy-data/:country', async (req, res) => {
+// Async function for /api/energy-data/:country
+async function onGetEnergyData(req, res) {
     const countryName = req.params.country;
 
     try {
@@ -125,45 +128,69 @@ server.get('/api/energy-data/:country', async (req, res) => {
                 renewable_energy.year
             ORDER BY 
                 year;
-        `, [countryName]); // Pass the country parameter here
+        `, [countryName]);
 
         res.json(dbResult.rows);
     } catch (err) {
         console.error('Error fetching data from database:', err.message);
         res.status(500).send('Internal Server Error');
     }
+}
 
-    server.get('/api/countries/:countryName', async (req, res) => { 
-        const countryName = req.params.countryName;
-        console.log("API request for country:", countryName);
-    
-        try {
-            // Query the database for the requested country
-            const result = await db.query(
-                `SELECT 
-                    country,
-                    current_solar_coverage, 
-                    missing_solar_coverage, 
-                    required_additional_solar_capacity, 
-                    panels_needed, 
-                    estimated_cost, 
-                    co2_reduction, 
-                    land_usage 
-                FROM solar_energy_requirements_data 
-                WHERE LOWER(country) = LOWER($1)`,
-                [countryName]
-            );
-    
-            if (result.rows.length > 0) {
-                // Send the first result row as a JSON response
-                res.json(result.rows[0]);
-            } else {
-                console.log("No data found for:", countryName);
-                res.status(404).send({ error: "Country data not found" });
-            }
-        } catch (error) {
-            console.error("Error fetching country data:", error);
-            res.status(500).send({ error: "Internal Server Error" });
+// Async function for /api/countries/:countryName
+async function onGetCountryData(req, res) {
+    const countryName = req.params.countryName;
+    console.log("API request for country:", countryName);
+
+    try {
+        const result = await db.query(
+            `SELECT 
+                country,
+                current_solar_coverage, 
+                missing_solar_coverage, 
+                required_additional_solar_capacity, 
+                panels_needed, 
+                estimated_cost, 
+                co2_reduction, 
+                land_usage 
+            FROM solar_energy_requirements_data 
+            WHERE LOWER(country) = LOWER($1)`,
+            [countryName]
+        );
+
+        if (result.rows.length > 0) {
+            res.json(result.rows[0]);
+        } else {
+            console.log("No data found for:", countryName);
+            res.status(404).send({ error: "Country data not found" });
         }
-    })});
-    
+    } catch (error) {
+        console.error("Error fetching country data:", error);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
+}
+
+// Async function for /api/leaderboard
+// Async function for /api/leaderboard
+async function onGetLeaderboard(req, res) {
+    try {
+        const result = await db.query(`
+            SELECT  
+                country, 
+                (SUM(renewable_energy.energy_consumption) * 100.0 / NULLIF(SUM(primary_energy.energy_consumption), 0)) AS renewable_percentage
+            FROM 
+                renewable_energy
+            JOIN 
+                primary_energy USING (country, year)
+            GROUP BY 
+                country
+            ORDER BY 
+                renewable_percentage DESC;
+        `);
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error fetching leaderboard data:", error);
+        res.status(500).send({ error: "Internal Server Error" });
+    }
+}
+
