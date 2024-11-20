@@ -160,4 +160,5 @@ server.get('/api/energy-data/:country', async (req, res) => {
             console.error("Error fetching country data:", error);
             res.status(500).send({ error: "Internal Server Error" });
         }
-    })});
+    })
+});
