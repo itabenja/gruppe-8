@@ -30,18 +30,12 @@
       width="80%">
     </iframe>
   </div>
-  
-  
-  
-  
-  
+
   <header>
     <h1></h1>
     
   </header>
   <div id="chartdiv"></div>
-  
-  
   <div id="country-data"></div> <!-- Container for country-specific data -->
  
 
@@ -55,40 +49,48 @@
   
   <div id="chartinfo"></div>
   <div id="chart2"></div>
-  <div id="leaderboard-container">
-    <h2>Renewable Energy Leaderboard</h2>
-    <table id="leaderboard-table">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Country</th>
-          <th>Renewable Energy (%)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Data will be dynamically injected here -->
-      </tbody>
-    </table>
-  </div>
-  
-  <script>
-    // Fetch leaderboard data
-    fetch('/api/leaderboard')
-      .then(response => response.json())
-      .then(data => {
-        const tableBody = document.querySelector("#leaderboard-table tbody");
-        data.forEach((country, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${country.country}</td>
-            <td>${country.renewable_percentage.toFixed(2)}%</td>
-          `;
-          tableBody.appendChild(row);
-        });
-      })
-      .catch(error => console.error("Error fetching leaderboard data:", error));
-  </script>
+    <div id="leaderboard-container">
+      <h2>Renewable Energy Leaderboard</h2>
+      <table id="leaderboard-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Country</th>
+            <th>Renewable Energy (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be dynamically injected here -->
+        </tbody>
+      </table>
+    </div>
+    <!-- Add leaderboard script -->
+
+    <script>
+      fetch('/api/leaderboard')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          const tableBody = document.querySelector("#leaderboard-table tbody");
+          tableBody.innerHTML = ''; // Clear previous rows
+          data.forEach((country, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${index + 1}</td>
+              <td>${country.country}</td>
+              <td>${country.renewable_percentage.toFixed(2)}%</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error("Error fetching leaderboard data:", error));
+    </script>
+    
+    <script src="leaderboard.js"></script>
   
   <script src="benja.js"></script>
   <script src="Emilscript.js"></script>

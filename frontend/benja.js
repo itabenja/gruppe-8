@@ -143,4 +143,4 @@ function createStackedChart(data) {
         .style("fill", "#333")
         .text(d => d.charAt(0).toUpperCase() + d.slice(1));
 };
- 
+
