@@ -222,6 +222,12 @@ am5.ready(function () {
       if (popup) {
         popup.style.display = "none";
       }
+
+      //Clear the text in the searchbar when zooming out
+      const searchInput = document.getElementById("countrySearchInput");
+      if (searchInput) {
+        searchInput.value = ""; //Set the value of the search input to an empty string to clear it
+      }
     }
 
     // Function to stop rotation
