@@ -20,6 +20,7 @@
   </style>
   </head>
   
+
 <body>
   <div id="counterContainer">
     <iframe
@@ -29,33 +30,69 @@
       width="80%">
     </iframe>
   </div>
+  
+  
+  
+  
+  
+  <header>
+    <h1></h1>
+    
+  </header>
   <div id="chartdiv"></div>
+  
+  
   <div id="country-data"></div> <!-- Container for country-specific data -->
+ 
+
+    
   <h2> Renewable vs Primary Energy Consumption for the whole world</h2>
   <div id="chart"></div>
- 
- 
+  <br>
+  <br>
+  <div id="c"></div>
+  
+  
   <div id="chartinfo"></div>
   <div id="chart2"></div>
-  <div id="leaderboard-container">
-    <h2>Renewable Energy Leaderboard</h2>
-    <table id="leaderboard-table">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Country</th>
-          <th>Renewable Energy (%)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Data will be dynamically injected here -->
-      </tbody>
-    </table>
-  </div>
   
-  <script src="benja.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+  <h2>Comparison of 2 countries showing a high Renewable-energy country and a low renewable-energy country</h2>
+<div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
+    <!-- Algeria Chart and Explanation -->
+    <div style="width: 45%; height: 400px;">
+        <canvas id="algeriaChart"></canvas>
+    </div>
+    <div style="width: 45%; height: 400px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h3>Algeria's Renewable Energy Situation</h3>
+        <p>Algeria has a low percentage of renewable energy usage, primarily due to its reliance on fossil fuels. Government policies and investments in green energy are still in the early stages.</p>
+    </div>
+</div>
+<div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
+    <!-- Iceland Chart and Explanation -->
+    <div style="width: 45%; height: 400px;">
+        <canvas id="icelandChart"></canvas>
+    </div>
+    <div style="width: 45%; height: 400px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h3>Iceland's Renewable Energy Success</h3>
+        <p>Iceland has one of the highest shares of renewable energy in the world, mainly due to its abundant geothermal and hydroelectric power resources.</p>
+    </div>
+</div>
+
+  
+
+    
+
+
+   
+  
+
+  
+  <script src="WorldChart.js"></script>
   <script src="Emilscript.js"></script>
   <script src="World Map/globus.js"></script>
- 
+  <script src="countryCharts.js"></script>
 </body>
+
 </html>
