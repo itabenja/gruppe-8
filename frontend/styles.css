@@ -157,3 +157,21 @@ canvas {
   display: block;
   margin: 0 auto;
 }
+
+/* Style the header for a clean and professional look */
+h2 {
+  text-align: center; /* Center the text */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern font */
+  font-size: 2.2em; /* Slightly smaller, refined font size */
+  color: #333; /* Dark grey for a more professional look */
+  text-transform: none; /* Keep text as is */
+  margin-top: 15vh; /* Vertical centering with more balanced spacing */
+  padding: 20px 0; /* Padding for balance, no excessive space */
+  background-color: #f4f4f4; /* Light background for a clean, soft feel */
+  border-radius: 8px; /* Subtle rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+  max-width: 80%; /* Limit width for better readability */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  border-left: 6px solid #4CAF50; /* Add a clean left border for emphasis */
+}
