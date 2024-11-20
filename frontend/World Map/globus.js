@@ -37,19 +37,91 @@ am5.ready(function () {
         fill: root.interfaceColors.get("primaryButtonHover")
       });
 
+      //Set up events
+      //This variable will hold a reference to the previously clicked polygon (country) on the map.
+      var previousPolygon; 
+
     //tingting
     polygonSeries.mapPolygons.template.on("active", async function (active, target) {
+      //If there is a previous polygon selected and it's different from the current targe, deactive it.
+      if (previousPolygon && previousPolygon != target) {
+        previousPolygon.set("active", false);
+      }
+      //Check if the current target (clicked polygon) is active (i.e., selected)
         if (target.get("active")) {
             console.log(target);
+
+            //Extract the country ID and name from the target dataItem
+            const countryId = target.dataItem.get("id");
             const countryName = target.dataItem.dataContext.name;
-            console.log(countryName);
-            const energyData = await fetchEnergyData(countryName);
-            if (energyData) {
-                // Clear existing chart and render the new one
-                d3.select("#chartinfo").html("");
-                createStackedChart(processEnergyData(energyData));
-            }
+
+            //Get the infocontainer element (create once, used globally)
+            const infoContainer = document.getElementById("infoContainer");
+            infoContainer.innerHTML = ""; //Clear existing content in the container
+
+            //Show a popup with the country name
+            showPopup(countryName);
+
+            //Add content to infoContainer and display it
+            //Add the close button and styling
+            const closeButton = document.createElement("button");
+            closeButton.id = "closeInfoContainer";
+            closeButton.innerText = "Close";
+            closeButton.style.position = "absolute"; 
+            closeButton.style.top = "10px";
+            closeButton.style.right = "10px";
+            closeButton.style.padding = "5px 10px";
+            closeButton.style.border = "none";
+            closeButton.style.backgroundColor = "#007BFF";
+            closeButton.style.color = "white";
+            closeButton.style.borderRadius = "4px";
+            closeButton.style.cursor = "pointer";
+            closeButton.style.zIndex = "1001"; //Make sure it's above other elements
+            infoContainer.appendChild(closeButton);
+
+            //Add event listener to close button
+            closeButton.addEventListener("click", function() {
+              window.closeInfoContainer();
+            });
+
+            //Add country information and chart container
+            const countryTitle = document.createElement("h3");
+            countryTitle.innerText = countryName; 
+            infoContainer.appendChild(countryTitle);
+
+            //Add some information details about the country to the infoContainer
+            const countryDetails = document.createElement("p");
+            countryDetails.innerText = `Energy consumption details for ${countryName}:`;
+            infoContainer.appendChild(countryDetails);
+
+            // Add a div for the chart
+            const chartDiv = document.createElement("div");
+            chartDiv.id = "chartInfo";
+            infoContainer.appendChild(chartDiv);
+
+            infoContainer.style.display = "block";  // Show the container
+
+            // Center and zoom to the country
+            centerAndZoomToCountry(countryId); //This function centers and zooms into the clicked country
+            stopRotation(); //Stops the globe's auto-rotation when a country is clicked
+
+            // Now, fetch the energy data and create the chart as intended
+            fetchEnergyData(countryName).then(data => {
+              if (data) {
+                const processedData = processEnergyData(data);
+                createStackedChart(processedData); 
+              }
+            });
+        } else {
+          // Hide the container when deselecting
+          const infoContainer = document.getElementById("infoContainer");
+          infoContainer.style.display = "none";
+
+          //Close the popup that might have been shown
+          window.closePopup();
         }
+        //Set the previousPolygon to the current target to track the previously clicked polygon.
+        previousPolygon = target;
     });
 
     function processEnergyData(data) {
@@ -130,29 +202,7 @@ am5.ready(function () {
         }
     }
 
-    // Set up events
-    var previousPolygon;
 
-    polygonSeries.mapPolygons.template.on("active", function (active, target) {
-        if (previousPolygon && previousPolygon != target) {
-          previousPolygon.set("active", false);
-        }
-        if (target.get("active")) {
-          const countryId = target.dataItem.get("id");
-          const countryName = target.dataItem.dataContext.name;
-          const infoContainer = document.getElementById("infoContainer");
-          infoContainer.innerHTML = "";
-          showPopup(countryName);
-          centerAndZoomToCountry(countryId);
-          stopRotation();
-          infoContainer.innerHTML = `
-                  <h3>${countryName}</h3>
-                  <p>Energy consumption details for ${countryName}:</p>
-                  <div id="chartInfo"></div>
-              `;
-        }
-        previousPolygon = target;
-    });
 
     // Function to reset zoom and rotation
     function resetZoom() {
@@ -194,15 +244,22 @@ am5.ready(function () {
     const infoContainer = document.createElement("div");
     infoContainer.id = "infoContainer";
     infoContainer.style.position = "absolute";
-    infoContainer.style.top = "397px";
+    infoContainer.style.display = "none"; //Hide the container initially
+    infoContainer.style.top = "10px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
-    infoContainer.style.height = "75%";
+    infoContainer.style.height = "80%";
     infoContainer.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
     infoContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
     infoContainer.style.overflowY = "auto";
     infoContainer.style.padding = "20px";
+    infoContainer.style.zIndex = "1000";
     document.body.appendChild(infoContainer);
+
+    //Function to close pop-up
+    window.closeInfoContainer = function() {
+      infoContainer.style.display = "none";
+    };
 
     // Add search bar HTML
     const searchContainer = document.createElement("div");
@@ -212,18 +269,19 @@ am5.ready(function () {
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";
 
-searchContainer.innerHTML = `
-  <input 
-    type="text" 
-    id="countrySearchInput" 
-    placeholder="Search for a country..." 
-    style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
-  />
-`;
-document.body.appendChild(searchContainer);
+    searchContainer.innerHTML = `
+      <input 
+        type="text" 
+        id="countrySearchInput" 
+        placeholder="Search for a country..." 
+        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
+      />
+    `;
 
-// Add search functionality
-document.getElementById("countrySearchInput").addEventListener("input", function (event) {
+    document.body.appendChild(searchContainer);
+
+    // Add search functionality
+    document.getElementById("countrySearchInput").addEventListener("input", function (event) {
     const searchQuery = event.target.value.trim().toLowerCase();
 
     // Find the country matching the search query
