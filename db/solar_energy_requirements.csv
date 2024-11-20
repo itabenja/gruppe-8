@@ -1,4 +1,4 @@
-Country,2023_Solar_Generation_TWh,2023_Total_Energy_GWh,Current_Solar_Percentage,Missing_Coverage_Percentage,Required_Solar_Capacity_MW
+country,solar_generation_twh,total_energy_gwh,current_solar_percentage,missing_coverage_percentage,required_solar_capacity_mw
 Canada,7.6416020021626005,633.2,1.2068228051425458,98.79317719485745,417038.93199855834
 Mexico,27.14334893560024,354.9,7.648168198253097,92.3518318017469,218504.43404293314
 US,240.52525252525254,4494.0,5.352141800739932,94.64785819926007,2835649.831649832

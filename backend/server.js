@@ -6,10 +6,10 @@ dotenv.config();
 
 console.log('Connecting to the database...');
 const db = new pg.Pool({ 
-    host: 'ep-dawn-cake-a2pb2gce.eu-central-1.aws.neon.tech',
-    port: 5432,
+    host:     'ep-dawn-cake-a2pb2gce.eu-central-1.aws.neon.tech',
+    port:     5432,
     database: 'Projekt-renewable energy',
-    user: 'Projekt-renewable energy_owner',
+    user:     'Projekt-renewable energy_owner',
     password: 'mTBxARibh1t4',
     ssl: {
         rejectUnauthorized: false // Allows SSL connection without strict certificate verification
@@ -23,22 +23,19 @@ try {
     console.error('Database connection error', err);
 }
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 const server = express();
 
 server.use(express.static('frontend'));
 server.use(onEachRequest);
 
-// Existing API endpoints
-server.get('/api/TY', onGetTY);
-server.get('/api/energy-data/:country', onGetEnergyData);
-server.get('/api/countries/:countryName', onGetCountryData);
+// API end-point  TY
+server.get('/api/TY', onGetTY); 
 
-// Add the new `/api/leaderboard` endpoint
-server.get('/api/leaderboard', onGetLeaderboard);
 
 server.listen(port, onServerReady);
 
+ 
 function onEachRequest(request, response, next) {
     console.log(new Date(), request.method, request.url);
     next();
