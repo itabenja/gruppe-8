@@ -55,15 +55,22 @@
   
   <div id="chartinfo"></div>
   <div id="chart2"></div>
-  <div id="leaderboard-container">
-    
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+  
+    <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
+      <div style="width: 45%; height: 400px;">
+          <canvas id="algeriaChart"></canvas>
+      </div>
+      <div style="width: 45%; height: 400px;">
+          <canvas id="icelandChart"></canvas>
+      </div>
+  </div>
+  
 
     
-  <h2>Renewable vs Primary Energy Consumption for Iceland</h2>
-  <div id="chart-iceland"></div>
-  
-  <h2>Renewable vs Primary Energy Consumption for Algeria</h2>
-  <div id="chart-algeria"></div>
+
 
     <h2>Renewable Energy Leaderboard</h2>
     <table id="leaderboard-table">
@@ -80,24 +87,7 @@
     </table>
   </div>
   
-  <script>
-    // Fetch leaderboard data
-    fetch('/api/leaderboard')
-      .then(response => response.json())
-      .then(data => {
-        const tableBody = document.querySelector("#leaderboard-table tbody");
-        data.forEach((country, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${country.country}</td>
-            <td>${country.renewable_percentage.toFixed(2)}%</td>
-          `;
-          tableBody.appendChild(row);
-        });
-      })
-      .catch(error => console.error("Error fetching leaderboard data:", error));
-  </script>
+
   
   <script src="benja.js"></script>
   <script src="Emilscript.js"></script>
