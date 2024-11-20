@@ -1,5 +1,5 @@
 am5.ready(function () {
-    // Create root element
+  // Create root element
     var root = am5.Root.new("chartdiv");
  
     // Set themes
@@ -335,7 +335,7 @@ am5.ready(function () {
 });
 
 
-    
+//Funktion til at fecthe data for lande fra CountryData apien    
 async function fetchCountryData(countryName) {
     try {
         // Build the API URL
@@ -423,7 +423,7 @@ document.addEventListener("click", function (event) {
 });
 
 
-
+// Funktion til at lave vores stacked chart i infocontaineren
   function createStackedChart(data) {
     // Clear existing chart
     d3.select("#chartInfo").html("");
