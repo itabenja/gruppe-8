@@ -25,9 +25,6 @@
       width="80%">
     </iframe>
   </div>
-  
-  
-  <!--Her globusen bliver sat ind-->
   <div id="chartdiv"></div>
   
   <!-- Container for country-specific data i popup-->
@@ -39,48 +36,65 @@
 
   <!--Energy chart for the whole world-->
   <div id="chart"></div>
+  <!-- Algeria Chart and Explanation -->
+<div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
+  <div style="width: 45%; height: 400px;">
+      <canvas id="algeriaChart"></canvas>
+  </div>
+
+  <!--container for algeria-->
+  <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+      <h3>Algeria's Renewable Energy Situation</h3>
+      <p>Algeria has a low percentage of renewable energy usage, primarily due to its reliance on fossil fuels. Government policies and investments in green energy are still in the early stages.</p>
+  </div>
+</div>
+<!-- Iceland Chart and Explanation -->
+<div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
  
+  <div style="width: 45%; height: 400px;">
+      <canvas id="icelandChart"></canvas>
+  </div>
+
+  <!--container for Iceland-->
+  <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+      <h3>Iceland's Renewable Energy Success</h3>
+      <p>Iceland has one of the highest shares of renewable energy in the world, mainly due to its abundant geothermal and hydroelectric power resources.</p>
+  </div>
+</div>
   
   
   <div id="chartinfo"></div>
 
   <!--Charten in the infocontainer-->
   <div id="chart2"></div>
+  <div id="leaderboard-container">
+  <table id="leaderboard-table">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Country</th>
+        <th>Renewable Energy (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Top 3 countries will be dynamically injected here -->
+    </tbody>
+  </table>
   
+  <button id="view-more" onclick="loadMore()">View More</button>
+  <table id="more-countries" style="display:none;">
+    <tbody>
+      <!-- Additional rows will be dynamically injected here -->
+    </tbody>
+  </div>
   
-  <!--Grafer for algeria og iceland + containere-->
-  <h2>Comparison of 2 countries showing a high Renewable-energy country and a low renewable-energy country</h2>
-
-  <!-- Algeria Chart and Explanation -->
-<div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
-    <div style="width: 45%; height: 400px;">
-        <canvas id="algeriaChart"></canvas>
-    </div>
-
-    <!--container for algeria-->
-    <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h3>Algeria's Renewable Energy Situation</h3>
-        <p>Algeria has a low percentage of renewable energy usage, primarily due to its reliance on fossil fuels. Government policies and investments in green energy are still in the early stages.</p>
-    </div>
-</div>
- <!-- Iceland Chart and Explanation -->
-<div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
-   
-    <div style="width: 45%; height: 400px;">
-        <canvas id="icelandChart"></canvas>
-    </div>
-
-    <!--container for Iceland-->
-    <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h3>Iceland's Renewable Energy Success</h3>
-        <p>Iceland has one of the highest shares of renewable energy in the world, mainly due to its abundant geothermal and hydroelectric power resources.</p>
-    </div>
-</div>
-
-  <!--Javascripts-->
   <script src="WorldChart.js"></script>
   <script src="World Map/globus.js"></script>
+  <script src="leaderboard.js"></script>
   <script src="countryCharts.js"></script>
+  
 </body>
 
 </html>
+
+  
