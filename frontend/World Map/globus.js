@@ -59,9 +59,9 @@ am5.ready(function () {
             const infoContainer = document.getElementById("infoContainer");
             infoContainer.innerHTML = ""; //Clear existing content in the container
 
-            //Show a popup with the country name
-            showPopup(countryName);
 
+            infoContainer.style.height = "700px";
+            infoContainer.style.overflow = "auto";
             //Add content to infoContainer and display it
             //Add the close button and styling
             const closeButton = document.createElement("button");
@@ -98,6 +98,45 @@ am5.ready(function () {
             const chartDiv = document.createElement("div");
             chartDiv.id = "chartInfo";
             infoContainer.appendChild(chartDiv);
+
+            //New code here!!!!
+            const moreDetailsButton = document.createElement("button");
+            moreDetailsButton.innerText = "More Details";
+            moreDetailsButton.style.padding = "10px 15px";
+            moreDetailsButton.style.border = "none";
+            moreDetailsButton.style.backgroundColor = "#28a745";
+            moreDetailsButton.style.color = "#fff";
+            moreDetailsButton.style.borderRadius = "4px";
+            moreDetailsButton.style.cursor = "pointer";
+            moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
+            infoContainer.appendChild(moreDetailsButton);
+
+            moreDetailsButton.addEventListener("click", async function() {
+              if (!document.getElementById("additionalInfo")) {
+                const countryData = await fetchCountryData(countryName);
+                  if (countryData) {
+                    // Populate the infoContainer with the additional country data
+                    const additionalInfo = document.createElement("div");
+                    additionalInfo.innerHTML = `
+                      <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
+                      <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
+                      <p>Panels Needed: ${countryData.panels_needed}</p>
+                      <p>Estimated Cost: $${countryData.estimated_cost}</p>
+                      <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
+                      <p>Land Usage: ${countryData.land_usage} km²</p>
+                    `;
+                    additionalInfo.style.marginTop = "10px";
+                    infoContainer.appendChild(additionalInfo);
+                  } else {
+                    // Display error message if data cannot be fetched
+                    const errorMessage = document.createElement("p");
+                    errorMessage.innerText = "Data not available for this country.";
+                    errorMessage.style.color = "red";
+                    infoContainer.appendChild(errorMessage);
+                  }
+              }
+            });
+        
 
             infoContainer.style.display = "block";  // Show the container
 

@@ -60,6 +60,12 @@ th {
   z-index: 1; /* Ensure it sits below the counter iframe */
 }
 
+body {
+  background-image: linear-gradient(#f8f8f8, rgb(0, 161, 37));
+  position: relative;
+  z-index: -1;
+}
+
 /* Frosted glass effect for the iframe */
 #counterIframe {
   width: 85%; /* Slightly wider for better visual flow */
