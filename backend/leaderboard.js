@@ -8,16 +8,14 @@ const router = express.Router();
 console.log('Connecting to the database...');
 const db = new pg.Pool({
     host: process.env.PG_HOST,
-    port: parseInt(process.env.PG_PORT),
+    port: parseInt(process.env.PG_PORT, 10),
     database: process.env.PG_DATABASE,
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
-    ssl: process.env.PG_REQUIRE_SSL ? {
-        rejectUnauthorized: false,
-    } : undefined,
+    ssl: process.env.PG_REQUIRE_SSL ? { rejectUnauthorized: false } : undefined,
 });
 
-// Handle pool-level errors
+// Handle database errors gracefully
 db.on('error', (err) => {
     console.error('Unexpected database pool error:', err);
 });
@@ -40,7 +38,8 @@ router.get('/leaderboard', async (req, res) => {
                     'Other Europe', 'Other Asia Pacific', 'Other Southern Africa', 
                     'Total Europe', 'Of which: OECD', 'Total World', 'Non OECD', 
                     'Total North America', 'Total Asia Pacific', 'Other Caribbean', 
-                    'Other Middle East', 'Total'
+                    'Other Middle East', 'Total S. & Cent. America','of which: OECD','Non-OECD', 'Other Northern Africa','China Hong Kong SAR',
+                    'China Hong Kong SAR', 'Total', 'Total CIS', 'Total Middle East', 'European Union #'
                 )
             GROUP BY 
                 country
@@ -48,14 +47,16 @@ router.get('/leaderboard', async (req, res) => {
                 renewable_percentage DESC;
         `);
 
+        // If no data is available, respond with 404
         if (result.rows.length === 0) {
-            return res.status(404).json({ error: "No leaderboard data available." });
+            return res.status(404).json({ error: 'No leaderboard data available.' });
         }
 
+        // Send leaderboard data as JSON
         res.json(result.rows);
     } catch (error) {
-        console.error("Error fetching leaderboard data:", error);
-        res.status(500).send({ error: "Failed to fetch leaderboard data. Please try again later." });
+        console.error('Error fetching leaderboard data:', error);
+        res.status(500).json({ error: 'Failed to fetch leaderboard data. Please try again later.' });
     }
 });
 

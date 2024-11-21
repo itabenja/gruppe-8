@@ -67,26 +67,41 @@
 
   <!--Charten in the infocontainer-->
   <div id="chart2"></div>
-  <div id="leaderboard-container">
-  <table id="leaderboard-table">
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Country</th>
-        <th>Renewable Energy (%)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Top 3 countries will be dynamically injected here -->
-    </tbody>
-  </table>
   
-  <button id="view-more" onclick="loadMore()">View More</button>
-  <table id="more-countries" style="display:none;">
-    <tbody>
-      <!-- Additional rows will be dynamically injected here -->
-    </tbody>
+  
+  <div id="podium-container">
+    <div class="podium">
+      <!-- Second Place -->
+      <div class="podium-item second">
+        <div class="flag-container">
+          <img id="second-place-flag" src="" alt="Second Place Flag">
+        </div>
+        <div class="podium-rank">2</div>
+      </div>
+  
+      <!-- First Place -->
+      <div class="podium-item first">
+        <div class="flag-container">
+          <img id="first-place-flag" src="" alt="First Place Flag">
+        </div>
+        <div class="podium-rank">1</div>
+      </div>
+  
+      <!-- Third Place -->
+      <div class="podium-item third">
+        <div class="flag-container">
+          <img id="third-place-flag" src="" alt="Third Place Flag">
+        </div>
+        <div class="podium-rank">3</div>
+      </div>
+    </div>
   </div>
+  
+  
+  
+  <button id="show-more">View More</button>
+  
+  
   
   <script src="WorldChart.js"></script>
   <script src="World Map/globus.js"></script>
