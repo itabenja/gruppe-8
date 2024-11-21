@@ -4,23 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stacked Bar Chart - Renewable vs Primary Energy</title>
+  <!--Links hvor vi henter code og codebibloteker fra-->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="styles.css"></link>
- <!-- style for globens størrelse-->
-  <style>
-  #chartdiv {
-    width: 100%;
-    height: 700px;
-    max-width: 100%;
-  }
-  </style>
+  <link rel="stylesheet" href="World Map/globus.css"></link>
   </head>
   
 <body>
+  <!--Energy counter code-->
   <div id="counterContainer">
     <iframe
       title="Global Energy Consumption"
@@ -29,22 +25,23 @@
       width="80%">
     </iframe>
   </div>
-  
-  
-  
-  
-  
-  <header>
-    <h1></h1>
-    
-  </header>
   <div id="chartdiv"></div>
-  <div id="country-data"></div> <!-- Container for country-specific data -->
+  
+  <!-- Container for country-specific data i popup-->
+  <div id="country-data"></div> 
+ 
+
+    
   <h2> Renewable vs Primary Energy Consumption for the whole world</h2>
+
+  <!--Energy chart for the whole world-->
   <div id="chart"></div>
  
- 
+  
+  
   <div id="chartinfo"></div>
+
+  <!--Charten in the infocontainer-->
   <div id="chart2"></div>
   <div id="leaderboard-container">
     <h2>Renewable Energy Leaderboard</h2>
@@ -57,29 +54,17 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Top 3 countries will be dynamically injected here -->
-      </tbody>
-    </table>
-    <button id="view-more" onclick="loadMore()">View More</button>
-    <table id="more-countries" style="display:none;">
-      <tbody>
-        <!-- Additional rows will be dynamically injected here -->
+        <!-- Data will be dynamically injected here -->
       </tbody>
     </table>
   </div>
   
-  <script src="leaderboard.js"></script>
-  
-  
-  
   <script src="benja.js"></script>
-
+  <script src="Emilscript.js"></script>
   <script src="World Map/Popup.js"></script>
   <script src="World Map/ZoomCenter.js"></script>
   <script src="World Map/Chartinfo.js"></script>
   <script src="World Map/globus.js"></script>
-  
-  
-
 </body>
+
 </html>

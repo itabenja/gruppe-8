@@ -155,13 +155,8 @@ server.get('/api/countries/:countryName', async (req, res) => {
             console.log("No data found for:", countryName);
             res.status(404).send({ error: "Country data not found" });
         }
-    } catch (error) {
-        console.error("Error fetching country data:", error);
-        res.status(500).send({ error: "Internal Server Error" });
-    }
-});
 
-server.listen(port, () => {
-    console.log('Webserver running on port', port);
+=======
+    })
 });
-
+>>>>>>> main
