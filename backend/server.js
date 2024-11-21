@@ -156,7 +156,11 @@ server.get('/api/countries/:countryName', async (req, res) => {
             res.status(404).send({ error: "Country data not found" });
         }
 
-=======
-    })
-});
->>>>>>> main
+    } catch (error) {
+        console.error("Error fetching country data:", error);
+        res.status(500).send({ error: "Failed to fetch country data" });
+    }});
+
+    server.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
