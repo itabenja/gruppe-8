@@ -57,35 +57,29 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Data will be dynamically injected here -->
+        <!-- Top 3 countries will be dynamically injected here -->
+      </tbody>
+    </table>
+    <button id="view-more" onclick="loadMore()">View More</button>
+    <table id="more-countries" style="display:none;">
+      <tbody>
+        <!-- Additional rows will be dynamically injected here -->
       </tbody>
     </table>
   </div>
   
-  <script>
-    // Fetch leaderboard data
-    fetch('/api/leaderboard')
-      .then(response => response.json())
-      .then(data => {
-        const tableBody = document.querySelector("#leaderboard-table tbody");
-        data.forEach((country, index) => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${country.country}</td>
-            <td>${country.renewable_percentage.toFixed(2)}%</td>
-          `;
-          tableBody.appendChild(row);
-        });
-      })
-      .catch(error => console.error("Error fetching leaderboard data:", error));
-  </script>
+  <script src="leaderboard.js"></script>
+  
+  
   
   <script src="benja.js"></script>
-  <script src="Emilscript.js"></script>
+
   <script src="World Map/Popup.js"></script>
   <script src="World Map/ZoomCenter.js"></script>
   <script src="World Map/Chartinfo.js"></script>
   <script src="World Map/globus.js"></script>
+  
+  
+
 </body>
 </html>
