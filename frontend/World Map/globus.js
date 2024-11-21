@@ -302,7 +302,7 @@ am5.ready(function () {
     infoContainer.id = "infoContainer";
     infoContainer.style.position = "absolute";
     infoContainer.style.display = "none"; //Hide the container initially
-    infoContainer.style.top = "370px";
+    infoContainer.style.top = "350px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
     infoContainer.style.height = "80%";
