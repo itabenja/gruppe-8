@@ -28,12 +28,12 @@ function processChartData(data) {
             {
                 label: 'Primary Energy',
                 data: primaryData,
-                backgroundColor: 'rgba(255, 159, 64, 1)', // Update as needed
+                backgroundColor: 'rgba(255, 140, 0, 1)', // Update as needed
             },
             {
                 label: 'Renewable Energy',
                 data: renewableData,
-                backgroundColor: 'rgba(75, 192, 192, 1)', // Update as needed
+                backgroundColor: 'rgba(107, 174, 214, 1)', // Update as needed
             },
         ],
     };

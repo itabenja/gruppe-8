@@ -66,7 +66,7 @@ function createStackedChart(data) {
         labels: labels,
         datasets: [
             {
-                label: "Non-Renewable Primary Energy",
+                label: "Primary Energy",
                 data: filledNonRenewableData,
                 backgroundColor: "rgba(255, 140, 0, 1)",
             },
