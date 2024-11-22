@@ -1,5 +1,5 @@
 am5.ready(function () {
-    // Create root element
+  // Create root element
     var root = am5.Root.new("chartdiv");
  
     // Set themes
@@ -59,22 +59,25 @@ am5.ready(function () {
             const infoContainer = document.getElementById("infoContainer");
             infoContainer.innerHTML = ""; //Clear existing content in the container
 
-            //Show a popup with the country name
-            showPopup(countryName);
 
+            infoContainer.style.height = "700px";
+            infoContainer.style.overflow = "auto";
             //Add content to infoContainer and display it
             //Add the close button and styling
             const closeButton = document.createElement("button");
             closeButton.id = "closeInfoContainer";
-            closeButton.innerText = "Close";
+            closeButton.innerHTML = "&times";
             closeButton.style.position = "absolute"; 
             closeButton.style.top = "10px";
             closeButton.style.right = "10px";
-            closeButton.style.padding = "5px 10px";
+            closeButton.style.padding = "5px";
             closeButton.style.border = "none";
-            closeButton.style.backgroundColor = "#007BFF";
-            closeButton.style.color = "white";
-            closeButton.style.borderRadius = "4px";
+            closeButton.style.backgroundColor = "transparent";
+            closeButton.style.color = "#333";
+            closeButton.style.borderRadius = "24px";
+            closeButton.style.fontWeight = "bold";
+            closeButton.style.fontSize = "50px"; //Increase or decrease to make the cross larger or smaller
+            closeButton.style.lineHeight = "1"; //Control line height to adjust vertical centering
             closeButton.style.cursor = "pointer";
             closeButton.style.zIndex = "1001"; //Make sure it's above other elements
             infoContainer.appendChild(closeButton);
@@ -98,6 +101,45 @@ am5.ready(function () {
             const chartDiv = document.createElement("div");
             chartDiv.id = "chartInfo";
             infoContainer.appendChild(chartDiv);
+
+            //New code here!!!!
+            const moreDetailsButton = document.createElement("button");
+            moreDetailsButton.innerText = "More Details";
+            moreDetailsButton.style.padding = "10px 15px";
+            moreDetailsButton.style.border = "none";
+            moreDetailsButton.style.backgroundColor = "#28a745";
+            moreDetailsButton.style.color = "#fff";
+            moreDetailsButton.style.borderRadius = "4px";
+            moreDetailsButton.style.cursor = "pointer";
+            moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
+            infoContainer.appendChild(moreDetailsButton);
+
+            moreDetailsButton.addEventListener("click", async function() {
+              if (!document.getElementById("additionalInfo")) {
+                const countryData = await fetchCountryData(countryName);
+                  if (countryData) {
+                    // Populate the infoContainer with the additional country data
+                    const additionalInfo = document.createElement("div");
+                    additionalInfo.innerHTML = `
+                      <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
+                      <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
+                      <p>Panels Needed: ${countryData.panels_needed}</p>
+                      <p>Estimated Cost: $${countryData.estimated_cost}</p>
+                      <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
+                      <p>Land Usage: ${countryData.land_usage} km²</p>
+                    `;
+                    additionalInfo.style.marginTop = "10px";
+                    infoContainer.appendChild(additionalInfo);
+                  } else {
+                    // Display error message if data cannot be fetched
+                    const errorMessage = document.createElement("p");
+                    errorMessage.innerText = "Data not available for this country.";
+                    errorMessage.style.color = "red";
+                    infoContainer.appendChild(errorMessage);
+                  }
+              }
+            });
+        
 
             infoContainer.style.display = "block";  // Show the container
 
@@ -243,7 +285,7 @@ am5.ready(function () {
     // Create a zoom-out button
     let zoomOutButton = document.createElement("button");
     zoomOutButton.innerText = "Zoom Out";
-    zoomOutButton.style.position = "fixed";
+    zoomOutButton.style.position = "absolute";
     zoomOutButton.style.bottom = "20px";
     zoomOutButton.style.left = "20px";
     zoomOutButton.style.padding = "10px 15px";
@@ -254,16 +296,19 @@ am5.ready(function () {
     zoomOutButton.style.cursor = "pointer";
     zoomOutButton.style.zIndex = "1000";
 
+    //Append the button to the chardiv container instead of the body
+    const chartDivContainer = document.getElementById("chartdiv");
+    chartDivContainer.appendChild(zoomOutButton);
     zoomOutButton.addEventListener("click", resetZoom);
 
-    document.body.appendChild(zoomOutButton);
+    //document.body.appendChild(zoomOutButton);
 
     // Create a container for country info on the right
     const infoContainer = document.createElement("div");
     infoContainer.id = "infoContainer";
     infoContainer.style.position = "absolute";
     infoContainer.style.display = "none"; //Hide the container initially
-    infoContainer.style.top = "370px";
+    infoContainer.style.top = "250px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
     infoContainer.style.height = "80%";
@@ -282,7 +327,7 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "397px";
+    searchContainer.style.top = "300px";
     searchContainer.style.left = "650px";
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";
@@ -335,7 +380,7 @@ am5.ready(function () {
 });
 
 
-    
+//Funktion til at fecthe data for lande fra CountryData apien    
 async function fetchCountryData(countryName) {
     try {
         // Build the API URL
@@ -423,7 +468,7 @@ document.addEventListener("click", function (event) {
 });
 
 
-
+// Funktion til at lave vores stacked chart i infocontaineren
   function createStackedChart(data) {
     // Clear existing chart
     d3.select("#chartInfo").html("");
