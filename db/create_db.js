@@ -16,6 +16,9 @@ const db = new pg.Pool({
         rejectUnauthorized: false,
     } : undefined,
 });
+
+export default db; 
+
 const dbResult = await db.query('select now()');
 console.log('Database connection established on', dbResult.rows[0].now);
 
