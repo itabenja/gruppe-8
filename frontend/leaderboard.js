@@ -65,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
       row.innerHTML = `
         <td>${i + 1}</td>
         <td>${country.country}</td>
-        <td>${country.renewable_percentage(2)}%</td>
+        <td><a href="${flagUrl}" target="_blank"><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30"></a></td>
+        <td>${parseFloat(country.renewable_percentage).toFixed(2)}%</td>
       `;
       tableBody.appendChild(row);
     }
