@@ -54,18 +54,6 @@ th {
   }
 }
 
-/* Overlay on the background image for contrast */
-#counterContainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.6); /* Lighter overlay for more contrast */
-  border-radius: 20px;
-  z-index: 1; /* Ensure it sits below the counter iframe */
-}
 
 body {
   background-image: linear-gradient(#f8f8f8, rgb(0, 161, 37));
