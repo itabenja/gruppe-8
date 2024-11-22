@@ -53,8 +53,18 @@ function renderChart(canvasId, chartData, countryName) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { stacked: true },
-                y: { stacked: true },
+                x: { stacked: true,
+                    title: {
+                        display: true,
+                        text: "Years",
+                    },
+                 },
+                y: { stacked: true,
+                    title: {
+                        display: true,
+                        text: "Energy Consumption (Exajoules)",
+                    },
+                 },
             },
         },
     });
