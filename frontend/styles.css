@@ -176,4 +176,6 @@ body {
   height: auto;
   z-index: 10;
 }
-  
+  h2{
+    text-align: center;
+  }
