@@ -17,6 +17,7 @@
   
 <body>
   <div id="counterContainer">
+<<<<<<< HEAD
     <div id="counterContent">
       <iframe
         title="Global Energy Consumption"
@@ -27,8 +28,19 @@
       </iframe>
     </div>
   </div>
+=======
+    <iframe
+      title="Global Energy Consumption"
+      src="https://www.theworldcounts.com/embeds/counters/25?background_color=transparent&color=white&font_family=%22Helvetica+Neue%22%2C+Arial%2C+sans-serif&font_size=48"
+      height="200"
+      width="80%"
+      style="border: none;">
+    </iframe>
+</div>
+
+>>>>>>> main
   <div id="chartdiv"></div>
-  
+
   <!-- Container for country-specific data i popup-->
   <div id="country-data"></div> 
  
@@ -37,8 +49,25 @@
   <h2> Renewable vs Primary Energy Consumption for the whole world</h2>
 
   <!--Energy chart for the whole world-->
-  <div id="chart"></div>
-  <!-- Algeria Chart and Explanation -->
+  <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
+    <!-- Chart Container -->
+    <div id="chartContainer" style="width: 45%;"></div>
+
+    <!-- Chart container for whole world -->
+    <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);" id="textBox">
+        <h3>World Energy Consumption</h3>
+        <p>The Transition to Renewable Energy: A Global Shift
+
+          As we look towards a sustainable future, the shift from primary energy sources like fossil fuels to renewable energy is more critical than ever. Currently, only [X]% of the world’s primary energy comes from renewable sources, a number that is steadily growing. However, the transition is still in its early stages. While wind, solar, and hydropower continue to lead the charge, the global energy landscape remains heavily reliant on non-renewable sources such as coal, oil, and natural gas.
+          
+          Why This Matters
+          Every percentage point gained in renewable energy is a step closer to mitigating climate change, reducing global pollution, and building a cleaner, more resilient energy future. The road ahead is challenging, but with continued investment, innovation, and global collaboration, we can accelerate the transition to a world powered by clean, renewable energy.
+          
+          Together, we can create a sustainable future. The question is: How much further can we go?.</p>
+    </div>
+</div>
+
+  <!-- Algeria Chart  -->
 <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
   <div style="width: 45%; height: 400px;">
       <canvas id="algeriaChart"></canvas>
@@ -96,7 +125,4 @@
   <script src="countryCharts.js"></script>
   
 </body>
-
 </html>
-
-  
