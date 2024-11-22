@@ -66,15 +66,18 @@ am5.ready(function () {
             //Add the close button and styling
             const closeButton = document.createElement("button");
             closeButton.id = "closeInfoContainer";
-            closeButton.innerText = "Close";
+            closeButton.innerHTML = "&times";
             closeButton.style.position = "absolute"; 
             closeButton.style.top = "10px";
             closeButton.style.right = "10px";
-            closeButton.style.padding = "5px 10px";
+            closeButton.style.padding = "5px";
             closeButton.style.border = "none";
-            closeButton.style.backgroundColor = "#007BFF";
-            closeButton.style.color = "white";
-            closeButton.style.borderRadius = "4px";
+            closeButton.style.backgroundColor = "transparent";
+            closeButton.style.color = "#333";
+            closeButton.style.borderRadius = "24px";
+            closeButton.style.fontWeight = "bold";
+            closeButton.style.fontSize = "50px"; //Increase or decrease to make the cross larger or smaller
+            closeButton.style.lineHeight = "1"; //Control line height to adjust vertical centering
             closeButton.style.cursor = "pointer";
             closeButton.style.zIndex = "1001"; //Make sure it's above other elements
             infoContainer.appendChild(closeButton);
@@ -282,7 +285,7 @@ am5.ready(function () {
     // Create a zoom-out button
     let zoomOutButton = document.createElement("button");
     zoomOutButton.innerText = "Zoom Out";
-    zoomOutButton.style.position = "fixed";
+    zoomOutButton.style.position = "absolute";
     zoomOutButton.style.bottom = "20px";
     zoomOutButton.style.left = "20px";
     zoomOutButton.style.padding = "10px 15px";
@@ -293,9 +296,12 @@ am5.ready(function () {
     zoomOutButton.style.cursor = "pointer";
     zoomOutButton.style.zIndex = "1000";
 
+    //Append the button to the chardiv container instead of the body
+    const chartDivContainer = document.getElementById("chartdiv");
+    chartDivContainer.appendChild(zoomOutButton);
     zoomOutButton.addEventListener("click", resetZoom);
 
-    document.body.appendChild(zoomOutButton);
+    //document.body.appendChild(zoomOutButton);
 
     // Create a container for country info on the right
     const infoContainer = document.createElement("div");
