@@ -20,7 +20,7 @@ fetch('/api/leaderboard')
       row.innerHTML = `
         <td>${index + 1}</td>
         <td>${country.country}</td>
-        <td>${country.renewable_percentage(2)}%</td>
+        <td>${country.renewable_percentage}%</td>
       `;
       tableBody.appendChild(row);
     });
