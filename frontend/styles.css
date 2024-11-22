@@ -28,7 +28,7 @@ th {
 /* Fullscreen counter container */
 #counterContainer {
   width: 100%;
-  height: 350px; /* Increased height for more breathing space */
+  height: 250px; /* Increased height for more breathing space */
   display: flex;
   align-items: center; /* Center the counter vertically */
   justify-content: center; /* Center the counter horizontally */
@@ -189,4 +189,7 @@ body {
 #view-more:hover {
   background-color: #0056b3;
 }
-  
+
+h2{
+text-align: center;
+}
