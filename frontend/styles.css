@@ -176,4 +176,14 @@ body {
   height: auto;
   z-index: 10;
 }
-  
+h2 {
+  font-family: 'Helvetica Neue', Arial, sans-serif; /* Clean and modern font */
+  font-size: 2rem; /* Adjust size for prominence */
+  font-weight: 600; /* Slightly bold */
+  color: #333; /* Neutral dark gray for readability */
+  text-transform: uppercase; /* Optional: Makes the text look modern */
+  letter-spacing: 0.05em; /* Subtle spacing for clarity */
+  border-bottom: 2px solid #f4a261; /* Add an accent line below */
+  padding-bottom: 0.5rem; /* Space below the text */
+  margin-bottom: 1.5rem; /* Space between the header and next element */
+}
