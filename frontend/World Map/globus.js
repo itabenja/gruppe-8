@@ -302,7 +302,7 @@ am5.ready(function () {
     infoContainer.id = "infoContainer";
     infoContainer.style.position = "absolute";
     infoContainer.style.display = "none"; //Hide the container initially
-    infoContainer.style.top = "350px";
+    infoContainer.style.top = "250px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
     infoContainer.style.height = "80%";
@@ -321,7 +321,7 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "397px";
+    searchContainer.style.top = "300px";
     searchContainer.style.left = "650px";
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";
