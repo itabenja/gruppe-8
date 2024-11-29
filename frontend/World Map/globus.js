@@ -151,8 +151,8 @@ am5.ready(function () {
             // Now, fetch the energy data and create the chart as intended
             fetchEnergyData(countryName).then(data => {
               if (data) {
-                const processedData = processEnergyData(data);
-                createStackedChart(processedData); 
+               
+                createStackedChart(data); 
               }
             });
         } else {
@@ -164,21 +164,7 @@ am5.ready(function () {
         previousPolygon = target;
     });
 
-    // kan laves i SQL
-    function processEnergyData(data) {
-        return d3.groups(data, d => d.year).map(([year, values]) => {
-            const obj = { year };
-            let primary = 0, renewable = 0;
-            values.forEach(v => {
-                if (v.energy_type === "primary") primary += v.total_energy_consumption;
-                if (v.energy_type === "renewable") renewable += v.total_energy_consumption;
-            });
-            obj.nonRenewablePrimary = primary - renewable;
-            obj.renewable = renewable;
-            obj.primary = primary;
-            return obj;
-        });
-    }
+    
 
     async function fetchEnergyData(countryName) {
         try {

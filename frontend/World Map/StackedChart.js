@@ -1,7 +1,4 @@
 
-
-
-
 // Funktion til at lave vores stacked chart i infocontaineren
 function createStackedChart(data) {
     // Clear existing chart
@@ -19,12 +16,12 @@ function createStackedChart(data) {
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const color = d3.scaleOrdinal()
-    .domain(["nonRenewablePrimary", "renewable"])
+    .domain(["non_renewable_energy", "renewable_energy"])
     .range(["#ff8c00", "#6baed6"]);
 
     // Stack the non-renewable and renewable portions
     const stack = d3.stack()
-    .keys(["nonRenewablePrimary", "renewable"]);
+    .keys(["non_renewable_energy", "renewable_energy"]);
 
     const stackedData = stack(data);
 
@@ -85,7 +82,7 @@ svg.append("g")
     .attr("height", d => y(d[0]) - y(d[1]))
     .attr("width", x.bandwidth())
     .attr("class", "bar");
-
+console.log("y",data)
   // Add percentage labels above the renewable portion
   svg.selectAll(".percentage-label")
     .data(data)
@@ -93,13 +90,13 @@ svg.append("g")
     .append("text")
     .attr("class", "percentage-label")
     .attr("x", d => x(d.year) + x.bandwidth() / 2) // Center the text horizontally
-    .attr("y", d => y(d.primary) - (y(d.primary) - y(d.primary - d.renewable)) / 2) // Vertically center the renewable portion
+    .attr("y", d =>  y(Number(d.non_renewable_energy) + Number(d.renewable_energy)/2) ) // Vertically center the renewable portion
     .attr("text-anchor", "middle")
     .style("font-size", "10px")
     .style("fill", "#333")
     .style("font-weight", "bold")
     .style("opacity", 0.8) // Slight opacity to make the text professional and clean
-    .text(d => `${Math.round((d.renewable / d.primary) * 100)}%`); // Only display the renewable energy percentage
+    .text(d => `${Math.round((Number(d.renewable_energy) / (Number(d.renewable_energy)+Number(d.non_renewable_energy))) * 100)}%`); // Only display the renewable energy percentage
 
   // Adjust the legend to position it outside the chart, to the right
   const legend = svg.selectAll(".legend")
