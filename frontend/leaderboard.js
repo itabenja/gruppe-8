@@ -1,16 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   const specialCases = {
-    'United Kingdom': 'great-britain',
-    'USA': 'united-states',
-    'South Korea': 'korea-south',
-    'North Korea': 'korea-north',
-    'Ivory Coast': 'cote-d-ivoire',
+    'United Kingdom': 'gb',
+    'United States': 'usa',
+    'South Korea': 'southkroea',
+    'North Korea': 'kp',
+    'New Zealand': 'newzealand',
+    'Ecuador' : 'Eduador',
+    'North Macedonia' : 'northmacedonia',
+    'Czech Republic' : 'czechia',
+    'South Korea' : 'southkorea',
+    'South Africa' : 'southafrica',
+    'United Arab Emirates' : 'unitedarabemirates',
+    'Saudi Arabia' : 'saudiarabia',
+    'Trinidad & Tobago' : 'trinidadtobago',
+    'Sri Lanka' : 'srilanka'
   };
+
 
   const getFlagUrl = (country) => {
     return specialCases[country]
-      ? `https://flagpedia.net/${specialCases[country]}`
-      : `https://flagpedia.net/${country.toLowerCase().replace(/ /g, '-')}`;
+      ? `images/${specialCases[country]}.png`
+      : `images/${country.toLowerCase().replace(/ /g, '-')}.png`;
   };
 
   let fullLeaderboard = [];
@@ -32,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // De tre bedste lande på podiet
+      // Podiets top 3 lande
       const [firstPlace, secondPlace, thirdPlace] = data;
 
       document.getElementById('first-place-flag').src = getFlagUrl(firstPlace.country);
@@ -44,11 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('third-place-flag').src = getFlagUrl(thirdPlace.country);
       document.getElementById('third-place-flag').alt = `${thirdPlace.country} Flag`;
 
-      // Indlæs de første lande i tabellen
+      // Indlæs første sæt lande i tabellen
       loadMoreCountries();
     })
     .catch((error) => console.error('Error fetching leaderboard data:', error));
-
+        
   function loadMoreCountries() {
     const tableBody = document.querySelector('#leaderboard-table tbody');
     if (!tableBody) {
@@ -65,9 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
       row.innerHTML = `
         <td>${i + 1}</td>
         <td>${country.country}</td>
-        <td><a href="${flagUrl}" target="_blank"><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30"></a></td>
+        <td><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30"></td>
         <td>${parseFloat(country.renewable_percentage).toFixed(2)}%</td>
       `;
+
+      // Tilføj faktaboks ved hover
+      row.addEventListener('mouseenter', (event) => showTooltip(event, country));
+      row.addEventListener('mouseleave', hideTooltip);
+
       tableBody.appendChild(row);
     }
 
@@ -85,10 +100,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const showMoreButton = document.getElementById('show-more');
   if (showMoreButton) {
     showMoreButton.addEventListener('click', () => {
-      console.log('View More button clicked'); // Debug besked
       loadMoreCountries();
     });
   } else {
     console.error('Show More button is missing.');
+  }
+
+  // Tooltip-funktion
+  const tooltip = document.createElement('div');
+  tooltip.id = 'tooltip';
+  tooltip.style.position = 'absolute';
+  tooltip.style.padding = '10px';
+  tooltip.style.backgroundColor = '#fff';
+  tooltip.style.border = '1px solid #ccc';
+  tooltip.style.borderRadius = '5px';
+  tooltip.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+  tooltip.style.display = 'none';
+  document.body.appendChild(tooltip);
+
+  function showTooltip(event, country) {
+    tooltip.style.display = 'block';
+    tooltip.style.left = `${event.pageX + 10}px`;
+    tooltip.style.top = `${event.pageY + 10}px`;
+    tooltip.innerHTML = `
+      <strong>${country.country}</strong><br>
+      Renewable Energy: ${parseFloat(country.renewable_percentage).toFixed(2)}%<br>
+      Rank: ${country.rank}
+    `;
+  }
+
+  function hideTooltip() {
+    tooltip.style.display = 'none';
   }
 });
