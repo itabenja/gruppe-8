@@ -88,11 +88,11 @@ server.get('/api/energy-data/:country', async (req, res) => {
 
     try {
         const dbResult = await db.query(`
-            SELECT 
+            select year, SUM(total_energy)-SUM(renewable_energy) as non_renewable_energy, SUM(renewable_energy) as renewable_energy
+            from (SELECT 
                 primary_energy.year,
-                'primary' AS energy_type,
-                SUM(primary_energy.energy_consumption) AS total_energy_consumption,
-                100.0 AS renewable_percentage
+                SUM(primary_energy.energy_consumption) AS total_energy,
+                0 AS renewable_energy
             FROM 
                 primary_energy
             WHERE 
@@ -104,24 +104,23 @@ server.get('/api/energy-data/:country', async (req, res) => {
             
             SELECT 
                 renewable_energy.year,
-                'renewable' AS energy_type,
-                SUM(renewable_energy.energy_consumption) AS total_energy_consumption,
-                (SUM(renewable_energy.energy_consumption) / (
-                    SELECT SUM(primary_energy.energy_consumption)
-                    FROM primary_energy
-                    WHERE primary_energy.country = $1 AND primary_energy.year = renewable_energy.year
-                )) * 100 AS renewable_percentage
+                0 AS total_energy,
+                SUM(renewable_energy.energy_consumption)
+                    
             FROM 
                 renewable_energy
             WHERE 
                 renewable_energy.country = $1
             GROUP BY 
-                renewable_energy.year
+                renewable_energy.year)
+            GROUP BY
+                year
             ORDER BY 
                 year;
         `, [countryName]);
 
-        res.json(dbResult.rows);
+        res.send(dbResult.rows);
+        console.log(dbResult.rows)
     } catch (err) {
         console.error('Error fetching data from database:', err.message);
         res.status(500).send('Internal Server Error');

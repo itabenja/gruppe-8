@@ -16,7 +16,6 @@
   </head>
   
 <body>
-  <!--Energy counter code-->
   <div id="counterContainer">
     <iframe
       title="Global Energy Consumption"
@@ -27,7 +26,7 @@
     </iframe>
 </div>
 
-  <div id="chartdiv" style="position: relative; width: 100%; height: 500px;"></div>
+  <div id="chartdiv"></div>
 
   <!-- Container for country-specific data i popup-->
   <div id="country-data"></div> 
@@ -60,7 +59,7 @@
 <br>
 <br>
 <br>
-<h2>Chart for primary and renewable energy for Algeria and iceland</h2>
+<h2>Chart for Primary and Renewable Energy for Algeria and iceland</h2>
   <!-- Algeria Chart  -->
 <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
   <div style="width: 45%; height: 400px;">
@@ -93,11 +92,8 @@
   <!--Charten in the infocontainer-->
   <div id="chart2"></div>
 
-<br>
-<br>
   
-  
-  
+  <h2>Leaderboard for countries with high Renewable energi % </h2>
   <!-- Podium -->
 <div id="podium-container">
   <div class="podium">
@@ -140,6 +136,7 @@
 <!-- "View More" Button -->
 <button id="show-more">View More</button>
   <script src="WorldChart.js"></script>
+  <script src="World Map/StackedChart.js"></script>
   <script src="World Map/globus.js"></script>
   <script src="leaderboard.js"></script>
   <script src="countryCharts.js"></script>
