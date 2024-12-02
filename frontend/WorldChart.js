@@ -71,7 +71,7 @@ function createWorldStackedChart(data) {
             plugins: {
                 title: {
                     display: true,
-                    text: "Energy Consumption (1990-2023)",
+                    text: " The Worlds Energy Consumption (1990-2023)",
                 },
             },
             responsive: true,
