@@ -21,12 +21,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 return obj;
             });
 
-            createStackedChart(groupedData);
+            createWorldStackedChart(groupedData);
         })
         .catch(error => console.error("Error fetching data:", error));
 });
 
-function createStackedChart(data) {
+function createWorldStackedChart(data) {
     const container = document.getElementById("chartContainer");
     if (!container) {
         console.error("Element with ID 'chartContainer' not found.");
