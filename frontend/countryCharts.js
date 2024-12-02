@@ -11,33 +11,39 @@ async function fetchEnergyData(country) {
         return [];
     }
 }
+
 function processChartData(data) {
-    const labels = [...new Set(data.map((row) => row.year))]; // Extract unique years
-    const primaryData = labels.map((year) => {
-        const row = data.find((d) => d.year === year && d.energy_type === 'primary');
-        return row ? row.total_energy_consumption : 0;
-    });
+    // Extract years and ensure they are unique and sorted
+    const labels = [...new Set(data.map((row) => row.year))].sort();
+
+    // Map renewable and non-renewable energy data by year
     const renewableData = labels.map((year) => {
-        const row = data.find((d) => d.year === year && d.energy_type === 'renewable');
-        return row ? row.total_energy_consumption : 0;
+        const row = data.find((d) => d.year === year);
+        return row ? row.renewable_energy || 0 : 0;
+    });
+
+    const nonRenewableData = labels.map((year) => {
+        const row = data.find((d) => d.year === year);
+        return row ? row.non_renewable_energy || 0 : 0;
     });
 
     return {
         labels,
         datasets: [
             {
-                label: 'Primary Energy',
-                data: primaryData,
-                backgroundColor: 'rgba(255, 140, 0, 1)', // Update as needed
-            },
-            {
                 label: 'Renewable Energy',
                 data: renewableData,
-                backgroundColor: 'rgba(107, 174, 214, 1)', // Update as needed
+                backgroundColor: 'rgba(107, 174, 214, 1)', // Renewable color
+            },
+            {
+                label: 'Non-Renewable Energy',
+                data: nonRenewableData,
+                backgroundColor: 'rgba(255, 140, 0, 1)', // Non-renewable color
             },
         ],
     };
 }
+
 function renderChart(canvasId, chartData, countryName) {
     const ctx = document.getElementById(canvasId).getContext('2d');
     new Chart(ctx, {
