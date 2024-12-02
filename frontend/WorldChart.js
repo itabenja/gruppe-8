@@ -2,26 +2,21 @@ let chartInstance; // Global variable to store the chart instance
 
 document.addEventListener("DOMContentLoaded", function () {
     fetch('/api/TY')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data: ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
-            const groupedData = d3.groups(data, d => d.year).map(([year, values]) => {
-                const obj = { year };
-                let primary = 0;
-                let renewable = 0;
+            if (!data || data.length === 0) {
+                console.error("No data received from the server.");
+                const container = document.getElementById("chartContainer");
+                container.innerHTML = "<p>No data available.</p>";
+                return;
+            }
 
-                values.forEach(v => {
-                    if (v.energy_type === "primary") primary = v.total_energy_consumption;
-                    if (v.energy_type === "renewable") renewable = v.total_energy_consumption;
-                });
-
-                obj.nonRenewablePrimary = primary - renewable;
-                obj.renewable = renewable;
-                obj.primary = primary;
-
-                return obj;
-            });
-
-            createWorldStackedChart(groupedData);
+            createWorldStackedChart(data);
         })
         .catch(error => console.error("Error fetching data:", error));
 });
@@ -37,7 +32,7 @@ function createWorldStackedChart(data) {
 
     const canvas = document.createElement("canvas");
     canvas.id = "chartCanvas";
-    canvas.width = 800; // Adjust canvas width
+    canvas.width = 700; // Adjust canvas width
     canvas.height = 500; // Adjust canvas height
     container.appendChild(canvas);
 
@@ -48,32 +43,23 @@ function createWorldStackedChart(data) {
         chartInstance.destroy();
     }
 
-    const labels = Array.from({ length: 2023 - 1990 + 1 }, (_, i) => 1990 + i); // Generate years from 1990 to 2023
-    const nonRenewableData = data.reduce((acc, d) => {
-        acc[d.year] = d.nonRenewablePrimary;
-        return acc;
-    }, {});
-    const renewableData = data.reduce((acc, d) => {
-        acc[d.year] = d.renewable;
-        return acc;
-    }, {});
-
-    // Fill in missing years with 0 values
-    const filledNonRenewableData = labels.map(year => nonRenewableData[year] || 0);
-    const filledRenewableData = labels.map(year => renewableData[year] || 0);
+    // Extract labels (years) and datasets
+    const labels = data.map(d => d.year); // Years as labels
+    const nonRenewableData = data.map(d => d.nonRenewablePrimary); // Non-renewable energy data
+    const renewableData = data.map(d => d.renewable); // Renewable energy data
 
     const chartData = {
         labels: labels,
         datasets: [
             {
-                label: "Primary Energy",
-                data: filledNonRenewableData,
-                backgroundColor: "rgba(255, 140, 0, 1)",
+                label: "Non-Renewable Energy",
+                data: nonRenewableData,
+                backgroundColor: "rgba(255, 140, 0, 1)", // Orange color
             },
             {
                 label: "Renewable Energy",
-                data: filledRenewableData,
-                backgroundColor: "rgba(107, 174, 214, 1)",
+                data: renewableData,
+                backgroundColor: "rgba(107, 174, 214, 1)", // Blue color
             },
         ],
     };
