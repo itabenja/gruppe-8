@@ -94,7 +94,61 @@
   <div id="chart2"></div>
 
 <<<<<<<<< Temporary merge branch 1
-  
+<style>
+  /* Tooltip styling */
+  #tooltip {
+    position: absolute;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: none;
+    z-index: 1000;
+  }
+
+  /* Table styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+
+  th {
+    background-color: #f4f4f4;
+  }
+
+  /* Podium styling */
+  #podium-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .podium {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .podium-item {
+    margin: 0 10px;
+    text-align: center;
+  }
+
+  .podium-item img {
+    display: block;
+    margin: 0 auto;
+    width: 80px;
+    height: 50px;
+  }
+</style>
+</head>
   <h2>Leaderboard for countries with high Renewable energi % </h2>
 =========
 >>>>>>>>> Temporary merge branch 2
@@ -121,7 +175,7 @@
     </div>
   </div>
 </div>
-
+<div id="tooltip"></div>
 <!-- Leaderboard Table -->
 <table id="leaderboard-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
   <thead>

@@ -172,3 +172,13 @@ h2 {
   padding-bottom: 0.5rem; /* Space below the text */
   margin-bottom: 1.5rem; /* Space between the header and next element */
 }
+#tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 1000;
+}

@@ -122,13 +122,14 @@ am5.ready(function () {
                     // Populate the infoContainer with the additional country data
                     const additionalInfo = document.createElement("div");
                     additionalInfo.innerHTML = `
-                      <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
-                      <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
-                      <p>Panels Needed: ${countryData.panels_needed}</p>
-                      <p>Estimated Cost: $${countryData.estimated_cost}</p>
-                      <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
-                      <p>Land Usage: ${countryData.land_usage} km²</p>
+                      <p>Current Solar Generation: ${countryData.solar_generation_twh} TWh</p>
+                      <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
+                      <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
+                      <p>Area Needed M2: ${countryData.area_needed_m2}</p>
                     `;
+
+                    console.log(countryData)
+                    
                     additionalInfo.style.marginTop = "10px";
                     infoContainer.appendChild(additionalInfo);
                   } else {
