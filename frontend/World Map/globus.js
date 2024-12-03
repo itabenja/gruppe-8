@@ -22,8 +22,9 @@ am5.ready(function () {
     // Create main polygon series for countries
     var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
       geoJSON: am5geodata_worldLow
+      
     }));
- 
+    console.log(polygonSeries)
     polygonSeries.mapPolygons.template.setAll({
       tooltipText: "{name}",
       toggleKey: "active",
@@ -44,10 +45,81 @@ am5.ready(function () {
 
     //tingting
     polygonSeries.mapPolygons.template.on("active", async function (active, target) {
-      //If there is a previous polygon selected and it's different from the current targe, deactive it.
       if (previousPolygon && previousPolygon != target) {
         previousPolygon.set("active", false);
       }
+    
+      if (target.get("active")) {
+        console.log(target);
+    
+        const countryId = target.dataItem.get("id");
+        const countryName = target.dataItem.dataContext.name;
+    
+        // Get the geometry data for the clicked country
+        const geometry = target.dataItem.dataContext.geometry;
+    
+        // Initialize min/max values
+        let minX = Infinity, maxX = -Infinity;
+        let minY = Infinity, maxY = -Infinity;
+    
+        // Compute min/max coordinates based on geometry type
+        if (geometry.type === "Polygon") {
+          geometry.coordinates.forEach(polygon => {
+            polygon.forEach(([x, y]) => {
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+              if (y < minY) minY = y;
+              if (y > maxY) maxY = y;
+            });
+          });
+        } else if (geometry.type === "MultiPolygon") {
+          geometry.coordinates.forEach(multiPolygon => {
+            multiPolygon.forEach(polygon => {
+              polygon.forEach(([x, y]) => {
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+              });
+            });
+          });
+        }
+    
+        // Log the calculated values
+        console.log(`Country: ${countryName}`);
+        console.log("Smallest X:", minX);
+        console.log("Largest X:", maxX);
+        console.log("Smallest Y:", minY);
+        console.log("Largest Y:", maxY);
+    
+        // Existing logic for infoContainer
+        const infoContainer = document.getElementById("infoContainer");
+        infoContainer.innerHTML = ""; // Clear existing content in the container
+        infoContainer.style.height = "700px";
+        infoContainer.style.overflow = "auto";
+    
+        // Add more content like title, close button, etc.
+        const countryTitle = document.createElement("h3");
+        countryTitle.innerText = countryName;
+        infoContainer.appendChild(countryTitle);
+    
+        // Add coordinate details to infoContainer
+        const coordinatesDetails = document.createElement("p");
+        coordinatesDetails.innerText = `Coordinates: Smallest X: ${minX}, Largest X: ${maxX}, Smallest Y: ${minY}, Largest Y: ${maxY}`;
+        infoContainer.appendChild(coordinatesDetails);
+    
+        infoContainer.style.display = "block"; // Show the container
+    
+        centerAndZoomToCountry(countryId); // Center and zoom to the country
+        stopRotation(); // Stops the globe's auto-rotation
+      } else {
+        const infoContainer = document.getElementById("infoContainer");
+        infoContainer.style.display = "none"; // Hide the container
+      }
+    
+      previousPolygon = target; // Update the reference to the last clicked polygon
+    
+    
       //Check if the current target (clicked polygon) is active (i.e., selected)
         if (target.get("active")) {
             console.log(target);
@@ -357,6 +429,53 @@ am5.ready(function () {
         console.log("No match found");
     }
 });
+
+function addRenewableCircle(countryId, renewablePercentage) {
+  // Get the country's data item
+  const dataItem = polygonSeries.getDataItemById(countryId);
+
+  if (!dataItem) {
+    console.error("Country data item not found for ID:", countryId);
+    return;
+  }
+
+  // Get the country polygon (geometry)
+  const mapPolygon = dataItem.get("mapPolygon");
+
+  if (!mapPolygon) {
+    console.error("MapPolygon not found for country ID:", countryId);
+    return;
+  }
+
+  // Get the country's center coordinates
+  const centroid = mapPolygon.geoCentroid();
+  if (!centroid) {
+    console.error("Could not calculate centroid for country ID:", countryId);
+    return;
+  }
+
+  // Add a circle to the chart
+  const circle = chart.series.push(am5map.MapPointSeries.new(root, {}));
+
+  const circlePoint = circle.data.push({
+    geometry: {
+      type: "Point",
+      coordinates: [centroid.longitude, centroid.latitude]
+    }
+  });
+
+  // Set up the circle's appearance
+  const circleMarker = circle.mapPoints.template;
+  circleMarker.setAll({
+    radius: renewablePercentage * 2, // Size the circle proportionally
+    fill: am5.color(0x28a745), // Green color
+    stroke: am5.color(0x000000), // Optional: Add a border
+    strokeWidth: 2,
+    tooltipText: `Renewable Energy: ${renewablePercentage}%`
+  });
+
+  console.log(`Circle added for ${countryId} with ${renewablePercentage}% renewable.`);
+}
 
 
 //Funktion til at fecthe data for lande fra CountryData apien    
