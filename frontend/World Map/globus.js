@@ -137,25 +137,31 @@ am5.ready(function () {
                 moreDetailsButton.innerText = "More Details";
               } else {
                 const countryData = await fetchCountryData(countryName);
-                if (countryData) {
-                   // Clear the chartInfo content and populate with the additional data
-                      //const chartInfo = document.getElementById("chartInfo");
-                      chartInfo.innerHTML = `
-                          <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
-                          <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
-                          <p>Panels Needed: ${countryData.panels_needed}</p>
-                          <p>Estimated Cost: $${countryData.estimated_cost}</p>
-                          <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
-                          <p>Land Usage: ${countryData.land_usage} km²</p>
-                      `;
-                } else {
-                  chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
-                }
-                moreDetailsButton.innerText = "Show Chart";
-              } 
-              //showingDetails = !showingDetails;
-          });
-          
+                  if (countryData) {
+                    // Populate the infoContainer with the additional country data
+                    const additionalInfo = document.createElement("div");
+                    additionalInfo.innerHTML = `
+                      <p>Current Solar Generation: ${countryData.solar_generation_twh} TWh</p>
+                      <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
+                      <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
+                      <p>Area Needed M2: ${countryData.area_needed_m2}</p>
+                      <p>Total Area KM2: ${countryData.total_area_km2}</p>
+
+                    `;
+
+                    console.log(countryData)
+                    
+                    additionalInfo.style.marginTop = "10px";
+                    infoContainer.appendChild(additionalInfo);
+                  } else {
+                    // Display error message if data cannot be fetched
+                    const errorMessage = document.createElement("p");
+                    errorMessage.innerText = "Data not available for this country.";
+                    errorMessage.style.color = "red";
+                    infoContainer.appendChild(errorMessage);
+                  }
+              }
+            });
         
 
             infoContainer.style.display = "block";  // Show the container

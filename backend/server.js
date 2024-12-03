@@ -129,20 +129,24 @@ server.get('/api/countries/:countryName', async (req, res) => {
     console.log("API request for country:", countryName);
 
     try {
+        // Log parametre før forespørgslen
+        console.log('Executing query with country:', countryName);
+
         const result = await db.query(
             `SELECT 
                 country,
-                current_solar_coverage, 
-                missing_solar_coverage, 
-                required_additional_solar_capacity, 
-                panels_needed, 
-                estimated_cost, 
-                co2_reduction, 
-                land_usage
-            FROM solar_energy_requirements_data 
+                solar_generation_twh,
+                solar_installed_capacity_mw,
+                solar_panels_needed,
+                area_needed_m2,
+                total_area_km2
+            FROM solar_panel_problem_solving_data 
             WHERE LOWER(country) = LOWER($1)`,
             [countryName]
         );
+
+        // Log hele resultatet
+        console.log('Query result:', result.rows);
 
         if (result.rows.length > 0) {
             res.json(result.rows[0]);
@@ -154,8 +158,9 @@ server.get('/api/countries/:countryName', async (req, res) => {
     } catch (error) {
         console.error("Error fetching country data:", error);
         res.status(500).send({ error: "Failed to fetch country data" });
-    }});
+    }
+});
 
-    server.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
-    });
+server.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
