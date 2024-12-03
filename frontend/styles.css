@@ -58,7 +58,7 @@ th {
 
 
 body {
-  background-image: linear-gradient(#f8f8f8, rgb(177, 255, 203));
+  background-image: linear-gradient(#f8f8f8,antiquewhite );
   position: relative;
   z-index: -1;
   padding: 20px;
@@ -173,4 +173,26 @@ h2 {
   border-bottom: 2px solid #f4a261; /* Add an accent line below */
   padding-bottom: 0.5rem; /* Space below the text */
   margin-bottom: 1.5rem; /* Space between the header and next element */
+}
+
+.Overskrift{
+  padding: 10px;
+  background-color: antiquewhite;
+  border-radius: 20px;
+}
+
+.conclusion {
+  padding: 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+}
+
+p {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 17px;
+}
+h3 {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 25px;
+
 }

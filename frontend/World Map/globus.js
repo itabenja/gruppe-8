@@ -325,7 +325,7 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "300px";
+    searchContainer.style.top = "580px";
     searchContainer.style.left = "650px";
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";

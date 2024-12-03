@@ -138,7 +138,7 @@ server.get('/api/countries/:countryName', async (req, res) => {
                 panels_needed, 
                 estimated_cost, 
                 co2_reduction, 
-                land_usage 
+                land_usage
             FROM solar_energy_requirements_data 
             WHERE LOWER(country) = LOWER($1)`,
             [countryName]
