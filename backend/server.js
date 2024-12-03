@@ -138,7 +138,8 @@ server.get('/api/countries/:countryName', async (req, res) => {
                 solar_generation_twh,
                 solar_installed_capacity_mw,
                 solar_panels_needed,
-                area_needed_m2
+                area_needed_m2,
+                total_area_km2
             FROM solar_panel_problem_solving_data 
             WHERE LOWER(country) = LOWER($1)`,
             [countryName]

@@ -27,9 +27,6 @@ await db.query(`
 drop table if exists primary_energy;
 drop table if exists renewable_energy;
 drop table if exists Solar_Panel_Problem_Solving_Data;
-drop table if exists solar_panel_problem_solving; 
-drop table if exists solar_energy_requirements_data; 
-drop table if exists solar_energy_requirements; 
 
 
 create table primary_energy (
@@ -50,7 +47,8 @@ country varchar(255) primary key,
 solar_generation_twh decimal (10,2),
 solar_installed_capacity_mw decimal(10,2),
 solar_panels_needed numeric,
-area_needed_m2 decimal (15,2));
+area_needed_m2 decimal (15,2),
+total_area_km2 decimal (15,2));
 `);
 console.log('Tables recreated.');
 
@@ -65,7 +63,7 @@ console.log('Tables recreated.');
             with csv header`, 'db/renewable_energy_final_all_correct.csv');
 
         await copyIntoTable(db, `
-            copy Solar_Panel_Problem_Solving_Data (country,solar_generation_twh,solar_installed_capacity_mw,solar_panels_needed,area_needed_m2)
+            copy Solar_Panel_Problem_Solving_Data (country,solar_generation_twh,solar_installed_capacity_mw,solar_panels_needed,area_needed_m2, total_area_km2)
             from stdin
             with csv header`, 'db/Solar_Panel_Problem_Solving_Data.csv');
 

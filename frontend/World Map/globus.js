@@ -126,6 +126,8 @@ am5.ready(function () {
                       <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
                       <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
                       <p>Area Needed M2: ${countryData.area_needed_m2}</p>
+                      <p>Total Area KM2: ${countryData.total_area_km2}</p>
+
                     `;
 
                     console.log(countryData)
