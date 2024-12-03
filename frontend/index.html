@@ -40,9 +40,11 @@
   <!--Energy chart for the whole world-->
   <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
     <!-- Chart Container -->
-    <div id="chartContainer" style="width: 45%;"></div>
+    <div id="chartContainer">
+      <canvas id="energyChart"></canvas>
+  </div>
 
-    <!-- Chart container for whole world -->
+    <!-- infocontainer for whole world -->
     <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);" id="textBox">
         <h3>World Energy Consumption</h3>
         <p>The Transition to Renewable Energy: A Global Shift
@@ -86,14 +88,16 @@
   </div>
 </div>
   
-  
   <div id="chartinfo"></div>
 
   <!--Charten in the infocontainer-->
   <div id="chart2"></div>
 
+<<<<<<<<< Temporary merge branch 1
   
   <h2>Leaderboard for countries with high Renewable energi % </h2>
+=========
+>>>>>>>>> Temporary merge branch 2
   <!-- Podium -->
 <div id="podium-container">
   <div class="podium">
@@ -119,22 +123,25 @@
 </div>
 
 <!-- Leaderboard Table -->
-<table id="leaderboard-table">
+<table id="leaderboard-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
   <thead>
-    <tr>
-      <th>Rank</th>
-      <th>Country</th>
-      <th>Flag</th>
-      <th>Renewable Energy (%)</th>
+    <tr style="background-color: #f4f4f4; text-align: left;">
+      <th style="padding: 10px;">Rank</th>
+      <th style="padding: 10px;">Country</th>
+      <th style="padding: 10px;">Flag</th>
+      <th style="padding: 10px;">Renewable Energy (%)</th>
     </tr>
   </thead>
   <tbody>
-    <!-- Dynamiske rækker -->
+    <!-- Dynamisk indhold -->
   </tbody>
 </table>
 
 <!-- "View More" Button -->
-<button id="show-more">View More</button>
+<button id="show-more" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+  View More
+</button>
+
   <script src="WorldChart.js"></script>
   <script src="World Map/StackedChart.js"></script>
   <script src="World Map/globus.js"></script>

@@ -39,48 +39,44 @@ server.use((req, res, next) => {
 // Add leaderboard routes
 server.use('/api', leaderboardRoutes);
 
-// Additional API endpoints
 server.get('/api/TY', async (req, res) => {
     try {
         const dbResult = await db.query(`
             SELECT 
-                year,
-                'primary' AS energy_type,
-                SUM(energy_consumption) AS total_energy_consumption,
-                100.0 AS renewable_percentage
-            FROM 
-                primary_energy
-            WHERE 
-                country = 'Total World'
-            GROUP BY 
-                year
+    COALESCE(p.year, r.year) AS year,
+    COALESCE(SUM(p.energy_consumption), 0) AS primary_energy,
+    COALESCE(SUM(r.energy_consumption), 0) AS renewable_energy,
+    COALESCE(SUM(p.energy_consumption), 0) - COALESCE(SUM(r.energy_consumption), 0) AS non_renewable_primary
+FROM 
+    primary_energy p
+FULL OUTER JOIN 
+    renewable_energy r
+ON 
+    p.year = r.year AND p.country = r.country
+WHERE 
+    COALESCE(p.country, r.country) = 'Total World'
+GROUP BY 
+    COALESCE(p.year, r.year)
+ORDER BY 
+    year;
 
-            UNION ALL
-
-            SELECT 
-                year,
-                'renewable' AS energy_type,
-                SUM(energy_consumption) AS total_energy_consumption,
-                (SUM(energy_consumption) / (
-                    SELECT SUM(energy_consumption)
-                    FROM primary_energy
-                    WHERE country = 'Total World' AND primary_energy.year = renewable_energy.year
-                )) * 100 AS renewable_percentage
-            FROM 
-                renewable_energy
-            WHERE 
-                country = 'Total World'
-            GROUP BY 
-                year
-            ORDER BY 
-                year;
         `);
-        res.json(dbResult.rows);
+
+        // Transform the result to directly match the frontend's expectations
+        const transformedData = dbResult.rows.map(row => ({
+            year: row.year,
+            primary: row.primary_energy,
+            renewable: row.renewable_energy,
+            nonRenewablePrimary: row.non_renewable_primary
+        }));
+
+        res.json(transformedData);
     } catch (err) {
-        console.error('Error fetching data from database', err);
+        console.error('Error fetching data from the database:', err);
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 // Endpoint to fetch energy data for a specific country
 server.get('/api/energy-data/:country', async (req, res) => {
@@ -120,7 +116,7 @@ server.get('/api/energy-data/:country', async (req, res) => {
         `, [countryName]);
 
         res.send(dbResult.rows);
-        console.log(dbResult.rows)
+        
     } catch (err) {
         console.error('Error fetching data from database:', err.message);
         res.status(500).send('Internal Server Error');

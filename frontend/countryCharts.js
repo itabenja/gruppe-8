@@ -53,7 +53,7 @@ function renderChart(canvasId, chartData, countryName) {
             plugins: {
                 title: {
                     display: true,
-                    text: `${countryName} Energy Data`,
+                    text: `${countryName}´s Energy Consumption (1990-2023)`,
                 },
             },
             responsive: true,
