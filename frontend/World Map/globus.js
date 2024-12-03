@@ -106,6 +106,9 @@ am5.ready(function () {
             //New code here!!!!
             const moreDetailsButton = document.createElement("button");
             moreDetailsButton.innerText = "More Details";
+            moreDetailsButton.style.position = "absolute";
+            moreDetailsButton.style.top = "10px";
+            moreDetailsButton.style.right = "60px";
             moreDetailsButton.style.padding = "10px 15px";
             moreDetailsButton.style.border = "none";
             moreDetailsButton.style.backgroundColor = "#28a745";
@@ -115,31 +118,44 @@ am5.ready(function () {
             moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
             infoContainer.appendChild(moreDetailsButton);
 
-            moreDetailsButton.addEventListener("click", async function() {
-              if (!document.getElementById("additionalInfo")) {
-                const countryData = await fetchCountryData(countryName);
-                  if (countryData) {
-                    // Populate the infoContainer with the additional country data
-                    const additionalInfo = document.createElement("div");
-                    additionalInfo.innerHTML = `
-                      <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
-                      <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
-                      <p>Panels Needed: ${countryData.panels_needed}</p>
-                      <p>Estimated Cost: $${countryData.estimated_cost}</p>
-                      <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
-                      <p>Land Usage: ${countryData.land_usage} km²</p>
-                    `;
-                    additionalInfo.style.marginTop = "10px";
-                    infoContainer.appendChild(additionalInfo);
+            let showingDetails = false;
+
+            moreDetailsButton.addEventListener("click", async function () {
+              const chartInfo = document.getElementById("chartInfo");
+
+              if (chartInfo.innerHTML.includes("Current Solar Coverage")) {
+
+
+                chartInfo.innerHTML ="";
+                fetchEnergyData(countryName).then(data => {
+                  if (data) {
+                    createStackedChart(data);
                   } else {
-                    // Display error message if data cannot be fetched
-                    const errorMessage = document.createElement("p");
-                    errorMessage.innerText = "Data not available for this country.";
-                    errorMessage.style.color = "red";
-                    infoContainer.appendChild(errorMessage);
+                    chartInfo.innerHTML = '<p style="color: red;">Failed to load chart data.</p>';
                   }
-              }
-            });
+                });
+                moreDetailsButton.innerText = "More Details";
+              } else {
+                const countryData = await fetchCountryData(countryName);
+                if (countryData) {
+                   // Clear the chartInfo content and populate with the additional data
+                      //const chartInfo = document.getElementById("chartInfo");
+                      chartInfo.innerHTML = `
+                          <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
+                          <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
+                          <p>Panels Needed: ${countryData.panels_needed}</p>
+                          <p>Estimated Cost: $${countryData.estimated_cost}</p>
+                          <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
+                          <p>Land Usage: ${countryData.land_usage} km²</p>
+                      `;
+                } else {
+                  chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
+                }
+                moreDetailsButton.innerText = "Show Chart";
+              } 
+              //showingDetails = !showingDetails;
+          });
+          
         
 
             infoContainer.style.display = "block";  // Show the container
@@ -150,9 +166,11 @@ am5.ready(function () {
 
             // Now, fetch the energy data and create the chart as intended
             fetchEnergyData(countryName).then(data => {
+              console.log("Fetched energy data:", data);
               if (data) {
-               
                 createStackedChart(data); 
+              } else {
+                console.log("Failed to fecth energy or data is null.")
               }
             });
         } else {
