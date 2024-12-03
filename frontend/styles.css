@@ -3,6 +3,7 @@
   width: 100%;
   height: 700px;
   max-width: 100%;
+  padding-top: 10px;
   position: relative;
 }
  
@@ -60,6 +61,7 @@ body {
   background-image: linear-gradient(#f8f8f8, rgb(177, 255, 203));
   position: relative;
   z-index: -1;
+  padding: 20px;
 }
 
 /* Frosted glass effect for the iframe */
