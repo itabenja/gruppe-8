@@ -16,6 +16,23 @@
   </head>
   
 <body>
+  <div class="Overskrift">
+  <h1 style="text-align: center; font-size: 70px; font-family: 'Times New Roman', Times, serif;">Global Energy Insights </h1>
+  <p style = "font-size: 30px;"> Welcome to Our Energy Insights Platform
+    Discover the latest data on total energy consumption and renewable energy adoption across the globe. Our platform offers dynamic, real-time insights to help you explore how different countries utilize energy and transition towards sustainable sources. Dive into interactive visualizations and learn how the world is shaping a greener future.</p>
+  </div>
+  <br>
+  <br>
+  <p style = "font-size: 20px; padding: 5px; border-radius: 20px; background-color: white; box-shadow: 2px; text-align: center; ">Click and drag to rotate the globe, and use your scroll wheel to zoom in or out. To explore energy data, simply click on a country, and detailed information about its total energy consumption and renewable energy use will appear. Start exploring and uncover global energy insights! </p>
+  <div id="chartdiv"></div>
+
+  <!-- Container for country-specific data i popup-->
+  <div id="country-data"></div> 
+  <br>
+  <br>
+  <br>
+  <br>
+
   <div id="counterContainer">
     <iframe
       title="Global Energy Consumption"
@@ -25,17 +42,8 @@
       style="border: none;">
     </iframe>
 </div>
-
-  <div id="chartdiv"></div>
-
-  <!-- Container for country-specific data i popup-->
-  <div id="country-data"></div> 
-  <br>
-  <br>
-  <br>
-  <br>
     
-  <h2> Renewable vs Primary Energy Consumption for the whole world</h2>
+  <h2> Renewable vs total Energy Consumption for the whole world</h2>
 
   <!--Energy chart for the whole world-->
   <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
@@ -45,23 +53,26 @@
   </div>
 
     <!-- infocontainer for whole world -->
-    <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);" id="textBox">
+    <div style="width: 45%; height: 37-0px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);" id="textBox">
         <h3>World Energy Consumption</h3>
         <p>The Transition to Renewable Energy: A Global Shift
 
-          As we look towards a sustainable future, the shift from primary energy sources like fossil fuels to renewable energy is more critical than ever. Currently, only [X]% of the world’s primary energy comes from renewable sources, a number that is steadily growing. However, the transition is still in its early stages. While wind, solar, and hydropower continue to lead the charge, the global energy landscape remains heavily reliant on non-renewable sources such as coal, oil, and natural gas.
+          As we look towards a sustainable future, the shift from primary energy sources like fossil fuels to renewable energy is more critical than ever. Currently, only [X]% of the world’s Total energy consumption comes from renewable sources, a number that is steadily growing. However, the transition is still in its early stages. While wind, solar, and hydropower continue to lead the charge, the global energy landscape remains heavily reliant on non-renewable sources such as coal, oil, and natural gas.
           
           Why This Matters
           Every percentage point gained in renewable energy is a step closer to mitigating climate change, reducing global pollution, and building a cleaner, more resilient energy future. The road ahead is challenging, but with continued investment, innovation, and global collaboration, we can accelerate the transition to a world powered by clean, renewable energy.
           
-          Together, we can create a sustainable future. The question is: How much further can we go?.</p>
+          Together, we can create a sustainable future. The question is: How much further can we go?. </p>
+          <br> 
+          This graph shows how much energy is used per year since 1990-2023 and how much of this energy is renewable energy
     </div>
 </div>
 <br>
 <br>
 <br>
 <br>
-<h2>Chart for Primary and Renewable Energy for Algeria and iceland</h2>
+<h2> Comparison of Algeria and iceland</h2>
+ <p style = "font-size: 30px;"> Why is there so much difference on countries and their percentage of renewable Energy?</p>
   <!-- Algeria Chart  -->
 <div style="display: flex; justify-content: space-evenly; margin-top: 50px;">
   <div style="width: 45%; height: 400px;">
@@ -72,6 +83,9 @@
   <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
       <h3>Algeria's Renewable Energy Situation</h3>
       <p>Algeria has a low percentage of renewable energy usage, primarily due to its reliance on fossil fuels. Government policies and investments in green energy are still in the early stages.</p>
+      <br>
+      <p>
+        This graph shows how much energy is used per year in Algeria since 1990-2023 and how much of this energy is renewable energy</p>
   </div>
 </div>
 <!-- Iceland Chart and Explanation -->
@@ -85,9 +99,22 @@
   <div style="width: 45%; height: 300px; padding: 20px; background-color: #f4f4f4; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
       <h3>Iceland's Renewable Energy Success</h3>
       <p>Iceland has one of the highest shares of renewable energy in the world, mainly due to its abundant geothermal and hydroelectric power resources.</p>
+      <br>
+      <p>
+        This graph shows how much energy is used per year in Iceland since 1990-2023 and how much of this energy is renewable energy</p>
   </div>
 </div>
   
+
+<div class = "conclusion"> 
+<h3>Conclusion</h3>
+<p>Why Algeria and Iceland Differ in Renewable Energy Use
+
+  The stark difference in renewable energy use between Algeria and Iceland highlights the impact of geography, resources, and policies on energy strategies. Iceland benefits from abundant geothermal and hydropower resources due to its volcanic activity and high water availability, enabling it to rely almost entirely on renewable energy. In contrast, Algeria, located in the arid Sahara region, lacks access to significant hydropower or geothermal resources and has historically depended on its vast fossil fuel reserves, like oil and natural gas, for energy.
+  
+  Such disparities reflect broader global trends. Geography determines the availability of renewable resources like wind, solar, and water. Economic priorities, energy infrastructure, and government policies also shape how countries harness and prioritize renewable energy. Together, these factors create significant variations in renewable energy adoption worldwide.</p>
+
+</div>
   <div id="chartinfo"></div>
 
   <!--Charten in the infocontainer-->
@@ -150,8 +177,7 @@
 </style>
 </head>
   <h2>Leaderboard for countries with high Renewable energi % </h2>
-=========
->>>>>>>>> Temporary merge branch 2
+
   <!-- Podium -->
 <div id="podium-container">
   <div class="podium">
@@ -195,6 +221,7 @@
 <button id="show-more" style="margin-top: 20px; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
   View More
 </button>
+
 
   <script src="WorldChart.js"></script>
   <script src="World Map/StackedChart.js"></script>

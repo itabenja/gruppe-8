@@ -106,17 +106,36 @@ am5.ready(function () {
             //New code here!!!!
             const moreDetailsButton = document.createElement("button");
             moreDetailsButton.innerText = "More Details";
+            moreDetailsButton.style.position = "absolute";
+            moreDetailsButton.style.top = "10px";
+            moreDetailsButton.style.right = "60px";
             moreDetailsButton.style.padding = "10px 15px";
             moreDetailsButton.style.border = "none";
             moreDetailsButton.style.backgroundColor = "#28a745";
             moreDetailsButton.style.color = "#fff";
-            moreDetailsButton.style.borderRadius = "4px";
+            moreDetailsButton.style.borderRadius = "20px";
             moreDetailsButton.style.cursor = "pointer";
             moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
             infoContainer.appendChild(moreDetailsButton);
 
-            moreDetailsButton.addEventListener("click", async function() {
-              if (!document.getElementById("additionalInfo")) {
+            let showingDetails = false;
+
+            moreDetailsButton.addEventListener("click", async function () {
+              const chartInfo = document.getElementById("chartInfo");
+
+              if (chartInfo.innerHTML.includes("Current Solar Coverage")) {
+
+
+                chartInfo.innerHTML ="";
+                fetchEnergyData(countryName).then(data => {
+                  if (data) {
+                    createStackedChart(data);
+                  } else {
+                    chartInfo.innerHTML = '<p style="color: red;">Failed to load chart data.</p>';
+                  }
+                });
+                moreDetailsButton.innerText = "More Details";
+              } else {
                 const countryData = await fetchCountryData(countryName);
                   if (countryData) {
                     // Populate the infoContainer with the additional country data
@@ -153,9 +172,11 @@ am5.ready(function () {
 
             // Now, fetch the energy data and create the chart as intended
             fetchEnergyData(countryName).then(data => {
+              console.log("Fetched energy data:", data);
               if (data) {
-               
                 createStackedChart(data); 
+              } else {
+                console.log("Failed to fecth energy or data is null.")
               }
             });
         } else {
@@ -291,6 +312,7 @@ am5.ready(function () {
     infoContainer.style.position = "absolute";
     infoContainer.style.display = "none"; //Hide the container initially
     infoContainer.style.top = "200px";
+    infoContainer.style.borderRadius = "20px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
     infoContainer.style.height = "80%";
@@ -309,7 +331,7 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "300px";
+    searchContainer.style.top = "580px";
     searchContainer.style.left = "650px";
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";
@@ -319,7 +341,7 @@ am5.ready(function () {
         type="text" 
         id="countrySearchInput" 
         placeholder="Search for a country..." 
-        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
+        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
       />
     `;
 
