@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let fullLeaderboard = [];
   let currentIndex = 3; // Start efter de første 3 lande (på podiet)
 
+
+
   // Hent data fra API'et
   fetch('/api/leaderboard')
     .then((response) => {

@@ -185,7 +185,7 @@ am5.ready(function () {
             moreDetailsButton.style.border = "none";
             moreDetailsButton.style.backgroundColor = "#28a745";
             moreDetailsButton.style.color = "#fff";
-            moreDetailsButton.style.borderRadius = "4px";
+            moreDetailsButton.style.borderRadius = "20px";
             moreDetailsButton.style.cursor = "pointer";
             moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
             infoContainer.appendChild(moreDetailsButton);
@@ -209,25 +209,31 @@ am5.ready(function () {
                 moreDetailsButton.innerText = "More Details";
               } else {
                 const countryData = await fetchCountryData(countryName);
-                if (countryData) {
-                   // Clear the chartInfo content and populate with the additional data
-                      //const chartInfo = document.getElementById("chartInfo");
-                      chartInfo.innerHTML = `
-                          <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
-                          <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
-                          <p>Panels Needed: ${countryData.panels_needed}</p>
-                          <p>Estimated Cost: $${countryData.estimated_cost}</p>
-                          <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
-                          <p>Land Usage: ${countryData.land_usage} km²</p>
-                      `;
-                } else {
-                  chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
-                }
-                moreDetailsButton.innerText = "Show Chart";
-              } 
-              //showingDetails = !showingDetails;
-          });
-          
+                  if (countryData) {
+                    // Populate the infoContainer with the additional country data
+                    const additionalInfo = document.createElement("div");
+                    additionalInfo.innerHTML = `
+                      <p>Current Solar Generation: ${countryData.solar_generation_twh} TWh</p>
+                      <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
+                      <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
+                      <p>Area Needed M2: ${countryData.area_needed_m2}</p>
+                      <p>Total Area KM2: ${countryData.total_area_km2}</p>
+
+                    `;
+
+                    console.log(countryData)
+                    
+                    additionalInfo.style.marginTop = "10px";
+                    infoContainer.appendChild(additionalInfo);
+                  } else {
+                    // Display error message if data cannot be fetched
+                    const errorMessage = document.createElement("p");
+                    errorMessage.innerText = "Data not available for this country.";
+                    errorMessage.style.color = "red";
+                    infoContainer.appendChild(errorMessage);
+                  }
+              }
+            });
         
 
             infoContainer.style.display = "block";  // Show the container
@@ -378,6 +384,7 @@ am5.ready(function () {
     infoContainer.style.position = "absolute";
     infoContainer.style.display = "none"; //Hide the container initially
     infoContainer.style.top = "200px";
+    infoContainer.style.borderRadius = "20px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
     infoContainer.style.height = "80%";
@@ -396,7 +403,7 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "300px";
+    searchContainer.style.top = "580px";
     searchContainer.style.left = "650px";
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";
@@ -406,7 +413,7 @@ am5.ready(function () {
         type="text" 
         id="countrySearchInput" 
         placeholder="Search for a country..." 
-        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
+        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
       />
     `;
 

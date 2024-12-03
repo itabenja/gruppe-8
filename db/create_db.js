@@ -26,8 +26,8 @@ console.log('Recreating tables...');
 await db.query(`
 drop table if exists primary_energy;
 drop table if exists renewable_energy;
-drop table if exists solar_energy_requirements;
-drop table if exists solar_energy_requirements_data;
+drop table if exists Solar_Panel_Problem_Solving_Data;
+
 
 create table primary_energy (
 country text,
@@ -41,49 +41,32 @@ year text,
 energy_consumption numeric
 );
 
-CREATE TABLE solar_energy_requirements (
-    country VARCHAR(50), 
-    solar_generation_twh NUMERIC, 
-    total_energy_gwh NUMERIC, 
-    current_solar_percentage NUMERIC, 
-    missing_coverage_percentage NUMERIC, 
-    required_solar_capacity_mw NUMERIC
-);
 
-create table solar_energy_requirements_data (
-country VARCHAR(50) UNIQUE NOT NULL,
-current_solar_coverage NUMERIC(5, 2),
-missing_solar_coverage NUMERIC(5, 2),
-required_additional_solar_capacity  NUMERIC ,
-total_energy_consumption  NUMERIC,
-panels_needed NUMERIC(20, 2),
-estimated_cost NUMERIC,
-co2_reduction NUMERIC(20, 2),
-land_usage NUMERIC(20, 2)
-);
-
+create table solar_panel_problem_solving_data ( 
+country varchar(255) primary key,
+solar_generation_twh decimal (10,2),
+solar_installed_capacity_mw decimal(10,2),
+solar_panels_needed numeric,
+area_needed_m2 decimal (15,2),
+total_area_km2 decimal (15,2));
 `);
 console.log('Tables recreated.');
 
-console.log('Copying data from CSV files...');
-await copyIntoTable(db, `
-	copy primary_energy (country, year, energy_consumption)
-	from stdin
-	with csv header`, 'db/primary_energy_final_all_correct-1.csv');
-await copyIntoTable(db, `
-	copy renewable_energy (country, year, energy_consumption)
-	from stdin
-	with csv header`, 'db/renewable_energy_final_all_correct.csv');
+        console.log('Copying data from CSV files...');
+        await copyIntoTable(db, `
+            copy primary_energy (country, year, energy_consumption)
+            from stdin
+            with csv header`, 'db/primary_energy_final_all_correct-1.csv');
+        await copyIntoTable(db, `
+            copy renewable_energy (country, year, energy_consumption)
+            from stdin
+            with csv header`, 'db/renewable_energy_final_all_correct.csv');
 
-await copyIntoTable(db, `
-    copy solar_energy_requirements (country, solar_generation_twh, total_energy_gwh, current_solar_percentage, missing_coverage_percentage, required_solar_capacity_mw)
-    from stdin
-    with csv header`, 'db/solar_energy_requirements.csv');
+        await copyIntoTable(db, `
+            copy Solar_Panel_Problem_Solving_Data (country,solar_generation_twh,solar_installed_capacity_mw,solar_panels_needed,area_needed_m2, total_area_km2)
+            from stdin
+            with csv header`, 'db/Solar_Panel_Problem_Solving_Data.csv');
 
-await copyIntoTable(db, `
-    copy solar_energy_requirements_data (country, current_solar_coverage, missing_solar_coverage, required_additional_solar_capacity, total_energy_consumption, panels_needed, estimated_cost, co2_reduction, land_usage)
-    from stdin
-    with csv header`, 'db/solar_energy_requirements_data.csv');
 await db.end();
 console.log('Data copied.');
 
