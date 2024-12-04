@@ -43,81 +43,112 @@ am5.ready(function () {
       //This variable will hold a reference to the previously clicked polygon (country) on the map.
       var previousPolygon; 
 
-    //tingting
-    polygonSeries.mapPolygons.template.on("active", async function (active, target) {
-      if (previousPolygon && previousPolygon != target) {
-        previousPolygon.set("active", false);
-      }
+// Helper function: Parse geometry and calculate center
+function calculateGeometryCenter(geometry) {
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+  if (geometry.type === "Polygon") {
+    geometry.coordinates.forEach(polygon => {
+      polygon.forEach(([x, y]) => {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      });
+    });
+  } else if (geometry.type === "MultiPolygon") {
+    geometry.coordinates.forEach(multiPolygon => {
+      multiPolygon.forEach(polygon => {
+        polygon.forEach(([x, y]) => {
+          if (x < minX) minX = x;
+          if (x > maxX) maxX = x;
+          if (y < minY) minY = y;
+          if (y > maxY) maxY = y;
+        });
+      });
+    });
+  }
+
+  return {
+    centerX: (minX + maxX) / 2,
+    centerY: (minY + maxY) / 2,
+  };
+}
+
+// Fetch country data from the backend
+async function fetchCountryDataFromAPI(countryName) {
+  try {
+    const response = await fetch(`/api/circle/${encodeURIComponent(countryName)}`);
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch country data:", error);
+    return null;
+  }
+}
+
+// Create the circle and place it on the map
+async function createCircleOnCountry(target, countryName) {
+  const countryData = await fetchCountryDataFromAPI(countryName);
+
+  if (!countryData) {
+    console.warn(`No data available for ${countryName}`);
+    return;
+  }
+
+  const { area_needed_m2, total_area_km2 } = countryData;
+  const totalAreaM2 = total_area_km2 * 1_000_000; // Convert km² to m²
+  const percentage = (area_needed_m2 / totalAreaM2) * 100;
+
+  const { centerX, centerY } = calculateGeometryCenter(target.dataItem.dataContext.geometry);
+
+  const circleRadius = Math.sqrt(percentage) * 50000; // Scale radius dynamically
+  const map = target.series.chart;
+
+  const circle = map.plotContainer.children.push(am5core.Circle.new(map, {
+    radius: circleRadius,
+    latitude: centerY,
+    longitude: centerX,
+    fill: am5core.color("#FF5733"),
+    fillOpacity: 0.5,
+    stroke: am5core.color("#C70039"),
+    strokeWidth: 2
+  }));
+
+  const label = map.plotContainer.createChild(am4core.Label);
+  label.text = `${percentage.toFixed(2)}%`;
+  label.horizontalCenter = "middle";
+  label.verticalCenter = "middle";
+  label.latitude = centerY;
+  label.longitude = centerX;
+}
+
+// Event listener for polygon clicks
+polygonSeries.mapPolygons.template.on("active", async function (active, target) {
+  if (previousPolygon && previousPolygon != target) {
+    previousPolygon.set("active", false);
+  }
+
+  if (target.get("active")) {
+    const countryName = target.dataItem.dataContext.name;
+    console.log(`Clicked country: ${countryName}`);
     
-      if (target.get("active")) {
-        console.log(target);
-    
-        const countryId = target.dataItem.get("id");
-        const countryName = target.dataItem.dataContext.name;
-    
-        // Get the geometry data for the clicked country
-        const geometry = target.dataItem.dataContext.geometry;
-    
-        // Initialize min/max values
-        let minX = Infinity, maxX = -Infinity;
-        let minY = Infinity, maxY = -Infinity;
-    
-        // Compute min/max coordinates based on geometry type
-        if (geometry.type === "Polygon") {
-          geometry.coordinates.forEach(polygon => {
-            polygon.forEach(([x, y]) => {
-              if (x < minX) minX = x;
-              if (x > maxX) maxX = x;
-              if (y < minY) minY = y;
-              if (y > maxY) maxY = y;
-            });
-          });
-        } else if (geometry.type === "MultiPolygon") {
-          geometry.coordinates.forEach(multiPolygon => {
-            multiPolygon.forEach(polygon => {
-              polygon.forEach(([x, y]) => {
-                if (x < minX) minX = x;
-                if (x > maxX) maxX = x;
-                if (y < minY) minY = y;
-                if (y > maxY) maxY = y;
-              });
-            });
-          });
-        }
-    
-        // Log the calculated values
-        console.log(`Country: ${countryName}`);
-        console.log("Smallest X:", minX);
-        console.log("Largest X:", maxX);
-        console.log("Smallest Y:", minY);
-        console.log("Largest Y:", maxY);
-    
-        // Existing logic for infoContainer
-        const infoContainer = document.getElementById("infoContainer");
-        infoContainer.innerHTML = ""; // Clear existing content in the container
-        infoContainer.style.height = "700px";
-        infoContainer.style.overflow = "auto";
-    
-        // Add more content like title, close button, etc.
-        const countryTitle = document.createElement("h3");
-        countryTitle.innerText = countryName;
-        infoContainer.appendChild(countryTitle);
-    
-        // Add coordinate details to infoContainer
-        const coordinatesDetails = document.createElement("p");
-        coordinatesDetails.innerText = `Coordinates: Smallest X: ${minX}, Largest X: ${maxX}, Smallest Y: ${minY}, Largest Y: ${maxY}`;
-        infoContainer.appendChild(coordinatesDetails);
-    
-        infoContainer.style.display = "block"; // Show the container
-    
-        centerAndZoomToCountry(countryId); // Center and zoom to the country
-        stopRotation(); // Stops the globe's auto-rotation
-      } else {
-        const infoContainer = document.getElementById("infoContainer");
-        infoContainer.style.display = "none"; // Hide the container
-      }
-    
-      previousPolygon = target; // Update the reference to the last clicked polygon
+
+    centerAndZoomToCountry(target.dataItem.get("id")); // Center and zoom
+    stopRotation(); // Stop globe rotation
+
+    // Create a circle for the clicked country
+    await createCircleOnCountry(target, countryName);
+  } else {
+    document.getElementById("infoContainer").style.display = "none";
+  }
+
+  previousPolygon = target;
+
+
+
     
     
       //Check if the current target (clicked polygon) is active (i.e., selected)

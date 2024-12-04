@@ -39,6 +39,8 @@ server.use((req, res, next) => {
 // Add leaderboard routes
 server.use('/api', leaderboardRoutes);
 
+
+
 server.get('/api/TY', async (req, res) => {
     try {
         const dbResult = await db.query(`
@@ -160,6 +162,38 @@ server.get('/api/countries/:countryName', async (req, res) => {
         res.status(500).send({ error: "Failed to fetch country data" });
     }
 });
+
+server.get('/api/circle/:country', async (req, res) => {
+    const countryName = req.params.country; // Correct parameter name
+
+    console.log("API called for country:", countryName);
+
+    try {
+        const result = await db.query(
+            `SELECT 
+                country,
+                area_needed_m2,
+                total_area_km2
+            FROM solar_panel_problem_solving_data
+            WHERE LOWER(country) = LOWER($1)`, // Case-insensitive match
+            [countryName]
+        );
+
+        // Log the query result
+        console.log('Query result:', result.rows);
+
+        if (result.rows.length > 0) {
+            res.json(result.rows[0]); // Return the first matching row
+        } else {
+            console.log("No data found for:", countryName);
+            res.status(404).send({ error: `Data for ${countryName} not found` });
+        }
+    } catch (error) {
+        console.error("Error fetching country data:", error);
+        res.status(500).send({ error: "Failed to fetch country data" });
+    }
+});
+
 
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
