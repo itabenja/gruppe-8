@@ -24,7 +24,7 @@ am5.ready(function () {
       geoJSON: am5geodata_worldLow
       
     }));
-    console.log(polygonSeries)
+   
     polygonSeries.mapPolygons.template.setAll({
       tooltipText: "{name}",
       toggleKey: "active",
@@ -45,10 +45,13 @@ am5.ready(function () {
 
 // Helper function: Parse geometry and calculate center
 function calculateGeometryCenter(geometry) {
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  let minX = Infinity,
+    maxX = -Infinity,
+    minY = Infinity,
+    maxY = -Infinity;
 
   if (geometry.type === "Polygon") {
-    geometry.coordinates.forEach(polygon => {
+    geometry.coordinates.forEach((polygon) => {
       polygon.forEach(([x, y]) => {
         if (x < minX) minX = x;
         if (x > maxX) maxX = x;
@@ -57,8 +60,8 @@ function calculateGeometryCenter(geometry) {
       });
     });
   } else if (geometry.type === "MultiPolygon") {
-    geometry.coordinates.forEach(multiPolygon => {
-      multiPolygon.forEach(polygon => {
+    geometry.coordinates.forEach((multiPolygon) => {
+      multiPolygon.forEach((polygon) => {
         polygon.forEach(([x, y]) => {
           if (x < minX) minX = x;
           if (x > maxX) maxX = x;
@@ -69,10 +72,14 @@ function calculateGeometryCenter(geometry) {
     });
   }
 
-  return {
-    centerX: (minX + maxX) / 2,
-    centerY: (minY + maxY) / 2,
-  };
+  // Calculate the center coordinates
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+  const width = maxX - minX
+  const height = maxY - minY
+
+
+  return { centerX, centerY, width, height};
 }
 
 // Fetch country data from the backend
@@ -88,41 +95,76 @@ async function fetchCountryDataFromAPI(countryName) {
     return null;
   }
 }
-
-// Create the circle and place it on the map
 async function createCircleOnCountry(target, countryName) {
-  const countryData = await fetchCountryDataFromAPI(countryName);
+  
+  try {
+    const countryData = await fetchCountryDataFromAPI(countryName);
+console.log(countryData,countryName)
+    if (!countryData) {
+      console.warn(`No data available for ${countryName}`);
+      return;
+    }
 
-  if (!countryData) {
-    console.warn(`No data available for ${countryName}`);
-    return;
+    const { area_needed_m2, total_area_km2 } = countryData;
+    const totalAreaM2 = total_area_km2 * 1000000; // Convert km² to m²
+    const percentage = (area_needed_m2 / totalAreaM2) * 100;
+
+    const geometry = target.dataItem?.dataContext?.geometry;
+    if (!geometry) {
+      console.warn(`Geometry data is missing for ${countryName}`);
+      return;
+    }
+
+    const { centerX, centerY, width, height} = calculateGeometryCenter(geometry);
+console.log("a", height, width)
+    if (centerX === undefined || centerY === undefined) {
+      console.warn(`Unable to calculate center for ${countryName}`);
+      return;
+    }
+
+    const map = target.series?.chart;
+    if (!map) {
+      console.error("Map chart is undefined.");
+      return;
+    }
+
+    // Create a MapPointSeries for circles
+    const circleSeries = map.series.push(
+      am5map.MapPointSeries.new(map.root, {
+        calculateAggregates: true,
+        valueField: "value",
+      })
+    );
+
+   
+
+    // Add a circle to the series
+    circleSeries.data.push({
+      geometry: {
+        type: "Point",
+        coordinates: [centerX, centerY],
+      },
+      value: percentage, // Optional: Add value for scaling
+      tooltipText: `Area Needed: ${percentage.toFixed(2)}%`,
+    });
+
+    // Add bullets for circles
+    circleSeries.bullets.push(() => 
+      am5.Bullet.new(map.root, {
+        sprite: am5.Circle.new(map.root, {
+          radius: Math.min(width,height), // Scale the circle radius
+          fill: am5.color("#FF5733"),
+          fillOpacity: 0.5,
+          stroke: am5.color("#C70039"),
+          strokeWidth: 2,
+          tooltipText: `Area Needed: ${percentage.toFixed(2)}%`,
+        }),
+      })
+    );
+
+  } catch (error) {
+    console.error(`Error creating circle for ${countryName}:`, error);
   }
-
-  const { area_needed_m2, total_area_km2 } = countryData;
-  const totalAreaM2 = total_area_km2 * 1_000_000; // Convert km² to m²
-  const percentage = (area_needed_m2 / totalAreaM2) * 100;
-
-  const { centerX, centerY } = calculateGeometryCenter(target.dataItem.dataContext.geometry);
-
-  const circleRadius = Math.sqrt(percentage) * 50000; // Scale radius dynamically
-  const map = target.series.chart;
-
-  const circle = map.plotContainer.children.push(am5core.Circle.new(map, {
-    radius: circleRadius,
-    latitude: centerY,
-    longitude: centerX,
-    fill: am5core.color("#FF5733"),
-    fillOpacity: 0.5,
-    stroke: am5core.color("#C70039"),
-    strokeWidth: 2
-  }));
-
-  const label = map.plotContainer.createChild(am4core.Label);
-  label.text = `${percentage.toFixed(2)}%`;
-  label.horizontalCenter = "middle";
-  label.verticalCenter = "middle";
-  label.latitude = centerY;
-  label.longitude = centerX;
 }
 
 // Event listener for polygon clicks
@@ -133,9 +175,6 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
 
   if (target.get("active")) {
     const countryName = target.dataItem.dataContext.name;
-    console.log(`Clicked country: ${countryName}`);
-    
-
     centerAndZoomToCountry(target.dataItem.get("id")); // Center and zoom
     stopRotation(); // Stop globe rotation
 
@@ -153,7 +192,7 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
     
       //Check if the current target (clicked polygon) is active (i.e., selected)
         if (target.get("active")) {
-            console.log(target);
+          
 
             //Extract the country ID and name from the target dataItem
             const countryId = target.dataItem.get("id");
@@ -252,7 +291,7 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
 
                     `;
 
-                    console.log(countryData)
+                    
                     
                     additionalInfo.style.marginTop = "10px";
                     infoContainer.appendChild(additionalInfo);
@@ -275,11 +314,11 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
 
             // Now, fetch the energy data and create the chart as intended
             fetchEnergyData(countryName).then(data => {
-              console.log("Fetched energy data:", data);
+              
               if (data) {
                 createStackedChart(data); 
               } else {
-                console.log("Failed to fecth energy or data is null.")
+                console.error("Failed to fecth energy or data is null.")
               }
             });
         } else {
@@ -295,12 +334,11 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
 
     async function fetchEnergyData(countryName) {
         try {
-            console.log(`Fetching data for country: ${countryName}`); // Debugging
-            console.log(`/api/energy-data/${countryName}`);
+           
             const response = await fetch(`/api/energy-data/${countryName}`);
             if (!response.ok) throw new Error("Failed to fetch energy data");
             const data = await response.json();
-            console.log(`API response for ${countryName}:`, data); // Debugging
+            // Debugging
             return data;
         } catch (error) {
             console.error("Error fetching energy data:", error);
@@ -461,7 +499,7 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
     });
 
     if (countryDataItem) {
-        console.log("Found country:", countryDataItem.dataContext.name);
+        
 
         // Reset all countries to inactive
         polygonSeries.dataItems.forEach(dataItem => {
@@ -482,64 +520,16 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
         centerAndZoomToCountry(countryId);
         stopRotation();
     } else {
-        console.log("No match found");
+        console.error("No match found");
     }
 });
-
-function addRenewableCircle(countryId, renewablePercentage) {
-  // Get the country's data item
-  const dataItem = polygonSeries.getDataItemById(countryId);
-
-  if (!dataItem) {
-    console.error("Country data item not found for ID:", countryId);
-    return;
-  }
-
-  // Get the country polygon (geometry)
-  const mapPolygon = dataItem.get("mapPolygon");
-
-  if (!mapPolygon) {
-    console.error("MapPolygon not found for country ID:", countryId);
-    return;
-  }
-
-  // Get the country's center coordinates
-  const centroid = mapPolygon.geoCentroid();
-  if (!centroid) {
-    console.error("Could not calculate centroid for country ID:", countryId);
-    return;
-  }
-
-  // Add a circle to the chart
-  const circle = chart.series.push(am5map.MapPointSeries.new(root, {}));
-
-  const circlePoint = circle.data.push({
-    geometry: {
-      type: "Point",
-      coordinates: [centroid.longitude, centroid.latitude]
-    }
-  });
-
-  // Set up the circle's appearance
-  const circleMarker = circle.mapPoints.template;
-  circleMarker.setAll({
-    radius: renewablePercentage * 2, // Size the circle proportionally
-    fill: am5.color(0x28a745), // Green color
-    stroke: am5.color(0x000000), // Optional: Add a border
-    strokeWidth: 2,
-    tooltipText: `Renewable Energy: ${renewablePercentage}%`
-  });
-
-  console.log(`Circle added for ${countryId} with ${renewablePercentage}% renewable.`);
-}
-
 
 //Funktion til at fecthe data for lande fra CountryData apien    
 async function fetchCountryData(countryName) {
     try {
         // Build the API URL
         const apiUrl = `/api/countries/${encodeURIComponent(countryName)}`;
-        console.log("Fetching:", apiUrl);
+       
 
         // Make the request to the server
         const response = await fetch(apiUrl);
