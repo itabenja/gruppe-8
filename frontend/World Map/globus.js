@@ -113,7 +113,7 @@ am5.ready(function () {
             moreDetailsButton.style.border = "none";
             moreDetailsButton.style.backgroundColor = "#28a745";
             moreDetailsButton.style.color = "#fff";
-            moreDetailsButton.style.borderRadius = "4px";
+            moreDetailsButton.style.borderRadius = "20px";
             moreDetailsButton.style.cursor = "pointer";
             moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
             infoContainer.appendChild(moreDetailsButton);
@@ -122,6 +122,11 @@ am5.ready(function () {
 
             moreDetailsButton.addEventListener("click", async function () {
               const chartInfo = document.getElementById("chartInfo"); //Her henter vi chartInfo containeren
+
+              if (moreDetailsButton.innerText === "Show Chart") {
+                // Hvis knapteksten er "Show Chart", skift tilbage til grafvisning
+                chartInfo.innerHTML = ""; //Ryd eksisterende indhold
+                console.log("Reloading the chart...");
 
               if (moreDetailsButton.innerText === "Show Chart") {
                 // Hvis knapteksten er "Show Chart", skift tilbage til grafvisning
@@ -138,9 +143,36 @@ am5.ready(function () {
                         chartInfo.innerHTML = '<p style="color: red;">Failed to load chart data.</p>';
                     }
                 });
+
+                moreDetailsButton.innerText = "More Details";
         
                 moreDetailsButton.innerText = "More Details"; //Opdatere knapteksten
               } else {
+                const countryData = await fetchCountryData(countryName);
+                  if (countryData) {
+                    // Populate the infoContainer with the additional country data
+                    //const ch = document.createElement("div");
+                    chartInfo.innerHTML = `
+                      <p>Current Solar Generation: ${countryData.solar_generation_twh} TWh</p>
+                      <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
+                      <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
+                      <p>Area Needed M2: ${countryData.area_needed_m2}</p>
+                      <p>Total Area KM2: ${countryData.total_area_km2}</p>
+
+                    `;
+
+                    
+                    
+                    moreDetailsButton.innerText = "Show Chart"; //Vi opdaterer knapteksten
+                  } else {
+                    //Håndtere tilfælde, hvor detajler ikke er tilgængelige
+                    console.error("Details not available for this country.");
+                    chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
+                    moreDetailsButton.innerText = "Show Chart"; //Tillad stadig at skifte tilbage til grafen
+                  
+                  }
+              }
+            });
                 //Hvis knaptesten er "More Details", hent koden og vis yderligere detaljer
                 console.log("Country Data for Details:", countryName);
                 const countryData = await fetchCountryData(countryName); //Hent yderligere landespecifikke data
@@ -317,6 +349,7 @@ am5.ready(function () {
     infoContainer.style.position = "absolute";
     infoContainer.style.display = "none"; //Hide the container initially
     infoContainer.style.top = "200px";
+    infoContainer.style.borderRadius = "20px";
     infoContainer.style.right = "10px";
     infoContainer.style.width = "40%";
     infoContainer.style.height = "80%";
@@ -335,7 +368,7 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "300px";
+    searchContainer.style.top = "580px";
     searchContainer.style.left = "650px";
     searchContainer.style.width = "180px";
     searchContainer.style.zIndex = "1000";
@@ -345,7 +378,7 @@ am5.ready(function () {
         type="text" 
         id="countrySearchInput" 
         placeholder="Search for a country..." 
-        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
+        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
       />
     `;
 
