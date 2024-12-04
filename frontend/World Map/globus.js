@@ -123,10 +123,11 @@ am5.ready(function () {
             moreDetailsButton.addEventListener("click", async function () {
               const chartInfo = document.getElementById("chartInfo");
 
-              if (chartInfo.innerHTML.includes("Current Solar Coverage")) {
+              if (moreDetailsButton.innerText === "Show Chart") {
+                // Hvis knapteksten er "Show Chart", skift tilbage til grafvisning
+                chartInfo.innerHTML = ""; //Ryd eksisterende indhold
+                console.log("Reloading the chart...");
 
-
-                chartInfo.innerHTML ="";
                 fetchEnergyData(countryName).then(data => {
                   if (data) {
                     createStackedChart(data);
@@ -134,13 +135,14 @@ am5.ready(function () {
                     chartInfo.innerHTML = '<p style="color: red;">Failed to load chart data.</p>';
                   }
                 });
+
                 moreDetailsButton.innerText = "More Details";
               } else {
                 const countryData = await fetchCountryData(countryName);
                   if (countryData) {
                     // Populate the infoContainer with the additional country data
-                    const additionalInfo = document.createElement("div");
-                    additionalInfo.innerHTML = `
+                    //const ch = document.createElement("div");
+                    chartInfo.innerHTML = `
                       <p>Current Solar Generation: ${countryData.solar_generation_twh} TWh</p>
                       <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
                       <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
@@ -149,16 +151,15 @@ am5.ready(function () {
 
                     `;
 
-                    console.log(countryData)
                     
-                    additionalInfo.style.marginTop = "10px";
-                    infoContainer.appendChild(additionalInfo);
+                    
+                    moreDetailsButton.innerText = "Show Chart"; //Vi opdaterer knapteksten
                   } else {
-                    // Display error message if data cannot be fetched
-                    const errorMessage = document.createElement("p");
-                    errorMessage.innerText = "Data not available for this country.";
-                    errorMessage.style.color = "red";
-                    infoContainer.appendChild(errorMessage);
+                    //Håndtere tilfælde, hvor detajler ikke er tilgængelige
+                    console.error("Details not available for this country.");
+                    chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
+                    moreDetailsButton.innerText = "Show Chart"; //Tillad stadig at skifte tilbage til grafen
+                  
                   }
               }
             });
