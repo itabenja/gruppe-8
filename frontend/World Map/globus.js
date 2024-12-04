@@ -121,25 +121,33 @@ am5.ready(function () {
             let showingDetails = false;
 
             moreDetailsButton.addEventListener("click", async function () {
-              const chartInfo = document.getElementById("chartInfo");
+              const chartInfo = document.getElementById("chartInfo"); //Her henter vi chartInfo containeren
 
-              if (chartInfo.innerHTML.includes("Current Solar Coverage")) {
-
-
-                chartInfo.innerHTML ="";
+              if (moreDetailsButton.innerText === "Show Chart") {
+                // Hvis knapteksten er "Show Chart", skift tilbage til grafvisning
+                chartInfo.innerHTML = ""; //Ryd eksisterende indhold
+                console.log("Reloading the chart...");
+                
+                //Hent energidata og genindlæs grafen
                 fetchEnergyData(countryName).then(data => {
-                  if (data) {
-                    createStackedChart(data);
-                  } else {
-                    chartInfo.innerHTML = '<p style="color: red;">Failed to load chart data.</p>';
-                  }
+                    if (data) {
+                        console.log("Energy data for chart:", data); // Debug
+                        createStackedChart(data); //Her kalder vi graf-gunktionen
+                    } else {
+                        console.error("Failed to load chart data.");
+                        chartInfo.innerHTML = '<p style="color: red;">Failed to load chart data.</p>';
+                    }
                 });
-                moreDetailsButton.innerText = "More Details";
+        
+                moreDetailsButton.innerText = "More Details"; //Opdatere knapteksten
               } else {
-                const countryData = await fetchCountryData(countryName);
+                //Hvis knaptesten er "More Details", hent koden og vis yderligere detaljer
+                console.log("Country Data for Details:", countryName);
+                const countryData = await fetchCountryData(countryName); //Hent yderligere landespecifikke data
+
                 if (countryData) {
-                   // Clear the chartInfo content and populate with the additional data
-                      //const chartInfo = document.getElementById("chartInfo");
+                  console.log("Country Data for Details:", countryData);
+                   //Udfyld chartInfo med de yderligere detajler vi har hentet ind
                       chartInfo.innerHTML = `
                           <p>Current Solar Coverage: ${countryData.current_solar_coverage}%</p>
                           <p>Required Additional Solar Capacity: ${countryData.required_additional_solar_capacity} GW</p>
@@ -148,12 +156,15 @@ am5.ready(function () {
                           <p>CO2 Reduction: ${countryData.co2_reduction} metric tons</p>
                           <p>Land Usage: ${countryData.land_usage} km²</p>
                       `;
+                      moreDetailsButton.innerText = "Show Chart"; //Vi opdaterer knapteksten
                 } else {
+                  //Håndtere tilfælde, hvor detajler ikke er tilgængelige
+                  console.error("Details not available for this country.");
                   chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
+                  moreDetailsButton.innerText = "Show Chart"; //Tillad stadig at skifte tilbage til grafen
                 }
-                moreDetailsButton.innerText = "Show Chart";
+               
               } 
-              //showingDetails = !showingDetails;
           });
           
         
