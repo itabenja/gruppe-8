@@ -174,7 +174,6 @@ h2 {
   padding-bottom: 0.5rem; /* Space below the text */
   margin-bottom: 1.5rem; /* Space between the header and next element */
 }
-<<<<<<< HEAD
 #tooltip {
   position: absolute;
   background-color: white;
@@ -185,7 +184,6 @@ h2 {
   display: none;
   z-index: 1000;
 }
-=======
 
 .Overskrift{
   padding: 10px;
@@ -208,4 +206,3 @@ h3 {
   font-size: 25px;
 
 }
->>>>>>> main
