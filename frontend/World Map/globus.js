@@ -96,17 +96,15 @@ async function fetchCountryDataFromAPI(countryName) {
   }
 }
 async function createCircleOnCountry(target, countryName) {
-  
   try {
     const countryData = await fetchCountryDataFromAPI(countryName);
-console.log(countryData,countryName)
     if (!countryData) {
       console.warn(`No data available for ${countryName}`);
       return;
     }
 
     const { area_needed_m2, total_area_km2 } = countryData;
-    const totalAreaM2 = total_area_km2 * 1000000; // Convert km² to m²
+    const totalAreaM2 = total_area_km2 * 1_000_000; // Convert km² to m²
     const percentage = (area_needed_m2 / totalAreaM2) * 100;
 
     const geometry = target.dataItem?.dataContext?.geometry;
@@ -115,8 +113,7 @@ console.log(countryData,countryName)
       return;
     }
 
-    const { centerX, centerY, width, height} = calculateGeometryCenter(geometry);
-console.log("a", height, width)
+    const { centerX, centerY } = calculateGeometryCenter(geometry);
     if (centerX === undefined || centerY === undefined) {
       console.warn(`Unable to calculate center for ${countryName}`);
       return;
@@ -136,36 +133,58 @@ console.log("a", height, width)
       })
     );
 
-   
-
-    // Add a circle to the series
+    // Add a data point for the circle
     circleSeries.data.push({
       geometry: {
         type: "Point",
         coordinates: [centerX, centerY],
       },
-      value: percentage, // Optional: Add value for scaling
-      tooltipText: `Area Needed: ${percentage.toFixed(2)}%`,
+      value: percentage,
     });
 
     // Add bullets for circles
-    circleSeries.bullets.push(() => 
-      am5.Bullet.new(map.root, {
-        sprite: am5.Circle.new(map.root, {
-          radius: Math.min(width,height), // Scale the circle radius
-          fill: am5.color("#FF5733"),
-          fillOpacity: 0.5,
-          stroke: am5.color("#C70039"),
-          strokeWidth: 2,
-          tooltipText: `Area Needed: ${percentage.toFixed(2)}%`,
-        }),
-      })
-    );
+    circleSeries.bullets.push(() => {
+      const baseRadius = 50; // Fixed size in pixels
 
+      const circle = am5.Circle.new(map.root, {
+        radius: baseRadius, // Fixed radius
+        fill: am5.color("#FF5733"),
+        fillOpacity: 0.5,
+        stroke: am5.color("#C70039"),
+        strokeWidth: 2,
+        tooltipText: `Area Needed: ${percentage.toFixed(2)}%`,
+      });
+
+      // Ensure the circle does not scale with the map
+      circle.set("nonScaling", true);
+
+      // Reposition circle on map redraw
+      const updateCirclePosition = () => {
+        const projection = map.get("projection");
+        const xy = projection([centerX, centerY]); // Convert geographic to screen coordinates
+        if (xy) {
+          circle.setAll({ x: xy[0], y: xy[1] });
+        } else {
+          console.warn("Projection failed for center coordinates:", { centerX, centerY });
+        }
+      };
+
+      // Initial positioning
+      updateCirclePosition();
+
+      // Reposition on map redraw
+      map.events.on("geometriesUpdated", updateCirclePosition);
+
+      return am5.Bullet.new(map.root, { sprite: circle });
+    });
   } catch (error) {
     console.error(`Error creating circle for ${countryName}:`, error);
   }
 }
+
+
+
+
 
 // Event listener for polygon clicks
 polygonSeries.mapPolygons.template.on("active", async function (active, target) {

@@ -192,6 +192,7 @@ server.get('/api/circle/:country', async (req, res) => {
         console.error("Error fetching country data:", error);
         res.status(500).send({ error: "Failed to fetch country data" });
     }
+
 });
 
 
