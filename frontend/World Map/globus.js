@@ -43,6 +43,25 @@ am5.ready(function () {
       //This variable will hold a reference to the previously clicked polygon (country) on the map.
       var previousPolygon; 
 
+      async function fetchCountryDataFromAPI(countryName) {
+        try {
+          // Normalize the country name (e.g., lowercase for consistency)
+          const apiUrl = `/api/circle/${encodeURIComponent(countryName.toLowerCase())}`;
+          console.log("Fetching data from API URL:", apiUrl);
+      
+          const response = await fetch(apiUrl);
+          if (!response.ok) {
+            throw new Error(`Failed to fetch data for ${countryName}. HTTP status: ${response.status}`);
+          }
+          return await response.json();
+        } catch (error) {
+          console.error(`Error fetching country data from API for ${countryName}:`, error);
+          return null;
+        }
+      }
+      
+      
+
 // Helper function: Parse geometry and calculate center
 function calculateGeometryCenter(geometry) {
   let minX = Infinity,
@@ -83,29 +102,31 @@ function calculateGeometryCenter(geometry) {
 }
 
 // Fetch country data from the backend
-async function fetchCountryDataFromAPI(countryName) {
+async function createSquareOnCountry(target, countryName) {
   try {
-    const response = await fetch(`/api/circle/${encodeURIComponent(countryName)}`);
-    if (!response.ok) {
-      throw new Error(`Error fetching data: ${response.statusText}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("Failed to fetch country data:", error);
-    return null;
-  }
-}
-async function createCircleOnCountry(target, countryName) {
-  try {
+    console.log(`Creating square for country: ${countryName}`);
+
+    // Fetch data using the API
     const countryData = await fetchCountryDataFromAPI(countryName);
     if (!countryData) {
       console.warn(`No data available for ${countryName}`);
       return;
     }
+    console.log(`Fetched country data for ${countryName}:`, countryData);
 
-    const { area_needed_m2, total_area_km2 } = countryData;
-    const totalAreaM2 = total_area_km2 * 1_000_000; // Convert km² to m²
-    const percentage = (area_needed_m2 / totalAreaM2) * 100;
+    let { area_needed_m2 } = countryData;
+
+    // Validate the area data
+    if (!area_needed_m2 || isNaN(area_needed_m2)) {
+      console.warn(`Invalid area data for ${countryName}:`, area_needed_m2);
+      return;
+    }
+    area_needed_m2 = parseFloat(area_needed_m2);
+    console.log(`Area needed (m²) for ${countryName}: ${area_needed_m2}`);
+
+    // Calculate side length in meters
+    const sideLengthMeters = Math.sqrt(area_needed_m2) * 150;
+    console.log(`Calculated side length (meters) for ${countryName}: ${sideLengthMeters}`);
 
     const geometry = target.dataItem?.dataContext?.geometry;
     if (!geometry) {
@@ -118,6 +139,7 @@ async function createCircleOnCountry(target, countryName) {
       console.warn(`Unable to calculate center for ${countryName}`);
       return;
     }
+    console.log(`Geometry center for ${countryName}: X=${centerX}, Y=${centerY}`);
 
     const map = target.series?.chart;
     if (!map) {
@@ -125,62 +147,80 @@ async function createCircleOnCountry(target, countryName) {
       return;
     }
 
-    // Create a MapPointSeries for circles
-    const circleSeries = map.series.push(
+    // Create a MapPointSeries for squares
+    const squareSeries = map.series.push(
       am5map.MapPointSeries.new(map.root, {
         calculateAggregates: true,
         valueField: "value",
       })
     );
+    console.log("MapPointSeries for squares created.");
 
-    // Add a data point for the circle
-    circleSeries.data.push({
+    // Add a data point for the square
+    squareSeries.data.push({
       geometry: {
         type: "Point",
         coordinates: [centerX, centerY],
       },
-      value: percentage,
+      value: area_needed_m2,
     });
+    console.log(`Data point added for ${countryName}: Center=(${centerX}, ${centerY}), Value=${area_needed_m2}`);
 
-    // Add bullets for circles
-    circleSeries.bullets.push(() => {
-      const baseRadius = 50; // Fixed size in pixels
+    // Add bullets for squares
+    squareSeries.bullets.push(() => {
+      const baseSideLength = 50; // Default side length in pixels for visual representation
+      console.log(`Base side length for square: ${baseSideLength}`);
 
-      const circle = am5.Circle.new(map.root, {
-        radius: baseRadius, // Fixed radius
+      const square = am5.Rectangle.new(map.root, {
+        width: baseSideLength, // Initial size
+        height: baseSideLength, // Initial size
         fill: am5.color("#FF5733"),
         fillOpacity: 0.5,
         stroke: am5.color("#C70039"),
         strokeWidth: 2,
-        tooltipText: `Area Needed: ${percentage.toFixed(2)}%`,
+        tooltipText: `Area Needed: ${area_needed_m2.toFixed(2)} m²`,
       });
 
-      // Ensure the circle does not scale with the map
-      circle.set("nonScaling", true);
+      console.log(`Square created for ${countryName}:`, square);
 
-      // Reposition circle on map redraw
-      const updateCirclePosition = () => {
+      // Dynamically adjust the square's size and position
+      const updateSquare = () => {
         const projection = map.get("projection");
-        const xy = projection([centerX, centerY]); // Convert geographic to screen coordinates
+        const zoomLevel = map.zoomLevel || 1;
+
+        // Calculate the side length in screen space
+        const scalingFactor = 0.00005; // Adjust this based on your map's projection
+        const sideLength = (sideLengthMeters * scalingFactor) / zoomLevel;
+
+        // Update square size
+        square.setAll({ width: sideLength, height: sideLength });
+
+        // Update position
+        const xy = projection([centerX, centerY]);
         if (xy) {
-          circle.setAll({ x: xy[0], y: xy[1] });
+          square.setAll({ x: xy[0], y: xy[1] });
+          console.log(`Updated square position for ${countryName}: X=${xy[0]}, Y=${xy[1]}, Side=${sideLength}`);
         } else {
           console.warn("Projection failed for center coordinates:", { centerX, centerY });
         }
       };
 
-      // Initial positioning
-      updateCirclePosition();
+      // Initial update
+      updateSquare();
 
-      // Reposition on map redraw
-      map.events.on("geometriesUpdated", updateCirclePosition);
+      // Recalculate on zoom or geometry updates
+      map.events.on("zoomLevelChanged", updateSquare);
+      map.events.on("geometriesUpdated", updateSquare);
 
-      return am5.Bullet.new(map.root, { sprite: circle });
+      console.log(`Square creation process completed for ${countryName}`);
+      return am5.Bullet.new(map.root, { sprite: square });
     });
   } catch (error) {
-    console.error(`Error creating circle for ${countryName}:`, error);
+    console.error(`Error creating square for ${countryName}:`, error);
   }
 }
+
+
 
 
 
@@ -197,13 +237,14 @@ polygonSeries.mapPolygons.template.on("active", async function (active, target) 
     centerAndZoomToCountry(target.dataItem.get("id")); // Center and zoom
     stopRotation(); // Stop globe rotation
 
-    // Create a circle for the clicked country
-    await createCircleOnCountry(target, countryName);
+    // Create a square for the clicked country
+    await createSquareOnCountry(target, countryName);
   } else {
     document.getElementById("infoContainer").style.display = "none";
   }
 
   previousPolygon = target;
+
 
 
 
