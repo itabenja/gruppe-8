@@ -118,6 +118,25 @@ am5.ready(function () {
       moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
       infoContainer.appendChild(moreDetailsButton);
 
+      // Now create and show the big red button after displaying the country data
+      const bigRedButton = document.createElement("button");
+      bigRedButton.innerText = "Take Special Action";
+      bigRedButton.style.position = "absolute";
+      bigRedButton.style.bottom = "20px";  // Position the button towards the bottom
+      bigRedButton.style.left = "50%"; // Center it horizontally
+      bigRedButton.style.transform = "translateX(-50%)";  // Adjust position to be centered
+      bigRedButton.style.padding = "20px 40px";  // Large padding for a big button
+      bigRedButton.style.fontSize = "18px";  // Larger font size
+      bigRedButton.style.backgroundColor = "#e74c3c";  // Red background color
+      bigRedButton.style.color = "#fff";  // White text
+      bigRedButton.style.border = "none";
+      bigRedButton.style.borderRadius = "30px";  // Rounded corners
+      bigRedButton.style.cursor = "pointer";
+      bigRedButton.style.zIndex = "1001";  // Ensure it is above other content
+      bigRedButton.style.display = "block";  // Make it visible
+      bigRedButton.id = "bigRedButton"; //Give it an id for later reference
+      chartInfo.appendChild(bigRedButton); // Append the button to the chart container
+
       let showingDetails = false;
 
       moreDetailsButton.addEventListener("click", async function () {
@@ -160,6 +179,30 @@ am5.ready(function () {
             chartInfo.innerHTML = '<p style="color: red;">Data not avaible for this country.</p>';
             moreDetailsButton.innerText = "Show Chart"; //Tillad stadig at skifte tilbage til grafen
                   
+          } 
+          if (!document.getElementById("bigRedButton")) {
+            // Now create and show the big red button after displaying the country data
+            const bigRedButton = document.createElement("button");
+            bigRedButton.innerText = "Take Special Action";
+            bigRedButton.style.position = "absolute";
+            bigRedButton.style.bottom = "20px";  // Position the button towards the bottom
+            bigRedButton.style.left = "50%"; // Center it horizontally
+            bigRedButton.style.transform = "translateX(-50%)";  // Adjust position to be centered
+            bigRedButton.style.padding = "20px 40px";  // Large padding for a big button
+            bigRedButton.style.fontSize = "18px";  // Larger font size
+            bigRedButton.style.backgroundColor = "#e74c3c";  // Red background color
+            bigRedButton.style.color = "#fff";  // White text
+            bigRedButton.style.border = "none";
+            bigRedButton.style.borderRadius = "30px";  // Rounded corners
+            bigRedButton.style.cursor = "pointer";
+            bigRedButton.style.zIndex = "1001";  // Ensure it is above other content
+            bigRedButton.style.display = "block";  // Make it visible
+            bigRedButton.id = "bigRedButton"; //Give it an id for later reference
+            chartInfo.appendChild(bigRedButton); // Append the button to the chart container
+            // Leave the functionality of the button empty for now (you can add it later)
+            bigRedButton.addEventListener("click", function () {
+              console.log("Big red button clicked. Final action coming soon!");
+            });
           }
         }
       });
@@ -188,7 +231,7 @@ am5.ready(function () {
     previousPolygon = target;
   });
 
-    
+
 
   async function fetchEnergyData(countryName) {
     try {
@@ -311,15 +354,15 @@ am5.ready(function () {
   infoContainer.id = "infoContainer";
   infoContainer.style.position = "absolute";
   infoContainer.style.display = "none"; //Hide the container initially
-  infoContainer.style.top = "200px";
-  infoContainer.style.borderRadius = "20px";
-  infoContainer.style.right = "10px";
-  infoContainer.style.width = "40%";
-  infoContainer.style.height = "80%";
+  infoContainer.style.top = "528px";
+  infoContainer.style.borderRadius = "12px";
+  infoContainer.style.right = "15px";
+  infoContainer.style.width = "41%";
+  //infoContainer.style.height = "100px";
   infoContainer.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
   infoContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
   infoContainer.style.overflowY = "auto";
-  infoContainer.style.padding = "20px";
+  infoContainer.style.padding = "2px";
   infoContainer.style.zIndex = "1000";
   document.body.appendChild(infoContainer);
 
@@ -331,9 +374,9 @@ am5.ready(function () {
   // Add search bar HTML
   const searchContainer = document.createElement("div");
   searchContainer.style.position = "absolute";
-  searchContainer.style.top = "580px";
-  searchContainer.style.left = "650px";
-  searchContainer.style.width = "180px";
+  searchContainer.style.top = "500px";
+  searchContainer.style.left = "625px";
+  searchContainer.style.width = "translate(-50%, -50%)";
   searchContainer.style.zIndex = "1000";
 
   searchContainer.innerHTML = `
