@@ -40,13 +40,15 @@ body {
 }
 
 #extra-text {
-    display: none;
-    margin-top: 1em; 
-    padding-top: 10px;
-    transition: max-height 0.3s ease-in-out;
-    max-height: 0;
-    overflow: hidden;
-}
+    max-height: 0;   /* Hidden by default */
+    overflow: hidden; /* Hide the content */
+    transition: max-height 0.5s ease-out; /* Smooth transition */
+  }
+  
+  #extra-text.open {
+    max-height: 200px; /* Adjust based on the content height */
+  }
+  
 
 .open {
     display: block;
@@ -102,22 +104,63 @@ canvas {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Leaderboard Section */
-#leaderboard-container {
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
+//* Table Styling */
 #leaderboard-table {
-    width: 100%;
+    width: 80%; /* Reduce the width of the whole table (use a percentage) */
+    margin: 20px auto; /* Center the table horizontally */
     border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 6px;
-    text-align: center;
-    border: 1px solid #ddd;
-}
+    background-color: #ffffff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 14px; /* Adjust font size */
+  }
+  
+  /* Header Styling */
+  #leaderboard-table th {
+    padding: 8px 15px; /* Reduced padding */
+    background-color: #f4f4f4;
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  /* Table cell styling */
+  #leaderboard-table td {
+    padding: 8px 15px; /* Reduced padding */
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Flag styling */
+  #leaderboard-table td img {
+    width: 20px; /* Set flags smaller */
+    height: auto;
+    margin: 0 5px; /* Small margin around the flags */
+  }
+  
+  /* Styling for the "View More" button */
+  #show-more {
+    margin: 20px auto;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    display: block;
+    width: 150px;
+    font-size: 12px;
+  }
+  
+  #show-more:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Row hover effect */
+  #leaderboard-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  

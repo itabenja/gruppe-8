@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function() { 
+document.addEventListener("DOMContentLoaded", function() {
   const toggleTextButton = document.getElementById("toggle-text");
   const extraText = document.getElementById("extra-text");
 
@@ -156,4 +156,5 @@ document.addEventListener("DOMContentLoaded", function() {
     console.error("Elements not found!");
   }
 });
+
 
