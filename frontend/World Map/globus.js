@@ -121,8 +121,10 @@ async function createSquareOnCountry(target, countryName) {
       console.warn(`Invalid area data for ${countryName}:`, area_needed_m2);
       return;
     }
-    area_needed_m2 = parseFloat(area_needed_m2);
-    console.log(`Area needed (m²) for ${countryName}: ${area_needed_m2}`);
+
+    // Convert area_needed_m2 to square kilometers
+    const areaNeededKm2 = area_needed_m2 / 1_000_000;
+    console.log(`Area needed (km²) for ${countryName}: ${areaNeededKm2}`);
 
     // Calculate side length in meters
     const sideLengthMeters = Math.sqrt(area_needed_m2) * 150;
@@ -162,9 +164,9 @@ async function createSquareOnCountry(target, countryName) {
         type: "Point",
         coordinates: [centerX, centerY],
       },
-      value: area_needed_m2,
+      value: areaNeededKm2, // Use the converted value here
     });
-    console.log(`Data point added for ${countryName}: Center=(${centerX}, ${centerY}), Value=${area_needed_m2}`);
+    console.log(`Data point added for ${countryName}: Center=(${centerX}, ${centerY}), Value=${areaNeededKm2}`);
 
     // Add bullets for squares
     squareSeries.bullets.push(() => {
@@ -178,7 +180,7 @@ async function createSquareOnCountry(target, countryName) {
         fillOpacity: 0.5,
         stroke: am5.color("#C70039"),
         strokeWidth: 2,
-        tooltipText: `Area Needed: ${area_needed_m2.toFixed(2)} m²`,
+        tooltipText: `Area Needed: ${areaNeededKm2.toFixed(2)} km²`,
       });
 
       console.log(`Square created for ${countryName}:`, square);
@@ -219,11 +221,6 @@ async function createSquareOnCountry(target, countryName) {
     console.error(`Error creating square for ${countryName}:`, error);
   }
 }
-
-
-
-
-
 
 
 // Event listener for polygon clicks
