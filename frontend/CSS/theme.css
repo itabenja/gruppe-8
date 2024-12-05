@@ -1,0 +1,18 @@
+/* theme.css */
+
+/* For specifikke sektioner som overskrifter */
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #f4a261;
+    padding: 20px 0; /* Øg padding omkring overskriften */
+}
+
+/* Styling for mindre overskrifter */
+h3 {
+    font-size: 25px;
+    color: #2a2f3d;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 20px 0; /* Øg padding omkring h3-elementer */
+}

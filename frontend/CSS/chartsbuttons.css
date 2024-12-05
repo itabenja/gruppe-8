@@ -1,0 +1,21 @@
+/* chartsbuttons.css */
+
+/* Knapperne */
+button {
+    padding: 15px 30px; /* Øg padding i knapperne */
+}
+
+/* Styling for specifikke diagrammer */
+#leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    padding: 15px; /* Øg padding omkring leaderboard-tabellen */
+}
+
+/* Cellestørrelse */
+th, td {
+    padding: 15px; /* Øg padding i tabelceller */
+    text-align: center;
+    border: 1px solid #ddd;
+}

@@ -289,8 +289,8 @@ am5.ready(function () {
     let zoomOutButton = document.createElement("button");
     zoomOutButton.innerText = "Zoom Out";
     zoomOutButton.style.position = "absolute";
-    zoomOutButton.style.bottom = "20px";
-    zoomOutButton.style.left = "20px";
+    zoomOutButton.style.bottom = "200px";
+    zoomOutButton.style.left = "370px";
     zoomOutButton.style.padding = "10px 15px";
     zoomOutButton.style.backgroundColor = "#007BFF";
     zoomOutButton.style.color = "#fff";
@@ -331,17 +331,17 @@ am5.ready(function () {
     // Add search bar HTML
     const searchContainer = document.createElement("div");
     searchContainer.style.position = "absolute";
-    searchContainer.style.top = "580px";
-    searchContainer.style.left = "650px";
-    searchContainer.style.width = "180px";
-    searchContainer.style.zIndex = "1000";
+    searchContainer.style.top = "300px";
+    searchContainer.style.left = "850px";
+    searchContainer.style.width = "800x";
+    searchContainer.style.zIndex = "1200";
 
     searchContainer.innerHTML = `
       <input 
         type="text" 
         id="countrySearchInput" 
         placeholder="Search for a country..." 
-        style="width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
+        style="width: 100%; padding: 10px; font-size: 14px; border: 5px solid #ccc; border-radius: 20px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);"
       />
     `;
 
