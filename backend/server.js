@@ -136,13 +136,14 @@ server.get('/api/countries/:countryName', async (req, res) => {
 
         const result = await db.query(
             `SELECT 
-                country,
-                solar_generation_twh,
-                solar_installed_capacity_mw,
-                solar_panels_needed,
+                Country,
+                Electricity_Consumption_TWh,
+                Electricity_Consumption_kWh,
+                Solar_Panels_Needed,
                 area_needed_m2,
-                total_area_km2
-            FROM solar_panel_problem_solving_data 
+                Area_Needed_km2
+                FROM solar_panel_coverage
+
             WHERE LOWER(country) = LOWER($1)`,
             [countryName]
         );
@@ -164,8 +165,7 @@ server.get('/api/countries/:countryName', async (req, res) => {
 });
 
 server.get('/api/circle/:country', async (req, res) => {
-    const countryName = req.params.country; // Correct parameter name
-
+    const countryName = req.params.country.trim(); // Sanitize input
     console.log("API called for country:", countryName);
 
     try {
@@ -173,27 +173,25 @@ server.get('/api/circle/:country', async (req, res) => {
             `SELECT 
                 country,
                 area_needed_m2,
-                total_area_km2
-            FROM solar_panel_problem_solving_data
+                Area_Needed_km2
+            FROM solar_panel_coverage
             WHERE LOWER(country) = LOWER($1)`, // Case-insensitive match
             [countryName]
         );
 
-        // Log the query result
-        console.log('Query result:', result.rows);
-
-        if (result.rows.length > 0) {
-            res.json(result.rows[0]); // Return the first matching row
-        } else {
-            console.log("No data found for:", countryName);
-            res.status(404).send({ error: `Data for ${countryName} not found` });
+        if (result.rows.length === 0) {
+            console.warn(`No data found for country: ${countryName}`);
+            return res.status(404).json({ error: `No data found for ${countryName}` });
         }
-    } catch (error) {
-        console.error("Error fetching country data:", error);
-        res.status(500).send({ error: "Failed to fetch country data" });
-    }
 
+        console.log("Query result for", countryName, ":", result.rows[0]);
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error querying database for country:", countryName, error);
+        res.status(500).json({ error: "Internal server error" });
+    }
 });
+
 
 
 server.listen(port, () => {
