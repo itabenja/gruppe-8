@@ -31,27 +31,39 @@ drop table if exists Solar_Panel_Coverage;
 
 
 
-create table primary_energy (
-country text,
-year text,
-energy_consumption numeric
+-- Table for primary energy
+CREATE TABLE primary_energy (
+    country VARCHAR(255) NOT NULL,
+    year VARCHAR(4) NOT NULL,
+    energy_consumption NUMERIC NOT NULL,
+    PRIMARY KEY (country, year) -- Composite primary key to ensure uniqueness
 );
 
-create table renewable_energy (
-country text ,
-year text,
-energy_consumption numeric
+-- Table for renewable energy
+CREATE TABLE renewable_energy (
+    country VARCHAR(255) NOT NULL,
+    year VARCHAR(4) NOT NULL,
+    energy_consumption NUMERIC NOT NULL,
+    PRIMARY KEY (country, year), -- Composite primary key
+    FOREIGN KEY (country, year) REFERENCES primary_energy (country, year) -- Foreign key to enforce valid references
 );
 
-
+-- Table for solar panel coverage
 CREATE TABLE Solar_Panel_Coverage (
-    country VARCHAR(255),
-    electricity_consumption_twh FLOAT,
-    electricity_consumption_kwh FLOAT,
-    solar_panels_needed FLOAT,
-    area_needed_m2 FLOAT,
-    area_needed_km2 FLOAT
+    country VARCHAR(255) NOT NULL,
+    electricity_consumption_twh FLOAT NOT NULL,
+    electricity_consumption_kwh FLOAT NOT NULL,
+    solar_panels_needed FLOAT NOT NULL,
+    area_needed_m2 FLOAT NOT NULL,
+    area_needed_km2 FLOAT NOT NULL,
+    PRIMARY KEY (country) -- Assume one row per country
 );
+
+-- Optional: Adding indexes for better performance
+CREATE INDEX idx_primary_energy_country_year ON primary_energy (country, year);
+CREATE INDEX idx_renewable_energy_country_year ON renewable_energy (country, year);
+CREATE INDEX idx_solar_panel_coverage_country ON Solar_Panel_Coverage (country);
+
 `);
 console.log('Tables recreated.');
 

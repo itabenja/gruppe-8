@@ -504,7 +504,7 @@ am5.ready(function () {
   infoContainer.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
   infoContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
   infoContainer.style.overflowY = "auto";
-  infoContainer.style.padding = "5px";
+  infoContainer.style.padding = "20px";
   infoContainer.style.zIndex = "1000";
   document.body.appendChild(infoContainer);
 
