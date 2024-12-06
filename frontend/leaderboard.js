@@ -135,3 +135,26 @@ document.addEventListener('DOMContentLoaded', () => {
     tooltip.style.display = 'none';
   }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  const toggleTextButton = document.getElementById("toggle-text");
+  const extraText = document.getElementById("extra-text");
+
+  // Check if elements exist before adding the event listener
+  if (toggleTextButton && extraText) {
+    toggleTextButton.addEventListener("click", function() {
+      // Toggle visibility of extra text
+      if (extraText.style.display === "none" || extraText.style.display === "") {
+        extraText.style.display = "block";  // Show content
+        extraText.classList.add("open");
+      } else {
+        extraText.style.display = "none";  // Hide content
+        extraText.classList.remove("open");
+      }
+    });
+  } else {
+    console.error("Elements not found!");
+  }
+});
+
+
