@@ -122,7 +122,7 @@ am5.ready(function () {
     console.log(`Area needed (m²) for ${countryName}: ${area_needed_m2}`);
 
       // Calculate side length in meters
-      const sideLengthMeters = Math.sqrt(area_needed_m2) * 150;
+      const sideLengthMeters = Math.sqrt(area_needed_m2)*50;
       console.log(`Calculated side length (meters) for ${countryName}: ${sideLengthMeters}`);
 
       const geometry = target.dataItem?.dataContext?.geometry;
@@ -336,11 +336,11 @@ am5.ready(function () {
           if (countryData) {
             // Populate the infoContainer with the additional country data
             chartInfo.innerHTML = `
-              <p>Current Solar Generation: ${countryData.solar_generation_twh} TWh</p>
-              <p>Solar Installed Capacity MW: ${countryData.solar_installed_capacity_mw} GW</p>
+              <p>Current Solar Generation: ${countryData.electricity_consumption_twh} TWh</p>
+              <p>Solar Installed Capacity MW: ${countryData.electricity_consumption_kwh} GW</p>
               <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
               <p>Area Needed M2: ${countryData.area_needed_m2}</p>
-              <p>Total Area KM2: ${countryData.total_area_km2}</p>
+              <p>Total Area KM2: ${countryData.area_needed_km2}</p>
             `;
 
             moreDetailsButton.innerText = "Show Chart"; //Opdatere knapteksten

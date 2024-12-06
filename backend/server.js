@@ -136,12 +136,12 @@ server.get('/api/countries/:countryName', async (req, res) => {
 
         const result = await db.query(
             `SELECT 
-                Country,
-                Electricity_Consumption_TWh,
-                Electricity_Consumption_kWh,
-                Solar_Panels_Needed,
+                country,
+                electricity_consumption_twh,
+                electricity_consumption_kwh,
+                solar_panels_needed,
                 area_needed_m2,
-                Area_Needed_km2
+                area_needed_km2
                 FROM solar_panel_coverage
 
             WHERE LOWER(country) = LOWER($1)`,

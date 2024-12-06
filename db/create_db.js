@@ -45,12 +45,12 @@ energy_consumption numeric
 
 
 CREATE TABLE Solar_Panel_Coverage (
-    Country VARCHAR(255),
-    Electricity_Consumption_TWh FLOAT,
-    Electricity_Consumption_kWh FLOAT,
-    Solar_Panels_Needed FLOAT,
+    country VARCHAR(255),
+    electricity_consumption_twh FLOAT,
+    electricity_consumption_kwh FLOAT,
+    solar_panels_needed FLOAT,
     area_needed_m2 FLOAT,
-    Area_Needed_km2 FLOAT
+    area_needed_km2 FLOAT
 );
 `);
 console.log('Tables recreated.');
@@ -66,7 +66,7 @@ console.log('Tables recreated.');
             with csv header`, 'db/renewable_energy_final_all_correct.csv');
 
         await copyIntoTable(db, `
-            copy Solar_Panel_Coverage (Country,Electricity_Consumption_TWh,Electricity_Consumption_kWh,Solar_Panels_Needed,area_needed_m2,Area_Needed_km2)
+            copy Solar_Panel_Coverage (country,electricity_consumption_twh,electricity_consumption_kwh,solar_panels_needed,area_needed_m2,area_needed_km2)
             from stdin
             with csv header`, 'db/Solar_Panel_Problem_Solving_Data.csv');
 
