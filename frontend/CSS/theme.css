@@ -1,5 +1,16 @@
 /* theme.css */
-
+/* General body styling with a different outer color */
+body {
+    background-image: radial-gradient(circle, #f8f8f8, #c2d9e1); /* Change outer color to a blue-gray */
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 /* For specifikke sektioner som overskrifter */
 h2 {
     font-size: 2rem;
@@ -15,4 +26,13 @@ h3 {
     color: #2a2f3d;
     font-family: 'Times New Roman', Times, serif;
     padding: 20px 0; /* Øg padding omkring h3-elementer */
+}
+p {
+    font-size: 15px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    
+    text-align: center;
 }

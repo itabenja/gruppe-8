@@ -7,7 +7,7 @@ button {
 
 /* Styling for specifikke diagrammer */
 #leaderboard-table {
-    width: 100%;
+    width: 819.83px;
     border-collapse: collapse;
     margin-top: 20px;
     padding: 15px; /* Øg padding omkring leaderboard-tabellen */
@@ -50,12 +50,13 @@ th, td {
 .chart-container {
     display: flex;
     justify-content: space-between; /* Space between the charts */
-    gap: 40px; /* Gap between charts */
+    gap: 20px; /* Gap between charts */
+    width: 1200px;
   }
   
   /* Styling for individual chart boxes */
   .chart-box {
-    width: 48%; /* Each chart will take up 48% of the container width */
+    width: 650px; /* Each chart will take up 48% of the container width */
     background-color: #f4f4f4;
     padding: 20px;
     border-radius: 8px;

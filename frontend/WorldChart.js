@@ -41,8 +41,6 @@ function createWorldStackedChart(data) {
     // Create a new canvas element for the chart
     const canvas = document.createElement("canvas");
     canvas.id = "chartCanvas"; // Assign an ID to the canvas
-    canvas.width = 700; // Set the canvas width
-    canvas.height = 500; // Set the canvas height
     container.appendChild(canvas); // Append the canvas to the container
 
     // Get the 2D rendering context for the canvas

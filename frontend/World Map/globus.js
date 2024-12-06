@@ -175,7 +175,7 @@ am5.ready(function () {
         fillOpacity: 0.5,
         stroke: am5.color("#C70039"),
         strokeWidth: 2,
-        tooltipText: `Area Needed: ${area_needed_m2.toFixed(2)} m²`,
+        tooltipText: `Area Needed: ${area_needed_m2.toFixed(2)} km²`,
       });
 
         console.log(`Square created for ${countryName}:`, square);
@@ -250,7 +250,6 @@ am5.ready(function () {
       //Get the infocontainer element (create once, used globally)
       const infoContainer = document.getElementById("infoContainer");
       infoContainer.innerHTML = ""; //Clear existing content in the container
-
       infoContainer.style.height = "700px";
       infoContainer.style.overflow = "auto";
       //Add content to infoContainer and display it
@@ -283,11 +282,7 @@ am5.ready(function () {
       countryTitle.innerText = countryName; 
       infoContainer.appendChild(countryTitle);
 
-      //Add some information details about the country to the infoContainer
-      const countryDetails = document.createElement("p");
-      countryDetails.innerText = `Energy consumption details for ${countryName}:`;
-      infoContainer.appendChild(countryDetails);
-
+      
       // Add a div for the chart
       const chartDiv = document.createElement("div");
       chartDiv.id = "chartInfo";
