@@ -39,6 +39,8 @@ server.use((req, res, next) => {
 // Add leaderboard routes
 server.use('/api', leaderboardRoutes);
 
+
+
 server.get('/api/TY', async (req, res) => {
     try {
         const dbResult = await db.query(`
@@ -135,12 +137,13 @@ server.get('/api/countries/:countryName', async (req, res) => {
         const result = await db.query(
             `SELECT 
                 country,
-                solar_generation_twh,
-                solar_installed_capacity_mw,
+                electricity_consumption_twh,
+                electricity_consumption_kwh,
                 solar_panels_needed,
                 area_needed_m2,
-                total_area_km2
-            FROM solar_panel_problem_solving_data 
+                area_needed_km2
+                FROM solar_panel_coverage
+
             WHERE LOWER(country) = LOWER($1)`,
             [countryName]
         );
@@ -160,6 +163,36 @@ server.get('/api/countries/:countryName', async (req, res) => {
         res.status(500).send({ error: "Failed to fetch country data" });
     }
 });
+
+server.get('/api/circle/:country', async (req, res) => {
+    const countryName = req.params.country.trim(); // Sanitize input
+    console.log("API called for country:", countryName);
+
+    try {
+        const result = await db.query(
+            `SELECT 
+                country,
+                area_needed_m2,
+                Area_Needed_km2
+            FROM solar_panel_coverage
+            WHERE LOWER(country) = LOWER($1)`, // Case-insensitive match
+            [countryName]
+        );
+
+        if (result.rows.length === 0) {
+            console.warn(`No data found for country: ${countryName}`);
+            return res.status(404).json({ error: `No data found for ${countryName}` });
+        }
+
+        console.log("Query result for", countryName, ":", result.rows[0]);
+        res.json(result.rows[0]);
+    } catch (error) {
+        console.error("Error querying database for country:", countryName, error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
+
 
 server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
