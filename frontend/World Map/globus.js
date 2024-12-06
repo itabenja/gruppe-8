@@ -58,7 +58,7 @@ am5.ready(function () {
     }
   }
       
-      
+  var createdSquares = [];
 
   // Helper function: Parse geometry and calculate center
   function calculateGeometryCenter(geometry) {
@@ -184,13 +184,10 @@ am5.ready(function () {
         const updateSquare = () => {
           const projection = map.get("projection");
           const zoomLevel = map.zoomLevel || 1;
-
           // Calculate the side length in screen space
           const scalingFactor = 0.00005; // Adjust this based on your map's projection
           const sideLength = (sideLengthMeters * scalingFactor) / zoomLevel;
-
-          // Update square size
-          square.setAll({ width: sideLength, height: sideLength });
+          square.setAll({ width: sideLength, height: sideLength }); // Update square size
 
           // Update position
           const xy = projection([centerX, centerY]);
@@ -202,6 +199,7 @@ am5.ready(function () {
           }
         };
 
+        createdSquares.push(square);
         // Initial update
         updateSquare();
 
@@ -447,12 +445,22 @@ am5.ready(function () {
     chart.set("zoomLevel", 1); // Reset zoom level
     startRotation(); //Start rotating the globe
 
+    createdSquares.forEach(square => {
+      square.dispose();
+    });
+
+    createdSquares = [];
+
+    polygonSeries.mapPolygons.each(function(polygon) {
+      polygon.set("active", false);
+    })
+
     //Close the infoContainer when zooming out
     const infoContainer = document.getElementById("infoContainer");
     if (infoContainer) {
       infoContainer.style.display = "none";
     }
-
+    
     //Clear the text in the searchbar when zooming out
     const searchInput = document.getElementById("countrySearchInput");
     if (searchInput) {
