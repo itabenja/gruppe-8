@@ -99,127 +99,158 @@ am5.ready(function () {
   }
 
   // Fetch country data from the backend
-  async function createSquareOnCountry(target, countryName) {
+  async function createOverlayedGeoRectanglesOnCountry(target, countryName) {
     try {
-      console.log(`Creating square for country: ${countryName}`);
+        console.log(`Creating overlayed geo-rectangles for country: ${countryName}`);
 
-      // Fetch data using the API
-      const countryData = await fetchCountryDataFromAPI(countryName);
-      if (!countryData) {
-        console.warn(`No data available for ${countryName}`);
-        return;
-      }
-      console.log(`Fetched country data for ${countryName}:`, countryData);
+        // Fetch country data
+        const countryData = await fetchCountryDataFromAPI(countryName);
+        if (!countryData) {
+            console.warn(`No data available for ${countryName}`);
+            return;
+        }
 
-      let { area_needed_m2 } = countryData;
+        let { area_needed_m2, total_area_km2 } = countryData;
 
-    // Validate the area data
-    if (!area_needed_m2 || isNaN(area_needed_m2)) {
-      console.warn(`Invalid area data for ${countryName}:`, area_needed_m2);
-      return;
+        if (!area_needed_m2 || isNaN(area_needed_m2) || !total_area_km2 || isNaN(total_area_km2)) {
+            console.warn(`Invalid area data for ${countryName}:`, { area_needed_m2, total_area_km2 });
+            return;
+        }
+
+        // Convert area_needed_m2 to km²
+        const areaNeededKm2 = area_needed_m2 / 1_000_000;
+
+        // Validate that area_needed_m2 does not exceed total_area_km2
+        if (areaNeededKm2 > total_area_km2) {
+            console.warn(`Area needed exceeds total area for ${countryName}.`);
+            return;
+        }
+
+        // Extract geometry data
+        const geometry = target.dataItem?.dataContext?.geometry;
+        if (!geometry || !geometry.coordinates) {
+            console.warn(`Geometry data is missing for ${countryName}`);
+            return;
+        }
+
+        const map = target.series?.chart;
+        if (!map) {
+            console.error("Map chart is undefined.");
+            return;
+        }
+
+        // Calculate geographic bounds for the country
+        let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+
+        if (geometry.type === "Polygon") {
+            geometry.coordinates.forEach(polygon => {
+                polygon.forEach(([lng, lat]) => {
+                    minLng = Math.min(minLng, lng);
+                    maxLng = Math.max(maxLng, lng);
+                    minLat = Math.min(minLat, lat);
+                    maxLat = Math.max(maxLat, lat);
+                });
+            });
+        } else if (geometry.type === "MultiPolygon") {
+            geometry.coordinates.forEach(multiPolygon => {
+                multiPolygon.forEach(polygon => {
+                    polygon.forEach(([lng, lat]) => {
+                        minLng = Math.min(minLng, lng);
+                        maxLng = Math.max(maxLng, lng);
+                        minLat = Math.min(minLat, lat);
+                        maxLat = Math.max(maxLat, lat);
+                    });
+                });
+            });
+        }
+
+        console.log("Country Bounds:", { minLng, maxLng, minLat, maxLat });
+
+        // Calculate the size of the overlay rectangle as a percentage of the country's bounds
+        const areaRatio = (areaNeededKm2 / total_area_km2) * 100; // Percentage size
+        const widthScale = Math.sqrt(areaRatio / 100); // Scale for width
+        const heightScale = Math.sqrt(areaRatio / 100); // Scale for height
+
+        const overlayTopLat = maxLat - ((maxLat - minLat) * (1 - heightScale) / 2);
+        const overlayBottomLat = minLat + ((maxLat - minLat) * (1 - heightScale) / 2);
+        const overlayRightLng = maxLng - ((maxLng - minLng) * (1 - widthScale) / 2);
+        const overlayLeftLng = minLng + ((maxLng - minLng) * (1 - widthScale) / 2);
+
+        console.log("Overlay Rectangle Bounds:", {
+            overlayTopLat,
+            overlayBottomLat,
+            overlayRightLng,
+            overlayLeftLng
+        });
+
+        if (
+            overlayTopLat <= overlayBottomLat ||
+            overlayRightLng <= overlayLeftLng
+        ) {
+            console.error("Overlay rectangle dimensions are invalid.");
+            return;
+        }
+
+        // Add a series for the overlay rectangle
+        const rectangleSeries = map.series.push(am5map.MapPolygonSeries.new(map.root, {}));
+        rectangleSeries.mapPolygons.template.setAll({
+            stroke: am5.color("#000"),
+            strokeWidth: 1,
+            interactive: true
+        });
+
+        // Add the overlay rectangle (red)
+        const overlayPolygon = rectangleSeries.pushDataItem({
+            geometry: am5map.getGeoRectangle(
+                overlayTopLat,
+                overlayRightLng,
+                overlayBottomLat,
+                overlayLeftLng
+            )
+        }).get("mapPolygon");
+
+        if (overlayPolygon) {
+            overlayPolygon.set("fill", am5.color("#ff0000")); // Red
+            overlayPolygon.set("fillOpacity", 0.7);
+
+            // Create a tooltip
+            let tooltip;
+
+            overlayPolygon.events.on("pointerover", () => {
+                // Create and display tooltip
+                if (!tooltip) {
+                    tooltip = map.seriesContainer.children.push(am5.Label.new(map.root, {
+                        x: am5.p50,
+                        y: am5.p50,
+                        centerX: am5.p50,
+                        centerY: am5.p50,
+                        text: `Area Needed: ${areaNeededKm2.toFixed(2)} km²\n(${areaRatio.toFixed(2)}%)`,
+                        fill: am5.color("#000000"), // Black text
+                        background: am5.RoundedRectangle.new(map.root, {
+                            fill: am5.color("#ffffff"),
+                            fillOpacity: 0.8,
+                            cornerRadius: 5,
+                            stroke: am5.color("#000000"),
+                            strokeOpacity: 0.5
+                        })
+                    }));
+                }
+            });
+
+            overlayPolygon.events.on("pointerout", () => {
+                // Remove tooltip
+                if (tooltip) {
+                    tooltip.dispose();
+                    tooltip = null;
+                }
+            });
+        }
+
+        console.log(`Overlay rectangle created for ${countryName} with percentage: ${areaRatio.toFixed(2)}%`);
+    } catch (error) {
+        console.error(`Error creating overlay rectangle for ${countryName}:`, error);
     }
-    area_needed_m2 = parseFloat(area_needed_m2);
-    console.log(`Area needed (m²) for ${countryName}: ${area_needed_m2}`);
-
-      // Calculate side length in meters
-      const sideLengthMeters = Math.sqrt(area_needed_m2)*50;
-      console.log(`Calculated side length (meters) for ${countryName}: ${sideLengthMeters}`);
-
-      const geometry = target.dataItem?.dataContext?.geometry;
-      if (!geometry) {
-        console.warn(`Geometry data is missing for ${countryName}`);
-        return;
-      }
-
-      const { centerX, centerY } = calculateGeometryCenter(geometry);
-      if (centerX === undefined || centerY === undefined) {
-        console.warn(`Unable to calculate center for ${countryName}`);
-        return;
-      }
-      console.log(`Geometry center for ${countryName}: X=${centerX}, Y=${centerY}`);
-
-      const map = target.series?.chart;
-      if (!map) {
-        console.error("Map chart is undefined.");
-        return;
-      }
-
-      // Create a MapPointSeries for squares
-      const squareSeries = map.series.push(
-        am5map.MapPointSeries.new(map.root, {
-          calculateAggregates: true,
-          valueField: "value",
-        })
-      );
-      console.log("MapPointSeries for squares created.");
-
-    // Add a data point for the square
-    squareSeries.data.push({
-      geometry: {
-        type: "Point",
-        coordinates: [centerX, centerY],
-      },
-      value: area_needed_m2,
-    });
-    console.log(`Data point added for ${countryName}: Center=(${centerX}, ${centerY}), Value=${area_needed_m2}`);
-
-      // Add bullets for squares
-      squareSeries.bullets.push(() => {
-        const baseSideLength = 50; // Default side length in pixels for visual representation
-        console.log(`Base side length for square: ${baseSideLength}`);
-
-      const square = am5.Rectangle.new(map.root, {
-        width: baseSideLength, // Initial size
-        height: baseSideLength, // Initial size
-        fill: am5.color("#FF5733"),
-        fillOpacity: 0.5,
-        stroke: am5.color("#C70039"),
-        strokeWidth: 2,
-        tooltipText: `Area Needed: ${area_needed_m2.toFixed(2)} km²`,
-      });
-
-        console.log(`Square created for ${countryName}:`, square);
-
-        // Dynamically adjust the square's size and position
-        const updateSquare = () => {
-          const projection = map.get("projection");
-          const zoomLevel = map.zoomLevel || 1;
-          // Calculate the side length in screen space
-          const scalingFactor = 0.00005; // Adjust this based on your map's projection
-          const sideLength = (sideLengthMeters * scalingFactor) / zoomLevel;
-          square.setAll({ width: sideLength, height: sideLength }); // Update square size
-
-          // Update position
-          const xy = projection([centerX, centerY]);
-          if (xy) {
-            square.setAll({ x: xy[0], y: xy[1] });
-            console.log(`Updated square position for ${countryName}: X=${xy[0]}, Y=${xy[1]}, Side=${sideLength}`);
-          } else {
-            console.warn("Projection failed for center coordinates:", { centerX, centerY });
-          }
-        };
-
-        createdSquares.push(square);
-        // Initial update
-        updateSquare();
-
-        // Recalculate on zoom or geometry updates
-        map.events.on("zoomLevelChanged", updateSquare);
-        map.events.on("geometriesUpdated", updateSquare);
-
-      console.log(`Square creation process completed for ${countryName}`);
-      return am5.Bullet.new(map.root, { sprite: square });
-    });
-  } catch (error) {
-    console.error(`Error creating square for ${countryName}:`, error);
-  }
 }
-
-
-
-
-
-
 
   // Event listener for polygon clicks
   polygonSeries.mapPolygons.template.on("active", async function (active, target) {
@@ -233,7 +264,7 @@ am5.ready(function () {
       stopRotation(); // Stop globe rotation
 
       // Create a square for the clicked country
-      await createSquareOnCountry(target, countryName);
+      await createOverlayedGeoRectanglesOnCountry(target, countryName);
     } else {
       document.getElementById("infoContainer").style.display = "none";
     }
