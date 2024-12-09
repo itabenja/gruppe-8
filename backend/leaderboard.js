@@ -25,26 +25,28 @@ router.get('/leaderboard', async (req, res) => {
     try {
         const result = await db.query(`
             SELECT  
-                country, 
-                (SUM(renewable_energy.energy_consumption) * 100.0 / NULLIF(SUM(primary_energy.energy_consumption), 0)) AS renewable_percentage
-            FROM 
-                renewable_energy
-            JOIN 
-                primary_energy USING (country, year)
-            WHERE 
-                country NOT IN (
-                    'USSR', 'Other South America', 'Other CIS', 'Eastern Africa', 
-                    'Total S&Cent. America', 'Middle Africa', 'Central America', 
-                    'Other Europe', 'Other Asia Pacific', 'Other Southern Africa', 
-                    'Total Europe', 'Of which: OECD', 'Total World', 'Non OECD', 
-                    'Total North America', 'Total Asia Pacific', 'Other Caribbean', 
-                    'Other Middle East', 'Total S. & Cent. America','of which: OECD','Non-OECD', 'Other Northern Africa','China Hong Kong SAR',
-                    'China Hong Kong SAR', 'Total', 'Total CIS', 'Total Middle East', 'European Union #'
-                )
-            GROUP BY 
-                country
-            ORDER BY 
-                renewable_percentage DESC;
+    country, 
+    (SUM(renewable_energy.energy_consumption) * 100.0 / NULLIF(SUM(primary_energy.energy_consumption), 0)) AS renewable_percentage
+FROM 
+    renewable_energy
+JOIN 
+    primary_energy USING (country, year)
+WHERE 
+    year = '2023' AND 
+    country NOT IN (
+        'USSR', 'Other South America', 'Other CIS', 'Eastern Africa', 
+        'Total S&Cent. America', 'Middle Africa', 'Central America', 
+        'Other Europe', 'Other Asia Pacific', 'Other Southern Africa', 
+        'Total Europe', 'Of which: OECD', 'Total World', 'Non OECD', 
+        'Total North America', 'Total Asia Pacific', 'Other Caribbean', 
+        'Other Middle East', 'Total S. & Cent. America', 'of which: OECD', 'Non-OECD', 'Other Northern Africa', 'China Hong Kong SAR',
+        'China Hong Kong SAR', 'Total', 'Total CIS', 'Total Middle East', 'European Union #'
+    )
+GROUP BY 
+    country
+ORDER BY 
+    renewable_percentage DESC;
+
         `);
 
         // If no data is available, respond with 404
