@@ -24,7 +24,7 @@ console.log('Database connection established on', dbResult.rows[0].now);
 
 console.log('Recreating tables...');
 await db.query(`
-drop table if exists primary_energy;
+drop table if exists primary_energy CASCADE;
 drop table if exists renewable_energy;
 drop table if exists Solar_Panel_Coverage;
 
@@ -55,7 +55,7 @@ CREATE TABLE Solar_Panel_Coverage (
     electricity_consumption_kwh FLOAT NOT NULL,
     solar_panels_needed FLOAT NOT NULL,
     area_needed_m2 FLOAT NOT NULL,
-    area_needed_km2 FLOAT NOT NULL,
+    total_area_km2 FLOAT,
     PRIMARY KEY (country) -- Assume one row per country
 );
 
@@ -78,7 +78,7 @@ console.log('Tables recreated.');
             with csv header`, 'db/renewable_energy_final_all_correct.csv');
 
         await copyIntoTable(db, `
-            copy Solar_Panel_Coverage (country,electricity_consumption_twh,electricity_consumption_kwh,solar_panels_needed,area_needed_m2,area_needed_km2)
+            copy Solar_Panel_Coverage (country,electricity_consumption_twh,electricity_consumption_kwh,solar_panels_needed,area_needed_m2,total_area_km2)
             from stdin
             with csv header`, 'db/Solar_Panel_Problem_Solving_Data.csv');
 
