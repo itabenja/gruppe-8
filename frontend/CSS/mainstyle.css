@@ -147,69 +147,60 @@
 /* Podium Styling */
 .podium-container {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
+    justify-content: center; /* Center align podium */
+    align-items: flex-end; /* Align items to the bottom */
+    gap: 20px; /* Add spacing between podium items */
+    padding: 20px;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px;
 }
 
 .podium {
-    text-align: center;
-    flex: 1;
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align text and images */
 }
 
 .podium-item {
     position: relative;
-    width: 240px;
-    height: 100px;
-    background-color: #b58863; /* Default podium color */
-    border-radius: 8px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 20px;
     color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.podium-item img {
+    width: 50px; /* Adjust flag size */
+    height: 30px;
+    margin-bottom: 10px; /* Add spacing below flag */
 }
 
 .podium-item.first {
-    background-color: #f1c40f; /* Gold for first place */
+    background-color: #f1c40f; /* Gold */
+    width: 150px;
+    height: 200px;
 }
 
 .podium-item.second {
-    background-color: #95a5a6; /* Silver for second place */
+    background-color: #95a5a6; /* Silver */
+    width: 150px;
+    height: 150px;
 }
 
 .podium-item.third {
-    background-color: #e67e22; /* Bronze for third place */
-}
-
-.podium-item .flag-container img {
-    width: 40px; /* Adjust flag size */
-    height: auto;
-    margin-bottom: 10px; /* Space between flag and rank */
+    background-color: #e67e22; /* Bronze */
+    width: 150px;
+    height: 100px;
 }
 
 .podium-rank {
-    font-size: 15px;
-    font-weight: bold;
-    color: #fff;
     position: absolute;
-    bottom: 5px;
-}
-
-/* Styling for podium ranks */
-.podium-item.first .podium-rank {
-    background-color: gold;
-}
-
-.podium-item.second .podium-rank {
-    background-color: silver;
-}
-
-.podium-item.third .podium-rank {
-    background-color: #cd7f32;
+    bottom: 10px; /* Position number near the bottom */
+    font-size: 24px;
+    font-weight: bold;
 }
