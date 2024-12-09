@@ -173,7 +173,7 @@ server.get('/api/circle/:country', async (req, res) => {
             `SELECT 
                 country,
                 area_needed_m2,
-                Total_area_km2
+                total_area_km2
             FROM solar_panel_coverage
             WHERE LOWER(country) = LOWER($1)`, // Case-insensitive match
             [countryName]
