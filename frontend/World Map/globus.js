@@ -99,17 +99,32 @@ am5.ready(function () {
   }
 
   // Fetch country data from the backend
-  async function createTwoGeoRectanglesOnCountry(target, countryName) {
+  async function createOverlayedGeoRectanglesOnCountry(target, countryName) {
     try {
-        console.log(`Creating two geo-rectangles for country: ${countryName}`);
+        console.log(`Creating overlayed geo-rectangles for country: ${countryName}`);
 
-        // Fetch data for the country
+        // Fetch country data
         const countryData = await fetchCountryDataFromAPI(countryName);
         if (!countryData) {
             console.warn(`No data available for ${countryName}`);
             return;
         }
-        console.log(`Fetched country data for ${countryName}:`, countryData);
+
+        let { area_needed_m2, total_area_km2 } = countryData;
+
+        if (!area_needed_m2 || isNaN(area_needed_m2) || !total_area_km2 || isNaN(total_area_km2)) {
+            console.warn(`Invalid area data for ${countryName}:`, { area_needed_m2, total_area_km2 });
+            return;
+        }
+
+        // Convert area_needed_m2 to km²
+        const areaNeededKm2 = area_needed_m2 / 1_000_000;
+
+        // Validate that area_needed_m2 does not exceed total_area_km2
+        if (areaNeededKm2 > total_area_km2) {
+            console.warn(`Area needed exceeds total area for ${countryName}.`);
+            return;
+        }
 
         // Extract geometry data
         const geometry = target.dataItem?.dataContext?.geometry;
@@ -124,10 +139,9 @@ am5.ready(function () {
             return;
         }
 
-        // Initialize bounds
+        // Calculate geographic bounds for the country
         let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
 
-        // Calculate bounds from the country's geometry
         if (geometry.type === "Polygon") {
             geometry.coordinates.forEach(polygon => {
                 polygon.forEach(([lng, lat]) => {
@@ -150,41 +164,100 @@ am5.ready(function () {
             });
         }
 
-        console.log(`Bounds for ${countryName}:`, { minLng, maxLng, minLat, maxLat });
+        console.log("Country Bounds:", { minLng, maxLng, minLat, maxLat });
 
-        // Calculate the midpoint for splitting the bounds
-        const midLng = (minLng + maxLng) / 2; // Split vertically by longitude
-        const midLat = (minLat + maxLat) / 2; // Split horizontally by latitude (if needed)
+        // Calculate the size of the overlay rectangle as a percentage of the country's bounds
+        const areaRatio = (areaNeededKm2 / total_area_km2) * 100; // Percentage size
+        const widthScale = Math.sqrt(areaRatio / 100); // Scale for width
+        const heightScale = Math.sqrt(areaRatio / 100); // Scale for height
 
-        // Create the first geo-rectangle (left half)
-        const geoRectangle1 = {
-            geometry: am5map.getGeoRectangle(maxLat, midLng, minLat, minLng)
-        };
+        const overlayTopLat = maxLat - ((maxLat - minLat) * (1 - heightScale) / 2);
+        const overlayBottomLat = minLat + ((maxLat - minLat) * (1 - heightScale) / 2);
+        const overlayRightLng = maxLng - ((maxLng - minLng) * (1 - widthScale) / 2);
+        const overlayLeftLng = minLng + ((maxLng - minLng) * (1 - widthScale) / 2);
 
-        // Create the second geo-rectangle (right half)
-        const geoRectangle2 = {
-            geometry: am5map.getGeoRectangle(maxLat, maxLng, minLat, midLng)
-        };
-
-        // Add a new series for the geo-rectangles
-        const rectangleSeries = map.series.push(am5map.MapPolygonSeries.new(map.root, {}));
-        rectangleSeries.mapPolygons.template.setAll({
-            fill: am5.color("#00ff00"), // Green fill color
-            fillOpacity: 0.7, // Partially transparent
-            stroke: am5.color("#000"), // Add a border for visibility
-            strokeWidth: 1,
-            interactive: true // Enable interaction
+        console.log("Overlay Rectangle Bounds:", {
+            overlayTopLat,
+            overlayBottomLat,
+            overlayRightLng,
+            overlayLeftLng
         });
 
-        // Add the rectangles to the series
-        rectangleSeries.data.push(geoRectangle1);
-        rectangleSeries.data.push(geoRectangle2);
+        if (
+            overlayTopLat <= overlayBottomLat ||
+            overlayRightLng <= overlayLeftLng
+        ) {
+            console.error("Overlay rectangle dimensions are invalid.");
+            return;
+        }
 
-        console.log(`Two geo-rectangles created for ${countryName}`);
+        // Add a series for the overlay rectangle
+        const rectangleSeries = map.series.push(am5map.MapPolygonSeries.new(map.root, {}));
+        rectangleSeries.mapPolygons.template.setAll({
+            stroke: am5.color("#000"),
+            strokeWidth: 1,
+            interactive: true
+        });
+
+        // Add the overlay rectangle (red)
+        const overlayPolygon = rectangleSeries.pushDataItem({
+            geometry: am5map.getGeoRectangle(
+                overlayTopLat,
+                overlayRightLng,
+                overlayBottomLat,
+                overlayLeftLng
+            )
+        }).get("mapPolygon");
+
+        if (overlayPolygon) {
+            overlayPolygon.set("fill", am5.color("#ff0000")); // Red
+            overlayPolygon.set("fillOpacity", 0.7);
+
+            // Create a tooltip
+            let tooltip;
+
+            overlayPolygon.events.on("pointerover", () => {
+                // Create and display tooltip
+                if (!tooltip) {
+                    tooltip = map.seriesContainer.children.push(am5.Label.new(map.root, {
+                        x: am5.p50,
+                        y: am5.p50,
+                        centerX: am5.p50,
+                        centerY: am5.p50,
+                        text: `Area Needed: ${areaNeededKm2.toFixed(2)} km²\n(${areaRatio.toFixed(2)}%)`,
+                        fill: am5.color("#000000"), // Black text
+                        background: am5.RoundedRectangle.new(map.root, {
+                            fill: am5.color("#ffffff"),
+                            fillOpacity: 0.8,
+                            cornerRadius: 5,
+                            stroke: am5.color("#000000"),
+                            strokeOpacity: 0.5
+                        })
+                    }));
+                }
+            });
+
+            overlayPolygon.events.on("pointerout", () => {
+                // Remove tooltip
+                if (tooltip) {
+                    tooltip.dispose();
+                    tooltip = null;
+                }
+            });
+        }
+
+        console.log(`Overlay rectangle created for ${countryName} with percentage: ${areaRatio.toFixed(2)}%`);
     } catch (error) {
-        console.error(`Error creating geo-rectangles for ${countryName}:`, error);
+        console.error(`Error creating overlay rectangle for ${countryName}:`, error);
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -205,7 +278,7 @@ am5.ready(function () {
       stopRotation(); // Stop globe rotation
 
       // Create a square for the clicked country
-      await createTwoGeoRectanglesOnCountry(target, countryName);
+      await createOverlayedGeoRectanglesOnCountry(target, countryName);
     } else {
       document.getElementById("infoContainer").style.display = "none";
     }
