@@ -105,7 +105,7 @@ function createStackedChart(data) {
       .style("font-weight", "bold")
       .style("opacity", 0.8) // Add slight opacity for aesthetics
       .text(d => `${Math.round((Number(d.renewable_energy) / 
-         Number(d.non_renewable_energy)) * 100)}%`); // Calculate and display renewable percentage
+          (Number(d.renewable_energy) + Number(d.non_renewable_energy))) * 100)}%`); // Calculate and display renewable percentage
 
   // Add a legend to the chart
   const legend = svg.selectAll(".legend")

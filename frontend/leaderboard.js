@@ -27,54 +27,39 @@ document.addEventListener('DOMContentLoaded', () => {
   let fullLeaderboard = []; // Array to store the leaderboard data
   let currentIndex = 3; // Start after the top 3 podium countries
 
-  fetch('/api/leaderboard?year=2023') // Ensure the API call includes the year 2023 filter
-  .then((response) => {
-    if (!response.ok) {
-      console.error(`HTTP error! Status: ${response.status}`);
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    console.log('Fetched leaderboard data:', data); // Debugging API data
-    if (!data || data.length < 3) {
-      console.error('Not enough leaderboard data to display the podium.');
-      return;
-    }
+  // Fetch leaderboard data from the API
+  fetch('/api/leaderboard')
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`); // Handle HTTP errors
+      }
+      return response.json(); // Parse JSON response
+    })
+    .then((data) => {
+      fullLeaderboard = data; // Store the fetched leaderboard data
 
-    // Extract the top 3 countries
-    const [firstPlace, secondPlace, thirdPlace] = data;
+      if (!data || data.length < 3) {
+        console.error('Not enough leaderboard data to display the podium.');
+        return;
+      }
 
-    // Update the podium flags and alt text
-    const firstFlagElement = document.getElementById('first-place-flag');
-    if (firstFlagElement) {
-      firstFlagElement.src = getFlagUrl(firstPlace.country);
-      firstFlagElement.alt = `${firstPlace.country} Flag`;
-    } else {
-      console.error('#first-place-flag element is missing!');
-    }
+      // Extract the top 3 countries for the podium
+      const [firstPlace, secondPlace, thirdPlace] = data;
 
-    const secondFlagElement = document.getElementById('second-place-flag');
-    if (secondFlagElement) {
-      secondFlagElement.src = getFlagUrl(secondPlace.country);
-      secondFlagElement.alt = `${secondPlace.country} Flag`;
-    } else {
-      console.error('#second-place-flag element is missing!');
-    }
+      // Set flag images and alt text for the podium countries
+      document.getElementById('first-place-flag').src = getFlagUrl(firstPlace.country);
+      document.getElementById('first-place-flag').alt = `${firstPlace.country} Flag`;
 
-    const thirdFlagElement = document.getElementById('third-place-flag');
-    if (thirdFlagElement) {
-      thirdFlagElement.src = getFlagUrl(thirdPlace.country);
-      thirdFlagElement.alt = `${thirdPlace.country} Flag`;
-    } else {
-      console.error('#third-place-flag element is missing!');
-    }
+      document.getElementById('second-place-flag').src = getFlagUrl(secondPlace.country);
+      document.getElementById('second-place-flag').alt = `${secondPlace.country} Flag`;
 
-    // Load additional countries into the leaderboard
-    fullLeaderboard = data; // Update the leaderboard array
-    loadMoreCountries(); // Load the initial set of countries
-  })
-  .catch((error) => console.error('Error fetching leaderboard data:', error));
+      document.getElementById('third-place-flag').src = getFlagUrl(thirdPlace.country);
+      document.getElementById('third-place-flag').alt = `${thirdPlace.country} Flag`;
+
+      // Load the first set of countries into the leaderboard table
+      loadMoreCountries();
+    })
+    .catch((error) => console.error('Error fetching leaderboard data:', error)); // Handle fetch errors
 
   // Function to load additional countries into the leaderboard table
   function loadMoreCountries() {
