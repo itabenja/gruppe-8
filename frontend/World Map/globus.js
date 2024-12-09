@@ -252,20 +252,6 @@ am5.ready(function () {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // Event listener for polygon clicks
   polygonSeries.mapPolygons.template.on("active", async function (active, target) {
     if (previousPolygon && previousPolygon != target) {
