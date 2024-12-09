@@ -99,121 +99,93 @@ am5.ready(function () {
   }
 
   // Fetch country data from the backend
-  async function createSquareOnCountry(target, countryName) {
+  async function createTwoGeoRectanglesOnCountry(target, countryName) {
     try {
-      console.log(`Creating square for country: ${countryName}`);
+        console.log(`Creating two geo-rectangles for country: ${countryName}`);
 
-      // Fetch data using the API
-      const countryData = await fetchCountryDataFromAPI(countryName);
-      if (!countryData) {
-        console.warn(`No data available for ${countryName}`);
-        return;
-      }
-      console.log(`Fetched country data for ${countryName}:`, countryData);
+        // Fetch data for the country
+        const countryData = await fetchCountryDataFromAPI(countryName);
+        if (!countryData) {
+            console.warn(`No data available for ${countryName}`);
+            return;
+        }
+        console.log(`Fetched country data for ${countryName}:`, countryData);
 
-      let { area_needed_m2 } = countryData;
+        // Extract geometry data
+        const geometry = target.dataItem?.dataContext?.geometry;
+        if (!geometry || !geometry.coordinates) {
+            console.warn(`Geometry data is missing for ${countryName}`);
+            return;
+        }
 
-    // Validate the area data
-    if (!area_needed_m2 || isNaN(area_needed_m2)) {
-      console.warn(`Invalid area data for ${countryName}:`, area_needed_m2);
-      return;
-    }
-    area_needed_m2 = parseFloat(area_needed_m2);
-    console.log(`Area needed (m²) for ${countryName}: ${area_needed_m2}`);
+        const map = target.series?.chart;
+        if (!map) {
+            console.error("Map chart is undefined.");
+            return;
+        }
 
-      // Calculate side length in meters
-      const sideLengthMeters = Math.sqrt(area_needed_m2)*50;
-      console.log(`Calculated side length (meters) for ${countryName}: ${sideLengthMeters}`);
+        // Initialize bounds
+        let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
 
-      const geometry = target.dataItem?.dataContext?.geometry;
-      if (!geometry) {
-        console.warn(`Geometry data is missing for ${countryName}`);
-        return;
-      }
+        // Calculate bounds from the country's geometry
+        if (geometry.type === "Polygon") {
+            geometry.coordinates.forEach(polygon => {
+                polygon.forEach(([lng, lat]) => {
+                    minLng = Math.min(minLng, lng);
+                    maxLng = Math.max(maxLng, lng);
+                    minLat = Math.min(minLat, lat);
+                    maxLat = Math.max(maxLat, lat);
+                });
+            });
+        } else if (geometry.type === "MultiPolygon") {
+            geometry.coordinates.forEach(multiPolygon => {
+                multiPolygon.forEach(polygon => {
+                    polygon.forEach(([lng, lat]) => {
+                        minLng = Math.min(minLng, lng);
+                        maxLng = Math.max(maxLng, lng);
+                        minLat = Math.min(minLat, lat);
+                        maxLat = Math.max(maxLat, lat);
+                    });
+                });
+            });
+        }
 
-      const { centerX, centerY } = calculateGeometryCenter(geometry);
-      if (centerX === undefined || centerY === undefined) {
-        console.warn(`Unable to calculate center for ${countryName}`);
-        return;
-      }
-      console.log(`Geometry center for ${countryName}: X=${centerX}, Y=${centerY}`);
+        console.log(`Bounds for ${countryName}:`, { minLng, maxLng, minLat, maxLat });
 
-      const map = target.series?.chart;
-      if (!map) {
-        console.error("Map chart is undefined.");
-        return;
-      }
+        // Calculate the midpoint for splitting the bounds
+        const midLng = (minLng + maxLng) / 2; // Split vertically by longitude
+        const midLat = (minLat + maxLat) / 2; // Split horizontally by latitude (if needed)
 
-      // Create a MapPointSeries for squares
-      const squareSeries = map.series.push(
-        am5map.MapPointSeries.new(map.root, {
-          calculateAggregates: true,
-          valueField: "value",
-        })
-      );
-      console.log("MapPointSeries for squares created.");
-
-    // Add a data point for the square
-    squareSeries.data.push({
-      geometry: {
-        type: "Point",
-        coordinates: [centerX, centerY],
-      },
-      value: area_needed_m2,
-    });
-    console.log(`Data point added for ${countryName}: Center=(${centerX}, ${centerY}), Value=${area_needed_m2}`);
-
-      // Add bullets for squares
-      squareSeries.bullets.push(() => {
-        const baseSideLength = 50; // Default side length in pixels for visual representation
-        console.log(`Base side length for square: ${baseSideLength}`);
-
-      const square = am5.Rectangle.new(map.root, {
-        width: baseSideLength, // Initial size
-        height: baseSideLength, // Initial size
-        fill: am5.color("#FF5733"),
-        fillOpacity: 0.5,
-        stroke: am5.color("#C70039"),
-        strokeWidth: 2,
-        tooltipText: `Area Needed: ${area_needed_m2.toFixed(2)} km²`,
-      });
-
-        console.log(`Square created for ${countryName}:`, square);
-
-        // Dynamically adjust the square's size and position
-        const updateSquare = () => {
-          const projection = map.get("projection");
-          const zoomLevel = map.zoomLevel || 1;
-          // Calculate the side length in screen space
-          const scalingFactor = 0.00005; // Adjust this based on your map's projection
-          const sideLength = (sideLengthMeters * scalingFactor) / zoomLevel;
-          square.setAll({ width: sideLength, height: sideLength }); // Update square size
-
-          // Update position
-          const xy = projection([centerX, centerY]);
-          if (xy) {
-            square.setAll({ x: xy[0], y: xy[1] });
-            console.log(`Updated square position for ${countryName}: X=${xy[0]}, Y=${xy[1]}, Side=${sideLength}`);
-          } else {
-            console.warn("Projection failed for center coordinates:", { centerX, centerY });
-          }
+        // Create the first geo-rectangle (left half)
+        const geoRectangle1 = {
+            geometry: am5map.getGeoRectangle(maxLat, midLng, minLat, minLng)
         };
 
-        createdSquares.push(square);
-        // Initial update
-        updateSquare();
+        // Create the second geo-rectangle (right half)
+        const geoRectangle2 = {
+            geometry: am5map.getGeoRectangle(maxLat, maxLng, minLat, midLng)
+        };
 
-        // Recalculate on zoom or geometry updates
-        map.events.on("zoomLevelChanged", updateSquare);
-        map.events.on("geometriesUpdated", updateSquare);
+        // Add a new series for the geo-rectangles
+        const rectangleSeries = map.series.push(am5map.MapPolygonSeries.new(map.root, {}));
+        rectangleSeries.mapPolygons.template.setAll({
+            fill: am5.color("#00ff00"), // Green fill color
+            fillOpacity: 0.7, // Partially transparent
+            stroke: am5.color("#000"), // Add a border for visibility
+            strokeWidth: 1,
+            interactive: true // Enable interaction
+        });
 
-      console.log(`Square creation process completed for ${countryName}`);
-      return am5.Bullet.new(map.root, { sprite: square });
-    });
-  } catch (error) {
-    console.error(`Error creating square for ${countryName}:`, error);
-  }
+        // Add the rectangles to the series
+        rectangleSeries.data.push(geoRectangle1);
+        rectangleSeries.data.push(geoRectangle2);
+
+        console.log(`Two geo-rectangles created for ${countryName}`);
+    } catch (error) {
+        console.error(`Error creating geo-rectangles for ${countryName}:`, error);
+    }
 }
+
 
 
 
@@ -233,7 +205,7 @@ am5.ready(function () {
       stopRotation(); // Stop globe rotation
 
       // Create a square for the clicked country
-      await createSquareOnCountry(target, countryName);
+      await createTwoGeoRectanglesOnCountry(target, countryName);
     } else {
       document.getElementById("infoContainer").style.display = "none";
     }

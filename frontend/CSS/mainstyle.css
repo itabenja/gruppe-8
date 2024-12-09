@@ -147,7 +147,6 @@
 /* Podium Styling */
 .podium-container {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-top: 20px;
     background-color: #fff;
@@ -165,7 +164,7 @@
 .podium-item {
     position: relative;
     width: 240px;
-    height: 100px;
+    height: flex;
     background-color: #b58863; /* Default podium color */
     border-radius: 8px;
     display: flex;
@@ -177,14 +176,18 @@
 
 .podium-item.first {
     background-color: #f1c40f; /* Gold for first place */
+    height: 400px;
+    
 }
 
 .podium-item.second {
     background-color: #95a5a6; /* Silver for second place */
+    height: 350px;
 }
 
 .podium-item.third {
     background-color: #e67e22; /* Bronze for third place */
+    height: 250px;
 }
 
 .podium-item .flag-container img {
