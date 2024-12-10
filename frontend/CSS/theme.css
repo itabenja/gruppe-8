@@ -2,7 +2,7 @@
 /* General body styling with a different outer color */
 body {
     background-image: radial-gradient(circle, #f8f8f8, #c2d9e1); /* Change outer color to a blue-gray */
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Light italic', sans-serif;
     margin: 0;
     padding: 50px;
     display: flex;
@@ -39,3 +39,25 @@ p {
 .am5-layer-0 {
     border-radius: 20px;
 }
+
+@keyframes bounceCrown {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bounce-crown {
+    animation: bounceCrown 1.5s infinite;
+}
+
+.podium-item.first .crown {
+    position: absolute;
+    top: -50px; /* Adjust crown position */
+    animation: crownRotation 4s linear infinite, bounceCrown 1.5s infinite; /* Combine animations */
+    width: 60px; /* Adjust crown size */
+    z-index: 10;
+}
+

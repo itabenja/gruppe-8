@@ -179,3 +179,21 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  const podiumItems = document.querySelectorAll('.podium-item');
+
+  // Add a delay to each item's animation
+  podiumItems.forEach((item, index) => {
+      item.style.animationDelay = `${index * 0.5}s`; // Staggered animation
+  });
+
+  // Optional: Add a bouncing effect to the crown
+  const crown = document.querySelector('.crown');
+  if (crown) {
+      crown.classList.add('bounce-crown');
+  }
+});
+const crown = document.querySelector('.crown');
+if (!crown) {
+    console.error('Crown element not found! Check the HTML structure and path.');
+}

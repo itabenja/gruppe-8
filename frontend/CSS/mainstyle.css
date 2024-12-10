@@ -154,6 +154,7 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
 }
 
 .podium {
@@ -173,7 +174,9 @@
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-
+.podium-item {
+    animation: bounce 2s infinite;
+}
 .podium-item img {
     width: 50px; /* Adjust flag size */
     height: 30px;
@@ -203,4 +206,12 @@
     bottom: 10px; /* Position number near the bottom */
     font-size: 24px;
     font-weight: bold;
+}
+
+.podium-item.first .crown {
+    position: absolute;
+    top: -50px; /* Adjust crown position */
+    animation: crownRotation 4s linear infinite;
+    width: 60px; /* Adjust crown size */
+    z-index: 10;
 }
