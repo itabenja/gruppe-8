@@ -46,29 +46,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const [firstPlace, secondPlace, thirdPlace] = data;
 
     // Update the podium flags and alt text
-    const firstFlagElement = document.getElementById('first-place-flag');
-    if (firstFlagElement) {
-      firstFlagElement.src = getFlagUrl(firstPlace.country);
-      firstFlagElement.alt = `${firstPlace.country} Flag`;
-    } else {
-      console.error('#first-place-flag element is missing!');
-    }
+    // Update the podium flags and renewable percentages
+const firstFlagElement = document.getElementById('first-place-flag');
+const firstPercentageElement = document.getElementById('first-place-percentage');
+if (firstFlagElement && firstPercentageElement) {
+  firstFlagElement.src = getFlagUrl(firstPlace.country);
+  firstFlagElement.alt = `${firstPlace.country} Flag`;
+  firstPercentageElement.textContent = `${parseFloat(firstPlace.renewable_percentage).toFixed(2)}%`;
+} else {
+  console.error('First place elements are missing!');
+}
 
-    const secondFlagElement = document.getElementById('second-place-flag');
-    if (secondFlagElement) {
-      secondFlagElement.src = getFlagUrl(secondPlace.country);
-      secondFlagElement.alt = `${secondPlace.country} Flag`;
-    } else {
-      console.error('#second-place-flag element is missing!');
-    }
+const secondFlagElement = document.getElementById('second-place-flag');
+const secondPercentageElement = document.getElementById('second-place-percentage');
+if (secondFlagElement && secondPercentageElement) {
+  secondFlagElement.src = getFlagUrl(secondPlace.country);
+  secondFlagElement.alt = `${secondPlace.country} Flag`;
+  secondPercentageElement.textContent = `${parseFloat(secondPlace.renewable_percentage).toFixed(2)}%`;
+} else {
+  console.error('Second place elements are missing!');
+}
 
-    const thirdFlagElement = document.getElementById('third-place-flag');
-    if (thirdFlagElement) {
-      thirdFlagElement.src = getFlagUrl(thirdPlace.country);
-      thirdFlagElement.alt = `${thirdPlace.country} Flag`;
-    } else {
-      console.error('#third-place-flag element is missing!');
-    }
+const thirdFlagElement = document.getElementById('third-place-flag');
+const thirdPercentageElement = document.getElementById('third-place-percentage');
+if (thirdFlagElement && thirdPercentageElement) {
+  thirdFlagElement.src = getFlagUrl(thirdPlace.country);
+  thirdFlagElement.alt = `${thirdPlace.country} Flag`;
+  thirdPercentageElement.textContent = `${parseFloat(thirdPlace.renewable_percentage).toFixed(2)}%`;
+} else {
+  console.error('Third place elements are missing!');
+}
 
     // Load additional countries into the leaderboard
     fullLeaderboard = data; // Update the leaderboard array
@@ -94,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       row.innerHTML = `
         <td>${i + 1}</td> <!-- Rank -->
         <td>${country.country}</td> <!-- Country name -->
-        <td><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30"></td> <!-- Country flag -->
+        <td><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30";></td> <!-- Country flag -->
         <td>${parseFloat(country.renewable_percentage).toFixed(2)}%</td> <!-- Renewable energy percentage -->
       `;
 

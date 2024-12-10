@@ -1,4 +1,10 @@
-
+.podium-percentage {
+    font-size: 15px;
+    color: #ffffff;
+    margin-top: 5px;
+    text-align: center;
+    font-weight: bold;
+  }
 
 /* Container styling for general layout */
 .container {
@@ -114,11 +120,13 @@
     border-bottom: 1px solid #ddd;
 }
 
+
 /* Flag styling */
 #leaderboard-table td img {
-    width: 25px; /* Reduced flag size */
+    width: 50px; /* Reduced flag size */
     height: auto;
     margin: 0 5px; /* Small margin around the flags */
+    align-items: center;
 }
 
 /* Styling for the "View More" button */
@@ -181,24 +189,29 @@
     width: 50px; /* Adjust flag size */
     height: 30px;
     margin-bottom: 10px; /* Add spacing below flag */
+    align-items: center;
+   
 }
 
 .podium-item.first {
     background-color: #f1c40f; /* Gold */
     width: 150px;
-    height: 200px;
+    height: 250px;
+    align-items: center;
 }
 
 .podium-item.second {
     background-color: #95a5a6; /* Silver */
     width: 150px;
-    height: 150px;
+    height: 200px;
+    align-items: center;
 }
 
 .podium-item.third {
     background-color: #e67e22; /* Bronze */
     width: 150px;
-    height: 100px;
+    height: 150px;
+    align-items: center;
 }
 
 .podium-rank {

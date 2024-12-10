@@ -27,7 +27,7 @@ h3 {
     font-family: 'Times New Roman', Times, serif;
     padding: 20px 0; /* Øg padding omkring h3-elementer */
 }
-p {
+/*p {
     font-size: 15px;
     padding: 20px;
     background-color: white;
@@ -35,7 +35,7 @@ p {
     border-radius: 5px;
     text-align: center;
 }
-
+*/
 .am5-layer-0 {
     border-radius: 20px;
 }
