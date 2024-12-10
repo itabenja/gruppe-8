@@ -17,6 +17,8 @@ button {
 th, td {
     padding: 15px; /* Øg padding i tabelceller */
     text-align: center;
+    
+    
     border: 1px solid #ddd;
 }
 
@@ -45,6 +47,10 @@ th, td {
     margin: 0 auto;
     padding: 20px;
   }
+
+  .flag-container{
+   text-align: center;
+}
   /* Container for charts to align them side by side */
 /* Container for the charts */
 .chart-container {
