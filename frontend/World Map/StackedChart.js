@@ -108,27 +108,29 @@ function createStackedChart(data) {
         (Number(d.renewable_energy) + Number(d.non_renewable_energy))) * 100)}%`); // Calculate and display renewable percentage
 
   // Add a legend to the chart
-  const legend = svg.selectAll(".legend")
-      .data(color.domain()) // Use the color domain for legend items
-      .enter()
-      .append("g") // Add a group for each legend item
-      .attr("class", "legend")
-      .attr("transform", (d, i) => `translate(${width + 20},${i * 25})`); // Position the legend to the right
+// Add a legend to the chart
+const legend = svg.selectAll(".legend")
+    .data(["Total Energy", "Renewable Energy"]) // Custom labels
+    .enter()
+    .append("g") // Add a group for each legend item
+    .attr("class", "legend")
+    .attr("transform", (d, i) => `translate(${(width / 2) - 100 + i * 120},-20)`); // Position items side by side
 
-  // Add colored boxes to the legend
-  legend.append("rect")
-      .attr("x", 0)
-      .attr("width", 18)
-      .attr("height", 18)
-      .style("fill", color); // Set color based on the domain
+// Add colored boxes to the legend
+legend.append("rect")
+    .attr("x", 0)
+    .attr("width", 18)
+    .attr("height", 18)
+    .style("fill", color); // Blue for the first item, orange for the second
 
-  // Add text labels to the legend
-  legend.append("text")
-      .attr("x", 24) // Offset text to the right of the box
-      .attr("y", 9) // Vertically center the text
-      .attr("dy", ".35em") // Adjust for baseline alignment
-      .style("text-anchor", "start")
-      .style("font-size", "14px")
-      .style("fill", "#333")
-      .text(d => d.charAt(0).toUpperCase() + d.slice(1)); // Capitalize the first letter of the label
+// Add text labels to the legend
+legend.append("text")
+    .attr("x", 24) // Offset text to the right of the box
+    .attr("y", 9) // Vertically center the text
+    .attr("dy", ".35em") // Adjust for baseline alignment
+    .style("text-anchor", "start")
+    .style("font-size", "14px")
+    .style("fill", "#333")
+    .text(d => d); // Use custom labels
+
 };
