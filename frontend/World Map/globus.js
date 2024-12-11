@@ -508,8 +508,8 @@ am5.ready(function () {
   let zoomOutButton = document.createElement("button");
   zoomOutButton.innerText = "Zoom Out";
   zoomOutButton.style.position = "absolute";
-  zoomOutButton.style.bottom = "20px";
-  zoomOutButton.style.left = "20px";
+  zoomOutButton.style.bottom = "22px";
+  zoomOutButton.style.left = "374px";
   zoomOutButton.style.padding = "10px 15px";
   zoomOutButton.style.backgroundColor = "#007BFF";
   zoomOutButton.style.color = "#fff";
@@ -550,8 +550,8 @@ am5.ready(function () {
   // Add search bar HTML
   const searchContainer = document.createElement("div");
   searchContainer.style.position = "absolute";
-  searchContainer.style.top = "500px";
-  searchContainer.style.left = "625px";
+  searchContainer.style.top = "290px";
+  searchContainer.style.left = "645px";
   searchContainer.style.width = "translate(-50%, -50%)";
   searchContainer.style.zIndex = "1000";
 

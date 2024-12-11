@@ -12,6 +12,7 @@
   <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/mainstyle.css">
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/chartsbuttons.css">
@@ -24,6 +25,8 @@
     <p>Welcome to Our Energy Insights Platform...</p>
   </div>
 
+ 
+  
   <!-- Instructions for user -->
   <p class="instruction-text">
     Click and drag to rotate the globe, and use your scroll wheel to zoom in or out.
@@ -66,6 +69,10 @@
     <div class="chart-box">
     
       <canvas id="algeriaChart"></canvas> <!-- ID must match the JS code -->
+      <p>
+        This graph shows how much energy is used per year in Algeria since 1990-2023 
+        and how much of this energy is renewable energy
+      </p>
    
     </div>
   
@@ -73,6 +80,10 @@
     <div class="chart-box">
      
       <canvas id="icelandChart"></canvas> <!-- ID must match the JS code -->
+      <p>
+        This graph shows how much energy is used per year in Iceland since 1990-2023 
+        and how much of this energy is renewable energy
+      </p>
   
     </div>
   </div>
@@ -167,6 +178,39 @@
   <button id="show-more">
     View More
   </button>
+
+  <div class="difference-box">
+    <h3 class="difference-title">Why Algeria and Iceland Differ in Renewable Energy Use</h3>
+    <p>
+      <strong>Algeria:</strong> Located in the Sahara region, Algeria relies heavily on fossil fuels due to limited renewable resources.
+    </p>
+    <p>
+      <strong>Iceland:</strong> Benefits from abundant geothermal and hydropower resources, enabling nearly 100% renewable energy usage.
+    </p>
+  </div>
+  
+  <script>
+  // Detect when elements are in view
+  function animateOnScroll() {
+    const elements = document.querySelectorAll('.scroll-animate'); // Select all scroll-animate elements
+    const windowHeight = window.innerHeight;
+
+    elements.forEach((element) => {
+      const position = element.getBoundingClientRect().top; // Get element's position
+
+      if (position < windowHeight - 100) { // Trigger animation when 100px away from viewport bottom
+        element.classList.add('active');
+      }
+    });
+  }
+
+  // Run animation on scroll
+  window.addEventListener('scroll', animateOnScroll);
+
+  // Run animation on page load
+  animateOnScroll();
+</script>
+
 
   <!-- External Scripts -->
   <script src="WorldChart.js"></script>
