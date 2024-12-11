@@ -363,8 +363,8 @@ am5.ready(function () {
               <p>Current Solar Generation: ${countryData.electricity_consumption_twh} TWh</p>
               <p>Solar Installed Capacity MW: ${countryData.electricity_consumption_kwh} GW</p>
               <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
-              <p>Area Needed M2: ${countryData.area_needed_m2}</p>
-              <p>Total Area KM2: ${countryData.area_needed_km2}</p>
+              <p>Area Needed M2: ${countryData.area_needed_m2}m2</p>
+              <p>Total Area KM2: ${countryData.total_area_km2} km2</p>
             `;
 
             moreDetailsButton.innerText = "Show Chart"; //Opdatere knapteksten
