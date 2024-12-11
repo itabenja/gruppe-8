@@ -12,8 +12,10 @@
         "@turf/turf": "^7.1.0",
         "dotenv": "^16.4.5",
         "express": "^4.19.2",
+        "gsap": "^3.12.5",
         "nodemon": "^3.1.4",
         "pg": "^8.12.0",
-        "pg-copy-streams": "^6.0.6"
+        "pg-copy-streams": "^6.0.6",
+        "scrollmagic": "^2.0.8"
     }
 }

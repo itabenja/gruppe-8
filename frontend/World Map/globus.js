@@ -126,6 +126,18 @@ am5.ready(function () {
             return;
         }
 
+        gsap.to('#chartdiv', {
+          opacity: 1,
+          duration: 2,
+          ease: 'power2.out',
+          scrollTrigger: {
+              trigger: '#chartdiv',
+              start: 'top 80%',
+              toggleActions: 'play none none none',
+          }
+      });
+      
+
         // Extract geometry data
         const geometry = target.dataItem?.dataContext?.geometry;
         if (!geometry || !geometry.coordinates) {
@@ -621,3 +633,46 @@ am5.ready(function () {
     }
   };
 });
+
+
+function onCountrySelect(country) {
+  // Assuming "country" is the name of the selected country from the globe
+  const chartContainerA = document.getElementById("chartAContainer");
+  const chartContainerB = document.getElementById("chartBContainer");
+
+  // Example: Update first chart with selected country
+  renderChart(chartContainerA.id, country);
+}
+
+// Example of globe click listener (modify to match your globe implementation)
+document.addEventListener("globe-country-click", (event) => {
+  const countryName = event.detail.countryName; // Example of how countryName might be provided
+  onCountrySelect(countryName);
+});
+function updateGlobeView(country) {
+  // Example: Center and highlight the country on the globe
+  centerAndZoomToCountry(country); // Assuming you have this function in globus.js
+}
+
+// Hook sidebar dropdown selection to update the globe
+document.querySelectorAll(".dropdown h3").forEach(header => {
+  header.addEventListener("click", () => {
+      const country = header.textContent.trim();
+      updateGlobeView(country);
+  });
+});
+function animateChartUpdate(containerId) {
+  const container = document.getElementById(containerId);
+  gsap.fromTo(container, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+}
+function renderChart(containerId, country) {
+  animateChartUpdate(containerId);
+  // Existing chart rendering logic
+  // ...
+}
+
+function renderOverlayChart(containerId, countryA, countryB) {
+  animateChartUpdate(containerId);
+  // Existing overlay rendering logic
+  // ...
+}

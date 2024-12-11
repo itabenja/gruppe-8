@@ -134,3 +134,76 @@ legend.append("text")
     .text(d => d); // Use custom labels
 
 };
+import { Chart } from 'chart.js';
+
+const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+const stackedChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['2018', '2019', '2020', '2021', '2022'], // Example years
+        datasets: [
+            {
+                label: 'Renewable Energy',
+                data: [30, 35, 40, 45, 50], // Example data
+                backgroundColor: '#00C851',
+            },
+            {
+                label: 'Primary Energy',
+                data: [100, 120, 140, 160, 180], // Example data
+                backgroundColor: '#007BFF',
+            },
+        ],
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: (context) => {
+                        const value = context.raw;
+                        const percentage = (
+                            (value /
+                                context.dataset.data.reduce(
+                                    (acc, curr) => acc + curr,
+                                    0
+                                )) *
+                            100
+                        ).toFixed(2);
+                        return `${context.dataset.label}: ${value} (${percentage}%)`;
+                    },
+                },
+            },
+        },
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                stacked: true,
+                beginAtZero: true,
+            },
+        },
+    },
+});
+gsap.registerPlugin(ScrollTrigger);
+
+// Animate Chart Container
+gsap.fromTo(
+    "#chartContainer",
+    { opacity: 0, scale: 0.8 }, // Start hidden and scaled down
+    {
+        opacity: 1,
+        scale: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: "#chartContainer",
+            start: "top 80%",
+            toggleActions: "play none none none", // Play once on scroll
+        },
+    }
+);

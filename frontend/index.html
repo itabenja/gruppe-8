@@ -3,176 +3,215 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stacked Bar Chart - Renewable vs Primary Energy</title>
+  <title>Global Energy Insights</title>
 
-  <!-- External Scripts and Styles -->
+  <!-- External Scripts -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- External Stylesheets -->
   <link rel="stylesheet" href="css/mainstyle.css">
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/chartsbuttons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <!-- Inline Styles -->
+  <style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', Arial, sans-serif;
+        background: linear-gradient(135deg, #003E99, #00C851);
+        color: #ffffff;
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    .center-content {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .title {
+        font-size: 3rem;
+        font-weight: bold;
+        background: linear-gradient(90deg, #00C851, #007BFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 20px;
+        opacity: 0;
+    }
+
+    .subtitle {
+        font-size: 1.5rem;
+        margin: 10px 0;
+        opacity: 0;
+    }
+
+    .section {
+        height: 100vh;
+        padding: 50px 20px;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 4px;
+        background: #00C851;
+        width: 0%;
+        z-index: 9999;
+    }
+
+    #chartdiv {
+        width: 100%;
+        height: 400px;
+        margin: 20px auto;
+    }
+
+    .chart-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px auto;
+        max-width: 1200px;
+    }
+
+    .chart-box {
+        background: rgba(0, 0, 0, 0.05);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        min-width: 300px;
+        max-width: 600px;
+        text-align: center;
+    }
+  </style>
 </head>
-
 <body>
-  <!-- Header Section -->
-  <div class="Overskrift">
-    <h1>Global Energy Insights</h1>
-    <p>Welcome to Our Energy Insights Platform...</p>
-  </div>
 
-  <!-- Instructions for user -->
-  <p class="instruction-text">
-    Click and drag to rotate the globe, and use your scroll wheel to zoom in or out.
-    To explore energy data, simply click on a country, and detailed information about its total energy consumption and renewable energy use will appear.
-  </p>
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress" id="scroll-progress"></div>
 
-  <!-- World Map Section -->
-  <div id="chartdiv"></div>
+  <!-- Center Content -->
+  <div class="center-content" id="intro">
+    <h1 class="title">Global Energy Insights</h1>
+    <p class="subtitle">Welcome to our platform for energy data visualization.</p>
+</div>
 
-  <!-- Renewable vs Total Energy Consumption -->
-  <h2>Renewable vs Total Energy Consumption for the Whole World</h2>
+
+  <!-- Instructions Section -->
+  <section class="section">
+    <h2>Interactive Globe</h2>
+    <p>Click and drag to rotate the globe, and use your scroll wheel to zoom in or out.</p>
+    <div id="chartdiv"></div>
+  </section>
+
+  <!-- Renewable Energy Section -->
+  <section class="section">
+    <h2>Renewable vs Total Energy Consumption</h2>
+    <div class="chart-container">
+      <div class="chart-box">
+        <p>The Transition to Renewable Energy: A Global Shift</p>
+        <canvas id="globalEnergyChart"></canvas>
+      </div>
+    </div>
+  </section>
   <div id="chartContainer" class="chart-box">
+    <canvas id="chartCanvas"></canvas>
   </div>
- <br>
-
-  <div class="chart-box" style="width: 1160px;"> <p>The Transition to Renewable Energy: A Global Shift
-
-    As we look towards a sustainable future, the shift from primary energy sources like fossil fuels to renewable energy is more critical than ever. Currently, only [X]% of the world’s Total energy consumption comes from renewable sources, a number that is steadily growing. However, the transition is still in its early stages. While wind, solar, and hydropower continue to lead the charge, the global energy landscape remains heavily reliant on non-renewable sources such as coal, oil, and natural gas.
-
-    Why This Matters
-    Every percentage point gained in renewable energy is a step closer to mitigating climate change, reducing global pollution, and building a cleaner, more resilient energy future. The road ahead is challenging, but with continued investment, innovation, and global collaboration, we can accelerate the transition to a world powered by clean, renewable energy.
-
-    Together, we can create a sustainable future. The question is: How much further can we go?. </p>
-  </div>
-
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
   
-  <!-- Comparison of Algeria and Iceland -->
-  <h2>Comparison of Algeria and Iceland</h2>
-  <p class="description-text">Why is there so much difference in countries and their percentage of renewable energy?</p>
-
-  <!-- Container for both charts -->
-  <div class="chart-container">
-    <!-- Algeria Chart -->
-    <div class="chart-box">
-    
-      <canvas id="algeriaChart"></canvas> <!-- ID must match the JS code -->
-   
+  <!-- Comparison Section -->
+  <section class="section">
+    <h2>Country Comparisons: Algeria vs Iceland</h2>
+    <div class="chart-container">
+      <div class="chart-box">
+        <canvas id="algeriaChart"></canvas>
+        <p>Energy usage and renewable energy trends in Algeria (1990-2023).</p>
+      </div>
+      <div class="chart-box">
+        <canvas id="icelandChart"></canvas>
+        <p>Energy usage and renewable energy trends in Iceland (1990-2023).</p>
+      </div>
     </div>
-  
-    <!-- Iceland Chart -->
-    <div class="chart-box">
-     
-      <canvas id="icelandChart"></canvas> <!-- ID must match the JS code -->
-  
-    </div>
-  </div>
-
-   <!-- Container for both charts -->
-   <div class="chart-container">
-    <!-- Algeria Chart -->
-    <div class="chart-box">
-      <p>
-        This graph shows how much energy is used per year in Algeria since 1990-2023 and how much of this energy is renewable energy</p>
-       
-    </div>
- 
-    <!-- Iceland Chart -->
-    <div class="chart-box">
-    <p>
-    This graph shows how much energy is used per year in Iceland since 1990-2023 and how much of this energy is renewable energy</p>
-    </div>
-  </div>
-
-<br>
-
-  <!-- Text under the Algeria and Iceland charts-->
-  <div class="chart-box" style="width: 1160px;"> 
-    <p>Why Algeria and Iceland Differ in Renewable Energy Use
-
-    The stark difference in renewable energy use between Algeria and Iceland highlights the impact of geography, resources, and policies on energy strategies. Iceland benefits from abundant geothermal and hydropower resources due to its volcanic activity and high water availability, enabling it to rely almost entirely on renewable energy. In contrast, Algeria, located in the arid Sahara region, lacks access to significant hydropower or geothermal resources and has historically depended on its vast fossil fuel reserves, like oil and natural gas, for energy.
-  
-    Such disparities reflect broader global trends. Geography determines the availability of renewable resources like wind, solar, and water. Economic priorities, energy infrastructure, and government policies also shape how countries harness and prioritize renewable energy. Together, these factors create significant variations in renewable energy adoption worldwide.
-    </p> 
-  </div>
-
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  </section>
 
   <!-- Leaderboard Section -->
-<div class="leaderboard-container">
-  <h2>Leaderboard for Countries with High Renewable Energy %</h2>
-<!-- Podium Section -->
-<div class="podium-container">
-  <div class="podium-item second">
-    <div class="flag-container">
-      <img id="second-place-flag" src="path/to/second-flag.png" alt="Second Place Flag">
-      <p id="second-place-percentage" class="podium-percentage"></p>
+  <section class="section">
+    <h2>Leaderboard: Renewable Energy Adoption</h2>
+    <div class="chart-container">
+      <div id="leaderboard-table-container" class="chart-box">
+        <table id="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Country</th>
+              <th>Flag</th>
+              <th>Renewable Energy (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Data to be dynamically populated -->
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="podium-rank">2</div>
-  </div>
-  <div class="podium-item first">
-    <div class="flag-container">
-      <img id="first-place-flag" src="path/to/first-flag.png" alt="First Place Flag">
-      <p id="first-place-percentage" class="podium-percentage"></p>
-    </div>
-    <div class="podium-rank">1</div>
-  </div>
-  <div class="podium-item third">
-    <div class="flag-container">
-      <img id="third-place-flag" src="path/to/third-flag.png" alt="Third Place Flag">
-      <p id="third-place-percentage" class="podium-percentage"></p>
-    </div>
-    <div class="podium-rank">3</div>
-  </div>
-</div>
-
-
-</div>
-
-
-  <div id="tooltip"></div>
-
-  <!-- Leaderboard Table -->
-  <div id="leaderboard-table-container">
-    <table id="leaderboard-table">
-    <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Country</th>
-        <th>Flag</th>
-        <th>Renewable Energy (%)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Dynamically populated -->
-    </tbody>
-  </table>
-  </div>
-
-  <!-- "View More" Button -->
-  <button id="show-more">
-    View More
-  </button>
+  </section>
 
   <!-- External Scripts -->
   <script src="WorldChart.js"></script>
-  <script src="World Map/StackedChart.js"></script>
+  <script src="StackedChart.js"></script>
   <script src="World Map/globus.js"></script>
   <script src="leaderboard.js"></script>
   <script src="countryCharts.js"></script>
+  <script>
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Intro Animation
+    gsap.timeline()
+        .fromTo(".title", { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out" })
+        .fromTo(".subtitle", { x: -100, opacity: 0 }, { x: 0, opacity: 1, duration: 1.5, ease: "power2.out" }, "-=0.5");
+
+    // Section Scroll Animations
+    document.querySelectorAll(".section").forEach((section) => {
+        gsap.fromTo(section, { opacity: 0, y: 50 }, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                toggleActions: "play none none none",
+            },
+        });
+    });
+
+    // Scroll Progress Bar
+    ScrollTrigger.create({
+        trigger: "body",
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+            document.getElementById("scroll-progress").style.width = `${self.progress * 100}%`;
+        },
+    });
+  </script>
 </body>
 </html>
