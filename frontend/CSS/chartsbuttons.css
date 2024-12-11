@@ -64,7 +64,9 @@ button:active {
   margin: 20px auto;
 }
 */
-
+#leaderboard-table-container{
+  width: 1000px;
+}
 
 /* Canvas for Charts */
 canvas {
