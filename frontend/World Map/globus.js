@@ -363,8 +363,8 @@ am5.ready(function () {
               <p>Current Solar Generation: ${countryData.electricity_consumption_twh} TWh</p>
               <p>Solar Installed Capacity MW: ${countryData.electricity_consumption_kwh} GW</p>
               <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
-              <p>Area Needed M2: ${countryData.area_needed_m2}</p>
-              <p>Total Area KM2: ${countryData.area_needed_km2}</p>
+              <p>Area Needed M2: ${countryData.area_needed_m2}m2</p>
+              <p>Total Area KM2: ${countryData.total_area_km2} km2</p>
             `;
 
             moreDetailsButton.innerText = "Show Chart"; //Opdatere knapteksten
@@ -508,8 +508,8 @@ am5.ready(function () {
   let zoomOutButton = document.createElement("button");
   zoomOutButton.innerText = "Zoom Out";
   zoomOutButton.style.position = "absolute";
-  zoomOutButton.style.bottom = "20px";
-  zoomOutButton.style.left = "20px";
+  zoomOutButton.style.bottom = "22px";
+  zoomOutButton.style.left = "374px";
   zoomOutButton.style.padding = "10px 15px";
   zoomOutButton.style.backgroundColor = "#007BFF";
   zoomOutButton.style.color = "#fff";
@@ -550,8 +550,8 @@ am5.ready(function () {
   // Add search bar HTML
   const searchContainer = document.createElement("div");
   searchContainer.style.position = "absolute";
-  searchContainer.style.top = "500px";
-  searchContainer.style.left = "625px";
+  searchContainer.style.top = "290px";
+  searchContainer.style.left = "645px";
   searchContainer.style.width = "translate(-50%, -50%)";
   searchContainer.style.zIndex = "1000";
 

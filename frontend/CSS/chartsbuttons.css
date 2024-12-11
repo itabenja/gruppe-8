@@ -1,83 +1,163 @@
-/* chartsbuttons.css */
-
-/* Knapperne */
+/* General Button Styling */
 button {
-    padding: 15px 30px; /* Øg padding i knapperne */
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Styling for specifikke diagrammer */
-#leaderboard-table {
-    width: 819.83px;
-    border-collapse: collapse;
-    margin-top: 20px;
-    padding: 15px; /* Øg padding omkring leaderboard-tabellen */
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
-/* Cellestørrelse */
-th, td {
-    padding: 15px; /* Øg padding i tabelceller */
-    text-align: center;
-    
-    
-    border: 1px solid #ddd;
+button:active {
+  background-color: #003f8c;
+  transform: translateY(1px);
 }
 
-/* Rækkestørrelse */
-  /* Ensure the chart has enough space and is centered */
+/* Globe Section - Chartdiv */
+#chartdiv {
+  width: 50%; /* Ensure the globe takes the full width of the container */
+  height: 500px; /* Maintain sufficient height for the globe */
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  background: none; /* Preserve the background styling required for the globe */
+  border: 2px solid #ddd; /* Optional border for visual separation */
+}
+
+/* Chart Section (General) */
 #energyChart {
-    width: 100% !important;  /* Take up full width */
-    height: 400px; /* Set a reasonable height */
-    margin-top: 20px; /* Add space above the chart */
-    background-color: #f4f4f4; /* Optional: Light background to highlight chart */
-  }
-  
-  /* Fact box styling - ensures consistent look across different sections */
-  .fact-box {
-    padding: 20px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  /* Optional: Adjust other sections around the chart if needed */
-  .containertextbox {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  .flag-container{
-   text-align: center;
+  width: 100%; /* Full width for responsiveness */
+  height: 400px;
+  margin-top: 20px;
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
-  /* Container for charts to align them side by side */
-/* Container for the charts */
+
+/* Fact Box Styling */
+.fact-box {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #2c3e50;
+}
+
+/* Chart Containers 
 .chart-container {
-    display: flex;
-    justify-content: space-between; /* Space between the charts */
-    gap: 20px; /* Gap between charts */
-    width: 1200px;
-  }
-  
-  /* Styling for individual chart boxes */
+  display: absolute;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 20px auto;
+}
+*/
+
+
+/* Canvas for Charts */
+canvas {
+  width: 100%; /* Ensure the chart canvas takes up the full width of its container */
+  height: 400px; /* Maintain consistent height for all charts */
+  display: block;
+  border-radius: 8px;
+}
+
+/* Flag Styling */
+.flag-container img {
+  width: 60px; /* Uniform size for flags */
+  height: auto;
+  border-radius: 5px;
+  margin: 0 auto;
+  display: block;
+}
+
+.flag-container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* Leaderboard Table */
+#leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#leaderboard-table th,
+#leaderboard-table td {
+  padding: 15px;
+  text-align: center;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+}
+
+#leaderboard-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+#leaderboard-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Row Hover Effect */
+#leaderboard-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* View More Button */
+#show-more {
+  margin: 20px auto;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  width: 150px;
+  font-size: 1rem;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#show-more:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* Stack chart boxes vertically on smaller screens */
+  /*.chart-container {
+    flex-direction: column;
+    align-items: center;
+  }*/
+
   .chart-box {
-    width: 650px; /* Each chart will take up 48% of the container width */
-    background-color: #f4f4f4;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Optional: Add any styles for the chart title */
-  .chart-box h3 {
-    text-align: center;
-    margin-bottom: 15px;
+    width: 90%; /* Full width for smaller screens */
   }
 
-  canvas {
-    width: 100% !important; /* Ensure the canvas takes full width */
-    height: 400px !important; /* Adjust height for a larger chart */
+  #chartdiv {
+    width: 100px; /* Ensure the globe remains fully visible */
   }
-  
-  
+
+  #leaderboard-table {
+    font-size: 0.9rem;
+  }
+}
