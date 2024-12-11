@@ -324,14 +324,15 @@ am5.ready(function () {
       moreDetailsButton.innerText = "More Details";
       moreDetailsButton.style.position = "absolute";
       moreDetailsButton.style.top = "10px";
-      moreDetailsButton.style.right = "60px";
-      moreDetailsButton.style.padding = "10px 15px";
+      moreDetailsButton.style.right = "20px";
+      moreDetailsButton.style.padding = " 10px";
       moreDetailsButton.style.border = "none";
       moreDetailsButton.style.backgroundColor = "#28a745";
       moreDetailsButton.style.color = "#fff";
-      moreDetailsButton.style.borderRadius = "20px";
+      moreDetailsButton.style.borderRadius = "60px";
       moreDetailsButton.style.cursor = "pointer";
-      moreDetailsButton.style.marginTop = "15px"; // Add some spacing from the previous element
+      moreDetailsButton.style.marginTop = "15px";
+      moreDetailsButton.style.marginRight = "50px"; 
       infoContainer.appendChild(moreDetailsButton);
 
       let showingDetails = false;
@@ -529,17 +530,22 @@ am5.ready(function () {
   const infoContainer = document.createElement("div");
   infoContainer.id = "infoContainer";
   infoContainer.style.position = "absolute";
-  infoContainer.style.display = "none"; //Hide the container initially
-  infoContainer.style.top = "528px";
-  infoContainer.style.borderRadius = "12px";
+  infoContainer.style.display = "none"; // Hide the container initially
+  infoContainer.style.top = "245px";
+  infoContainer.style.borderRadius = "20px";
   infoContainer.style.right = "15px";
-  infoContainer.style.width = "41%";
-  infoContainer.style.height = "100px";
+  infoContainer.style.width = "42.5%";
   infoContainer.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
   infoContainer.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
   infoContainer.style.overflowY = "auto";
-  infoContainer.style.padding = "20px";
-  infoContainer.style.zIndex = "1000";
+  infoContainer.style.marginTop = "40px"; // Correct unit (px instead of x)
+  infoContainer.style.paddingTop = "100px";
+  infoContainer.style.paddingLeft = "30px";
+  infoContainer.style.paddingRight = "0px";
+  
+  
+  
+
   document.body.appendChild(infoContainer);
 
   //Function to close pop-up
@@ -550,8 +556,8 @@ am5.ready(function () {
   // Add search bar HTML
   const searchContainer = document.createElement("div");
   searchContainer.style.position = "absolute";
-  searchContainer.style.top = "290px";
-  searchContainer.style.left = "745px";
+  searchContainer.style.top = "300px";
+  searchContainer.style.left = "center";
   searchContainer.style.width = "translate(-50%, -50%)";
   searchContainer.style.zIndex = "1000";
 
