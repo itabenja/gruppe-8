@@ -16,7 +16,78 @@
   <link rel="stylesheet" href="CSS/mainstyle.css">
   <link rel="stylesheet" href="CSS/theme.css">
   <link rel="stylesheet" href="CSS/chartsbuttons.css">
+  <style>
+    /* Scroll Progress Bar */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #00C851, #007BFF);
+      z-index: 9999;
+      width: 0%;
+    }
+
+    /* Animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease-out;
+    }
+
+    .fade-in.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: linear-gradient(135deg, #003E99, #00C851);
+      color: #ffffff;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      background: linear-gradient(90deg, #00C851, #007BFF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      opacity: 0;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      margin: 0.5rem 0 2rem 0;
+      opacity: 0;
+    }
+    .scroll-down {
+      position: absolute;
+      bottom: 20px;
+      font-size: 1.2rem;
+      color: #ffffff;
+      cursor: pointer;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
 </head>
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <body>
   <!-- Header Section -->
@@ -28,11 +99,12 @@
  
   
   <!-- Instructions for user -->
+   <section class="fade-in"
   <p class="instruction-text">
     Click and drag to rotate the globe, and use your scroll wheel to zoom in or out.
     To explore energy data, simply click on a country, and detailed information about its total energy consumption and renewable energy use will appear.
   </p>
-
+</section>
   <!-- World Map Section -->
   <div id="chartdiv"></div>
 
@@ -212,5 +284,36 @@
   <script src="World Map/globus.js"></script>
   <script src="leaderboard.js"></script>
   <script src="countryCharts.js"></script>
+   <!-- External Scripts -->
+   <script>
+    // Scroll Progress Bar
+    document.addEventListener("scroll", () => {
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPosition = window.scrollY;
+      const scrollPercentage = (scrollPosition / scrollHeight) * 100;
+      document.getElementById("scrollProgress").style.width = `${scrollPercentage}%`;
+    });
+
+    // GSAP Scroll Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.fade-in').forEach(element => {
+      gsap.fromTo(
+        element,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
+    });
+  </script>
 </body>
 </html>
