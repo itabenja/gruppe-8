@@ -117,6 +117,15 @@
     margin-top: 10px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
+.crown {
+    position: relative;
+    top: 2px; /* Adjust the distance above the podium */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px; /* Adjust size as needed */
+    height: auto;
+    z-index: 10; /* Ensure it stays on top */
+  }
   
 /* Chart Container for Algeria and Iceland */
 .chart-container {
