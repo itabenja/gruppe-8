@@ -23,8 +23,8 @@ button:active {
 
 /* Globe Section - Chartdiv */
 #chartdiv {
-  width: 50%; /* Ensure the globe takes the full width of the container */
-  height: 500px; /* Maintain sufficient height for the globe */
+  width: 70%; /* Ensure the globe takes the full width of the container */
+  height: 700px; /* Maintain sufficient height for the globe */
   margin: 20px auto;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
@@ -64,7 +64,9 @@ button:active {
   margin: 20px auto;
 }
 */
-
+#leaderboard-table-container{
+  width: 1000px;
+}
 
 /* Canvas for Charts */
 canvas {

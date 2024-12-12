@@ -90,30 +90,31 @@ if (thirdFlagElement && thirdPercentageElement) {
       console.error('Leaderboard table body is missing.');
       return;
     }
-
+  
     const endIndex = Math.min(currentIndex + 10, fullLeaderboard.length); // Load up to 10 more countries
     for (let i = currentIndex; i < endIndex; i++) {
       const country = fullLeaderboard[i]; // Get the current country
       const flagUrl = getFlagUrl(country.country); // Get the flag URL
-
+      const rank = i + 1; // Define the rank
+  
       // Create a new row for the country
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>${i + 1}</td> <!-- Rank -->
+        <td>${rank}</td> <!-- Rank -->
         <td>${country.country}</td> <!-- Country name -->
-        <td><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30";></td> <!-- Country flag -->
+        <td><img src="${flagUrl}" alt="${country.country} Flag" width="50" height="30"></td> <!-- Country flag -->
         <td>${parseFloat(country.renewable_percentage).toFixed(2)}%</td> <!-- Renewable energy percentage -->
       `;
-
+  
       // Add tooltip functionality for the row on hover
-      row.addEventListener('mouseenter', (event) => showTooltip(event, country));
+      row.addEventListener('mouseenter', (event) => showTooltip(event, country, rank));
       row.addEventListener('mouseleave', hideTooltip);
-
+  
       tableBody.appendChild(row); // Append the row to the table body
     }
-
+  
     currentIndex = endIndex; // Update the current index
-
+  
     // Disable the "Show More" button if no more countries are available
     if (currentIndex >= fullLeaderboard.length) {
       const showMoreButton = document.getElementById('show-more');
@@ -123,6 +124,7 @@ if (thirdFlagElement && thirdPercentageElement) {
       }
     }
   }
+  
 
   // Get the "Show More" button and add a click event listener to load more countries
   const showMoreButton = document.getElementById('show-more');
@@ -147,16 +149,17 @@ if (thirdFlagElement && thirdPercentageElement) {
   document.body.appendChild(tooltip); // Add tooltip to the document
 
   // Show the tooltip with country details
-  function showTooltip(event, country) {
+  function showTooltip(event, country, rank) {
     tooltip.style.display = 'block'; // Make the tooltip visible
     tooltip.style.left = `${event.pageX + 10}px`; // Position to the right of the cursor
     tooltip.style.top = `${event.pageY + 10}px`; // Position below the cursor
     tooltip.innerHTML = `
       <strong>${country.country}</strong><br>
       Renewable Energy: ${parseFloat(country.renewable_percentage).toFixed(2)}%<br>
-      Rank: ${country.rank}
+      Rank: ${rank}
     `; // Display country details in the tooltip
   }
+  
 
   // Hide the tooltip
   function hideTooltip() {
