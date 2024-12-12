@@ -1,117 +1,90 @@
 /* General Styling */
 body {
-  background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
-  font-family: 'Georgia', serif; /* Elegant font for body text */
-  color: #2c3e50; /* Dark gray-blue for text */
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 100vh;
-}
-
-/* Global Reset for Consistency */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Styling for All Div Containers */
-div {
-  box-sizing: border-box;
-}
-
-/* Header Section - Overskrift */
-.Overskrift {
-  background-color: #1a5276;
-  color: #ffffff;
-  text-align: center;
-  padding: 10vw 20vw; /* Use relative units for padding to make it more adaptive */
-  border-bottom: 5px solid #f4a261;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.Overskrift h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-.Overskrift p {
-  font-size: 1.2rem;
-  margin: 0;
-}
-
-/* Instruction Text Box */
-.instruction-text {
-  background-color: #4e5a92;
-  color: #ffffff;
-  padding: 4vw 6vw; /* Use relative units for padding */
-  margin: 4vh auto;
-  max-width: 90%; /* Make the box more responsive by limiting max width */
-  font-size: 1rem;
-  text-align: center;
-  line-height: 1.6;
-  border-radius: 10px;
-  position: relative;
-  z-index: 10;
-}
-
-/* Fact Box Section */
-.fact-box {
-  padding: 2vw;
-  background-color: #fafafa;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  margin: 4vh auto;
-  max-width: 90%;
-  line-height: 1.8;
-  font-size: 1rem;
-  color: #2c3e50;
-  border-left: 5px solid #f4a261;
-}
-
-/* General Hover Effects for Boxes */
-
-/* Responsive Design */
-@media (max-width: 1024px) {
+    background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
+    font-family: 'Georgia', serif; /* Elegant font for body text */
+    color: #2c3e50; /* Dark gray-blue for text */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+  }
+  
+  /* Global Reset for Consistency */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Styling for All Div Containers */
+  div {
+    box-sizing: border-box;
+  }
+  
+  /* Header Section - Overskrift */
   .Overskrift {
-      padding: 8vw 15vw; /* Adjust padding for mid-sized screens */
+    background-color: #1a5276;
+    color: #000000;
+    text-align: center;
+    padding: 30px 20px;
+   
+  
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
-
+  
   .Overskrift h1 {
-      font-size: 2.2rem;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-transform: uppercase;
   }
-
+  
   .Overskrift p {
-      font-size: 1rem;
+    font-size: 1.2rem;
+    margin: 0;
   }
-
+  
+  /* Instruction Text Box */
   .instruction-text {
-      font-size: 1rem;
-      padding: 6vw 10vw;
+    background-color: #f4f4f4;
+    color: #2c3e50;
+    padding: 15px 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1.6;
   }
-
+  
+  /* Fact Box Section */
   .fact-box {
-      font-size: 0.95rem;
-      padding: 2.5vw;
+    padding: 25px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #2c3e50;
+    border-left: 5px solid #f4a261;
   }
-}
-
-@media (max-width: 768px) {
-  body {
-      padding: 5vw; /* Add padding on small screens */
-  }
-
-  .Overskrift {
-      padding: 15vw 10vw;
-  }
-
-  .Overskrift h1 {
+  
+  /* General Hover Effects for Boxes */
+ 
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    body {
+      padding: 10px;
+    }
+  
+    .Overskrift h1 {
       font-size: 2rem;
   }
 
@@ -126,222 +99,7 @@ div {
 
   .fact-box {
       font-size: 0.9rem;
-      padding: 5vw;
+      padding: 20px;
+    }
   }
-}
-
-@media (max-width: 480px) {
-  .Overskrift {
-      padding: 20vw 5vw; /* Further adjust for very small screens */
-  }
-
-  .Overskrift h1 {
-      font-size: 1.8rem;
-  }
-
-  .Overskrift p {
-      font-size: 1rem;
-  }
-
-  .instruction-text {
-      font-size: 0.85rem;
-      padding: 8vw 12vw;
-  }
-
-  .fact-box {
-      font-size: 0.85rem;
-      padding: 6vw;
-  }
-}
-
-/* Scroll to Top Button */
-.scroll-btn {
-  display: block;
-  margin: 5vh auto 0;
-  padding: 2vw 4vw; /* Adjust padding for smaller screens */
-  background-color: #007bff;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.scroll-btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.scroll-btn:active {
-  background-color: #003f8c;
-  transform: translateY(1px);
-}
-
-/* Adjust the position of the Learn More button */
-#scrollToEnergy {
-  margin-top: 8px;
-  position: relative;
-  top: -10px;
-  left: 3.5%;
-  transform: translateX(-50%);
-}
-
-#scrollToComparison {
-  margin-top: 30px;
-}
-
-/* Adjust position of the energy section title */
-.energy-title {
-  margin-top: -50px;
-  text-align: center;
-  font-size: 2rem;
-}
-
-/* Adjust position of the chart container */
-#chartContainerBox {
-  margin-top: -10px;
-  padding: 2vw;
-  display: flex;
-  justify-content: center;
-}
-
-/* Optional: Add shadow for distinction */
-#chartContainer {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  background-color: #f4f4f4;
-}
-
-/* Ensure button does not push other elements */
-.energy-section + h1 {
-  margin-top: 50px;
-}
-
-/* Styling for 'Is the world far from 100% renewable energy?' button */
-#scrollToRenewable {
-  display: block; /* Ensure it's block-level to stack below content */
-  margin: 20px auto; /* Center horizontally with space above */
-  padding: 12px 24px; /* Button padding */
-  background-color: #007bff; /* Button background color */
-  color: #ffffff; /* Text color */
-  font-size: 1rem; /* Font size */
-  font-weight: bold; /* Bold text */
-  border: none; /* Remove border */
-  border-radius: 8px; /* Rounded corners */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  max-width: 200px; /* Restrict button width */
-}
-
-/* Hover and Active States */
-#scrollToRenewable:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-  transform: translateY(-2px); /* Slight lift on hover */
-}
-
-#scrollToRenewable:active {
-  background-color: #003f8c; /* Even darker blue on click */
-  transform: translateY(1px);
-}
-/* Section Styling */
-/* Energy Section Styling */
-#energySection {
-  text-align: center;
-  padding: 40px 20px;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  margin: 20px auto;
-  max-width: 1200px;
-}
-
-/* Flexbox Container for Chart and Text */
-.energy-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px; /* Space between chart and text */
-  margin-top: 20px;
-}
-
-/* Chart Box Styling */
-.chart-box {
-  flex: 1.5; /* Allow the chart to take more space */
-  max-width: 600px;
-  height: 300px;
-  padding: 10px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Text Box Styling */
-.text-box {
-  flex: 1; /* Allow text to take less space */
-  max-width: 650px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  line-height: 1.6;
-  color: #333;
-}
-
-/* Heading inside the text box */
-.text-box h2 {
-  font-size: 1.4em;
-  margin-bottom: 15px;
-  color: #007bff; /* Accent color */
-}
-
-/* Button Styling */
-.scroll-btn {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 12px 24px;
-  background-color: #007bff;
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.scroll-btn:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-.scroll-btn:active {
-  background-color: #003f8c;
-  transform: translateY(1px);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .energy-container {
-    flex-direction: column; /* Stack chart and text vertically */
-    align-items: center;
-  }
-
-  .chart-box,
-  .text-box {
-    max-width: 100%; /* Full width for mobile */
-    margin-bottom: 5px; /* Add spacing between stacked items */
-  }
-}
-
-.chart-box {
-  flex: 1;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex; /* Ensures content aligns properly */
-  align-items: center; /* Center chart vertically */
-  justify-content: center; /* Center chart horizontally */
-  min-height: 410px; /* Ensures consistent height with text box */
-}
+  

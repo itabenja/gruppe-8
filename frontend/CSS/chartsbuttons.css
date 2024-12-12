@@ -55,17 +55,9 @@ button:active {
   color: #2c3e50;
 }
 
-/* Chart Containers 
-.chart-container {
-  display: absolute;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 20px;
-  margin: 20px auto;
-}
-*/
+
 #leaderboard-table-container{
-  width: 1000px;
+  width: 100%;
 }
 
 /* Canvas for Charts */
@@ -143,23 +135,4 @@ canvas {
   transform: translateY(-2px);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  /* Stack chart boxes vertically on smaller screens */
-  /*.chart-container {
-    flex-direction: column;
-    align-items: center;
-  }*/
 
-  .chart-box {
-    width: 90%; /* Full width for smaller screens */
-  }
-
-  #chartdiv {
-    width: 100px; /* Ensure the globe remains fully visible */
-  }
-
-  #leaderboard-table {
-    font-size: 0.9rem;
-  }
-}
