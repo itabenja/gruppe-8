@@ -57,6 +57,17 @@ if (firstFlagElement && firstPercentageElement) {
   console.error('First place elements are missing!');
 }
 
+//podium crown
+const firstPlacePodium = document.querySelector('.podium-item.first');
+if (firstPlacePodium) {
+  const crownIcon = document.createElement('img');
+  crownIcon.src = 'vecteezy_3d-golden-crown-ai-generative_29881645.png'; // Path to crown image
+  crownIcon.alt = 'Crown';
+  crownIcon.classList.add('crown');
+  firstPlacePodium.prepend(crownIcon); // Add the crown to the first-place podium
+}
+
+
 const secondFlagElement = document.getElementById('second-place-flag');
 const secondPercentageElement = document.getElementById('second-place-percentage');
 if (secondFlagElement && secondPercentageElement) {
@@ -167,25 +178,6 @@ if (thirdFlagElement && thirdPercentageElement) {
   }
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-  const toggleTextButton = document.getElementById("toggle-text");
-  const extraText = document.getElementById("extra-text");
 
-  // Check if elements exist before adding the event listener
-  if (toggleTextButton && extraText) {
-    toggleTextButton.addEventListener("click", function() {
-      // Toggle visibility of extra text
-      if (extraText.style.display === "none" || extraText.style.display === "") {
-        extraText.style.display = "block";  // Show content
-        extraText.classList.add("open");
-      } else {
-        extraText.style.display = "none";  // Hide content
-        extraText.classList.remove("open");
-      }
-    });
-  } else {
-    console.error("Elements not found!");
-  }
-});
 
 
