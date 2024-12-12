@@ -1,5 +1,22 @@
-/* General Container Styling */
+
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* General Container Styling */
 .container {
+
+    flex-wrap: wrap; /* Ensures items wrap on smaller screens */
+    justify-content: center;
+    max-width: 1200px; /* Limits width on larger screens */
+    margin: 0 auto; /* Centers content */
+    padding: 20px;
+      
+      
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -121,9 +138,11 @@
 /* Chart Container for Algeria and Iceland */
 .chart-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-wrap: wrap; /* Ensures charts stack on smaller screens */
     gap: 20px;
+    justify-content: center;
+    display: flex;
+    justify-content: space-between;
     margin: 20px auto;
 }
   
@@ -249,5 +268,24 @@ button:hover {
     width: 60px; /* Adjust size as needed */
     height: auto;
     z-index: 10; /* Ensure it stays on top */
+  }
+  @media (max-width: 768px) {
+    .chart-container {
+      flex-direction: column; /* Stacks elements vertically */
+    }
+  
+    .chart-box {
+      width: 100%; /* Full width on small screens */
+    }
+  
+    .container {
+      padding: 10px; /* Reduce padding on smaller devices */
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1400px; /* Allows for wider layouts */
+    }
   }
   

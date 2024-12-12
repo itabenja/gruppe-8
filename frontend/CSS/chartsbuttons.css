@@ -1,3 +1,31 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    flex-direction: column; /* Stacks elements vertically */
+  }
+
+  .chart-box {
+    width: 100%; /* Full width on small screens */
+  }
+
+  .container {
+    padding: 10px; /* Reduce padding on smaller devices */
+  }
+  
+}
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px; /* Allows for wider layouts */
+  }
+}
+
+
 /* General Button Styling */
 button {
   padding: 12px 24px;

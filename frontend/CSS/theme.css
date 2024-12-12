@@ -1,3 +1,11 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
 /* General Styling */
 body {
     background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
