@@ -79,27 +79,4 @@ body {
  
   
   /* Responsive Design */
-  @media (max-width: 768px) {
-    body {
-      padding: 10px;
-    }
-  
-    .Overskrift h1 {
-      font-size: 2rem;
-  }
 
-  .Overskrift p {
-      font-size: 1rem;
-  }
-
-  .instruction-text {
-      font-size: 0.9rem;
-      padding: 6vw 10vw;
-  }
-
-  .fact-box {
-      font-size: 0.9rem;
-      padding: 20px;
-    }
-  }
-  
