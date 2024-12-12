@@ -169,3 +169,130 @@ body {
 .energy-section + h1 {
   margin-top: 50px; /* Add space above the next section */
 }
+
+/* Styling for 'Is the world far from 100% renewable energy?' button */
+#scrollToRenewable {
+  display: block; /* Ensure it's block-level to stack below content */
+  margin: 20px auto; /* Center horizontally with space above */
+  padding: 12px 24px; /* Button padding */
+  background-color: #007bff; /* Button background color */
+  color: #ffffff; /* Text color */
+  font-size: 1rem; /* Font size */
+  font-weight: bold; /* Bold text */
+  border: none; /* Remove border */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  max-width: 200px; /* Restrict button width */
+}
+
+/* Hover and Active States */
+#scrollToRenewable:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+#scrollToRenewable:active {
+  background-color: #003f8c; /* Even darker blue on click */
+  transform: translateY(1px);
+}
+/* Section Styling */
+/* Energy Section Styling */
+#energySection {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 1200px;
+}
+
+/* Flexbox Container for Chart and Text */
+.energy-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px; /* Space between chart and text */
+  margin-top: 20px;
+}
+
+/* Chart Box Styling */
+.chart-box {
+  flex: 1.5; /* Allow the chart to take more space */
+  max-width: 600px;
+  height: 300px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Text Box Styling */
+.text-box {
+  flex: 1; /* Allow text to take less space */
+  max-width: 650px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Heading inside the text box */
+.text-box h2 {
+  font-size: 1.4em;
+  margin-bottom: 15px;
+  color: #007bff; /* Accent color */
+}
+
+/* Button Styling */
+.scroll-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scroll-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.scroll-btn:active {
+  background-color: #003f8c;
+  transform: translateY(1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .energy-container {
+    flex-direction: column; /* Stack chart and text vertically */
+    align-items: center;
+  }
+
+  .chart-box,
+  .text-box {
+    max-width: 100%; /* Full width for mobile */
+    margin-bottom: 5px; /* Add spacing between stacked items */
+  }
+}
+
+.chart-box {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex; /* Ensures content aligns properly */
+  align-items: center; /* Center chart vertically */
+  justify-content: center; /* Center chart horizontally */
+  min-height: 410px; /* Ensures consistent height with text box */
+}
