@@ -57,6 +57,13 @@ if (firstFlagElement && firstPercentageElement) {
   console.error('First place elements are missing!');
 }
 
+const firstPlacePodium = document.querySelector('.podium-item.first');
+if (firstPlacePodium) {
+  const crownIcon = document.createElement('img');
+  crownIcon.src = 'vecteezy_3d-golden-crown-ai-generative_29881645.png'; // Path to crown image
+}
+
+
 const secondFlagElement = document.getElementById('second-place-flag');
 const secondPercentageElement = document.getElementById('second-place-percentage');
 if (secondFlagElement && secondPercentageElement) {

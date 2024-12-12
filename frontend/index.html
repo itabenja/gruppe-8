@@ -17,17 +17,7 @@
   <link rel="stylesheet" href="css/chartsbuttons.css">
   <script src="https://unpkg.com/scrollreveal"></script>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      ScrollReveal().reveal('.chart-box, .fact-box, #chartdiv, .container, .podium-container', {
-        duration: 1000,
-        distance: '50px',
-        easing: 'ease-in-out',
-        origin: 'bottom',
-        reset: true
-      });
-    });
-  </script>
+ 
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="CSS/mainstyle.css">
@@ -150,11 +140,8 @@
    
     <button onclick="scrollToSection('section3')">Read more↓</button>
 </div>
+<div id="section3" style="width: 100%;height: 950px; text-align: center;">
 
-<div id="section3" class="Overskrift" style="width: 100%;height: 950px; text-align: center; border: radius 20px; box-shadow: #333">
-  <h2>Is the world far from 100% renewable energy?</h2>
-
-  </div>
   <br>
   <br>
   <br>
@@ -184,7 +171,7 @@
   <button onclick="scrollToSection('section4')">Read more↓</button>
 </div>
 
-<div id="section4" class="Overskrift" style="width: 100%;height: 1100px; text-align: center;">
+<div id="section4" class="Overskrift" style="width: 100%;height: 1200px; text-align: center;">
   
   <!-- Comparison of Algeria and Iceland -->
   <h2>Why is there so much difference in countries and their percentage of renewable energy?</h2>
@@ -260,7 +247,7 @@
 <div class="podium-container">
   <div class="podium-item second">
     <div class="flag-container">
-      <img id="second-place-flag" alt="Second Place Flag">
+      
       <img id="second-place-flag" alt="Second Place Flag">
       <p id="second-place-percentage" class="podium-percentage"></p>
     </div>
@@ -283,7 +270,7 @@
 
   <div class="podium-item third">
     <div class="flag-container">
-      <img id="third-place-flag"  alt="Third Place Flag">
+     
       <img id="third-place-flag"  alt="Third Place Flag">
       <p id="third-place-percentage" class="podium-percentage"></p>
     </div>
@@ -387,6 +374,16 @@
   section.scrollIntoView({ behavior: 'smooth' });
 }
 
-  </script>
+    document.addEventListener('DOMContentLoaded', function () {
+      ScrollReveal().reveal('.chart-box, .fact-box, #chartdiv, .container, .podium-container', {
+        duration: 1000,
+        distance: '50px',
+        easing: 'ease-in-out',
+        origin: 'bottom',
+        reset: true
+      });
+    });
+ 
+</script>
 </body>
 </html>
