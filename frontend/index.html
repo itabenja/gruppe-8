@@ -12,6 +12,9 @@
   <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/split-type"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="CSS/mainstyle.css">
   <link rel="stylesheet" href="CSS/theme.css">
@@ -32,7 +35,7 @@
     .fade-in {
       opacity: 0;
       transform: translateY(20px);
-      transition: all 0.5s ease-out;
+      transition: all 0,5s ease-out;
     }
 
     .fade-in.active {
@@ -40,34 +43,6 @@
       transform: translateY(0);
     }
 
-
-    /* Hero Section */
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      background: linear-gradient(135deg, #003E99, #00C851);
-      color: #ffffff;
-      position: relative;
-    }
-
-    .hero h1 {
-      font-size: 4rem;
-      background: linear-gradient(90deg, #00C851, #007BFF);
-     
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
-      opacity: 0;
-    }
-
-    .hero p {
-      font-size: 1.5rem;
-      margin: 0.5rem 0 2rem 0;
-      opacity: 0;
-    }
     .scroll-down {
       position: absolute;
       bottom: 20px;
@@ -85,6 +60,8 @@
         transform: translateY(-10px);
       }
     }
+
+
   </style>
 </head>
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -92,23 +69,38 @@
 <body>
  
   <!-- Header Section -->
-  <div class="Overskrift">
+  <div class="Overskrift" animate>
     <h1>How far is the transition to Renewable energy?</h1>
-    <p>Welcome to Our Energy Insights Platform</p>
+    <p>Welcome to Our Energy Insights Platform...</p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <button id="scrollDownBtn" class="scroll-btn">Explore More ↓</button>
   </div>
 
- 
+  <!-- Next Section -->
+  <section id="nextSection">
+    <p class="instruction-text">
+      Click and drag to rotate the globe, and use your scroll wheel to zoom in or out. To explore energy data, simply click on a country, and detailed information about its total energy consumption and renewable energy use will appear.
+    </p>
+  </section>
   
-  <!-- Instructions for user -->
-   
-  <p class="instruction-text">
-    To view energy data, click on a
-    country to explore detailed charts showing its total energy consumption 
-    and the balance between renewable and non-renewable energy sources.
-  </p>
+  
+</body>
+</section>
+<div id="chartdiv"></div>
+<button id="scrollToEnergy" class="scroll-btn">Learn More ↓</button>
 
-  <!-- World Map Section -->
-  <div id="chartdiv"></div>
 
   <br>
   <br>
@@ -123,30 +115,33 @@
   <br>
 
 
-  <h1>Is the world far from 100% renewable energy?</h1>
+  <h1 id="energySection">Is the world far from 100% renewable energy?</h1>
 
+  </div>
   <br>
   <br>
   <br>
-  
-  <div class="chart-container">
+
+  <h1 id="comparisonSection">Why is there so much difference in countries and their percentage of renewable energy?</h1>
+  <div class="chart-container"> 
     <!-- Renewable vs Total Energy Consumption -->
     
     <div id="chartContainer" class="chart-box"></div>
   
-    <div class="chart-box" style="width: 1160px; font-family: 'Arial, sans-serif'; line-height: 1.8; background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-      <p style="font-size: 1.6em; font-weight: bold; color: #333; margin-bottom: 20px;">The Shift to Renewable Energy: A Global Movement</p>
-      
-      <p style="font-size: 1.2em; color: #555; line-height: 1.6;">
-        Imagine a world where <span style="font-weight: bold; color: #007BFF;">clean, renewable energy</span> powers every home, car, and industry. It’s not just a dream—it’s a future we’re building. Right now, renewable energy accounts for only <span style="color: #007BFF; font-weight: bold;">17%</span> of global energy consumption, but this number is rising every year. <span style="font-weight: bold; color: #28a745;">Solar panels</span>, <span style="font-weight: bold; color: #28a745;">wind turbines</span>, and <span style="font-weight: bold; color: #28a745;">hydropower plants</span> are lighting up the path to sustainability, even as traditional sources like <span style="font-weight: bold; color: #dc3545;">coal</span>, <span style="font-weight: bold; color: #dc3545;">oil</span>, and <span style="font-weight: bold; color: #dc3545;">gas</span> continue to dominate much of the energy mix.
-      </p>
-      
-      <p style="font-size: 1.2em; color: #555; line-height: 1.6;">
-        Why does this matter? Every new <span style="font-weight: bold; color: #28a745;">wind turbine</span>, every <span style="font-weight: bold; color: #28a745;">rooftop covered in solar panels</span>, brings us closer to combating <span style="font-weight: bold; color: #007BFF;">climate change</span>, reducing <span style="font-weight: bold; color: #007BFF;">pollution</span>, and creating a <span style="font-weight: bold; color: #28a745;">greener, healthier planet</span>. It’s not just about energy—it’s about <span style="font-weight: bold; color: #007BFF;">survival</span>, <span style="font-weight: bold; color: #007BFF;">innovation</span>, and the future of humanity.
-      </p>
-      
-      <p style="font-size: 1.3em; font-weight: bold; color: #007BFF; text-align: center; margin-top: 20px;">Can we go further? Let’s find out.</p>
+    <div class="chart-box" style="width: 1160px; font-family: 'Arial, sans-serif'; line-height: 1.8; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+      <p style="font-size: 1.4em; font-weight: bold; color: #333;">The Shift to Renewable Energy: A Global Movement</p>
+  
+      <p style="font-size: 1.2em; color: #555;">Imagine a world where clean, renewable energy powers every home, car, and industry. It’s not just a dream—it’s a future we’re building. Right now, renewable energy makes up only <span style="color: #007BFF; font-weight: bold;">17%</span> of the world’s energy consumption, but this number is rising every year. Solar panels, wind turbines, and hydropower plants are lighting up the path to sustainability, even as coal, oil, and gas still dominate much of the energy mix.</p>
+  
+      <p style="font-size: 1.2em; color: #555;">Why does this matter? Every new wind turbine, every rooftop covered in solar panels, brings us closer to combating climate change, reducing pollution, and creating a greener, healthier planet. It’s not just about energy—it’s about survival, innovation, and the future of humanity.</p>
+  
+      <p style="font-size: 1.3em; font-weight: bold; color: #007BFF; text-align: center;">Can we go further? Let’s find out.</p>
     </div>
+  
+    <!-- Button placed at the bottom -->
+    <button id="scrollToComparison" class="scroll-btn">Learn More ↓</button>
+  </div>
+  
   </div>
   
   
@@ -346,7 +341,7 @@
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 2,
           ease: "power2.out",
           scrollTrigger: {
             trigger: element,
@@ -357,5 +352,25 @@
       );
     });
   </script>
+  <script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize SplitType to split text into lines, words, and characters
+      let typeSplit = new SplitType('.Overskrift', {
+        types: 'lines, words, chars', // Specify splitting type
+        tagName: 'span'              // Wrap elements in <span>
+      });
+  
+      // Apply GSAP animation to each line
+      gsap.from('.Overskrift .line', {
+        y: '100%',               // Animate lines from 100% below their original position
+        opacity: 0,              // Start with opacity 0
+        duration: 1.5,           // Animation duration
+        ease: 'power1.out',      // Easing function for smooth transition
+        stagger: 0.1,            // Apply stagger between animations for lines
+      });
+    });
+  </script>
+  
 </body>
 </html>
