@@ -16,7 +16,18 @@
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/chartsbuttons.css">
   <script src="https://unpkg.com/scrollreveal"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    ScrollReveal().reveal('.chart-box, .fact-box, #chartdiv, .container, .podium-container', {
+      duration: 1000,
+      distance: '50px',
+      easing: 'ease-in-out',
+      origin: 'bottom',
+      reset: true
+    });
+  });
 
+</script>
  
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -64,9 +75,6 @@
         transform: translateY(-10px);
       }
     }
-
-  
-  
 
     #section2 {
     background: linear-gradient(to bottom, #e3f2fd, #dcecfb);
@@ -371,16 +379,6 @@
   const section = document.getElementById(sectionId);
   section.scrollIntoView({ behavior: 'smooth' });
 }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      ScrollReveal().reveal('.chart-box, .fact-box, #chartdiv, .container, .podium-container', {
-        duration: 1000,
-        distance: '50px',
-        easing: 'ease-in-out',
-        origin: 'bottom',
-        reset: true
-      });
-    });
  
 </script>
 </body>
