@@ -1,160 +1,208 @@
 /* General Styling */
 body {
-    background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
-    font-family: 'Georgia', serif; /* Elegant font for body text */
-    color: #2c3e50; /* Dark gray-blue for text */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-  }
-  
-  /* Global Reset for Consistency */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Styling for All Div Containers */
-  div {
-    box-sizing: border-box;
-  }
-  
-  /* Header Section - Overskrift */
-  .Overskrift {
-    background-color: #1a5276;
-    color: #ffffff;
-    text-align: center;
-    padding: 415px 500px;
-    border-bottom: 5px solid #f4a261;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  }
-  
-  .Overskrift h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-  
-  .Overskrift p {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-  
-  /* Instruction Text Box */
-  .instruction-text {
-    background-color: #4e5a92; /* Dark brown background */
-    color: #ffffff; /* White text for better contrast */
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 800px;
-    font-size: 1rem;
-    text-align: center;
-    line-height: 1.6;
-    border-radius: 10px;
-    position: relative;
-    z-index: 10;
-    opacity: 1; /* Ensure visibility */
-  }
-  
-  /* Fact Box Section */
-  .fact-box {
-    padding: 25px;
-    background-color: #fafafa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 800px;
-    line-height: 1.8;
-    font-size: 1rem;
-    color: #2c3e50;
-    border-left: 5px solid #f4a261;
-  }
-  
-  /* General Hover Effects for Boxes */
- 
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    body {
-      padding: 10px;
-    }
-  
-    .Overskrift h1 {
-      font-size: 2rem;
-    }
-  
-    .Overskrift p {
-      font-size: 1rem;
-    }
-  
-    .instruction-text {
-      font-size: 0.9rem;
-      padding: 10px 15px;
-    }
-  
-    .fact-box {
-      font-size: 0.9rem;
-      padding: 20px;
-    }
-  }
-  
+  background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
+  font-family: 'Georgia', serif; /* Elegant font for body text */
+  color: #2c3e50; /* Dark gray-blue for text */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
 
-  /* Scroll to Top Button SCRRROOOOOOOLLLL TING OG SAGER */
-  .scroll-btn {
-    display: block;            /* Ensures the button is block-level to stack below content */
-    margin: 20px auto 0;       /* Center horizontally and add space above */
-    padding: 12px 24px;        /* Button padding */
-    background-color: #007bff; /* Button background color */
-    color: #ffffff;            /* Text color */
-    font-size: 1rem;           /* Font size */
-    font-weight: bold;         /* Bold text */
-    border: none;              /* Remove border */
-    border-radius: 8px;        /* Rounded corners */
-    cursor: pointer;           /* Pointer cursor on hover */
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .scroll-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    transform: translateY(-2px); /* Slight movement on hover */
-  }
-  
-  .scroll-btn:active {
-    background-color: #003f8c; /* Even darker blue on click */
-    transform: translateY(1px);
-  }
-  
- 
+/* Global Reset for Consistency */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
- /* Adjust the position of the Learn More button */
- #scrollToEnergy {
-  margin-top: 8px; /* Adjust this value to move the button higher */
+/* Styling for All Div Containers */
+div {
+  box-sizing: border-box;
+}
+
+/* Header Section - Overskrift */
+.Overskrift {
+  background-color: #1a5276;
+  color: #ffffff;
+  text-align: center;
+  padding: 10vw 20vw; /* Use relative units for padding to make it more adaptive */
+  border-bottom: 5px solid #f4a261;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.Overskrift h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.Overskrift p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Instruction Text Box */
+.instruction-text {
+  background-color: #4e5a92;
+  color: #ffffff;
+  padding: 4vw 6vw; /* Use relative units for padding */
+  margin: 4vh auto;
+  max-width: 90%; /* Make the box more responsive by limiting max width */
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.6;
+  border-radius: 10px;
   position: relative;
-  top: -10px; /* Moves the button closer to chartdiv */
+  z-index: 10;
+}
+
+/* Fact Box Section */
+.fact-box {
+  padding: 2vw;
+  background-color: #fafafa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin: 4vh auto;
+  max-width: 90%;
+  line-height: 1.8;
+  font-size: 1rem;
+  color: #2c3e50;
+  border-left: 5px solid #f4a261;
+}
+
+/* General Hover Effects for Boxes */
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .Overskrift {
+      padding: 8vw 15vw; /* Adjust padding for mid-sized screens */
+  }
+
+  .Overskrift h1 {
+      font-size: 2.2rem;
+  }
+
+  .Overskrift p {
+      font-size: 1rem;
+  }
+
+  .instruction-text {
+      font-size: 1rem;
+      padding: 6vw 10vw;
+  }
+
+  .fact-box {
+      font-size: 0.95rem;
+      padding: 2.5vw;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+      padding: 5vw; /* Add padding on small screens */
+  }
+
+  .Overskrift {
+      padding: 15vw 10vw;
+  }
+
+  .Overskrift h1 {
+      font-size: 2rem;
+  }
+
+  .Overskrift p {
+      font-size: 1rem;
+  }
+
+  .instruction-text {
+      font-size: 0.9rem;
+      padding: 6vw 10vw;
+  }
+
+  .fact-box {
+      font-size: 0.9rem;
+      padding: 5vw;
+  }
+}
+
+@media (max-width: 480px) {
+  .Overskrift {
+      padding: 20vw 5vw; /* Further adjust for very small screens */
+  }
+
+  .Overskrift h1 {
+      font-size: 1.8rem;
+  }
+
+  .Overskrift p {
+      font-size: 1rem;
+  }
+
+  .instruction-text {
+      font-size: 0.85rem;
+      padding: 8vw 12vw;
+  }
+
+  .fact-box {
+      font-size: 0.85rem;
+      padding: 6vw;
+  }
+}
+
+/* Scroll to Top Button */
+.scroll-btn {
+  display: block;
+  margin: 5vh auto 0;
+  padding: 2vw 4vw; /* Adjust padding for smaller screens */
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scroll-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.scroll-btn:active {
+  background-color: #003f8c;
+  transform: translateY(1px);
+}
+
+/* Adjust the position of the Learn More button */
+#scrollToEnergy {
+  margin-top: 8px;
+  position: relative;
+  top: -10px;
   left: 3.5%;
-  transform: translateX(-50%); /* Center align the button */
+  transform: translateX(-50%);
 }
- /* For spacing the button below the content */
- #scrollToComparison {
-  margin-top: 30px; /* Space between the content and the button */
+
+#scrollToComparison {
+  margin-top: 30px;
 }
- /* Adjust position of the energy section title */
- .energy-title {
-  margin-top: -50px; /* Move the title higher */
-  text-align: center; /* Center align the title */
-  font-size: 2rem; /* Adjust font size for visibility */
+
+/* Adjust position of the energy section title */
+.energy-title {
+  margin-top: -50px;
+  text-align: center;
+  font-size: 2rem;
 }
 
 /* Adjust position of the chart container */
 #chartContainerBox {
-  margin-top: -10px; /* Move the chart container higher */
-  padding: 20px; /* Add some padding for better spacing */
+  margin-top: -10px;
+  padding: 2vw;
   display: flex;
   justify-content: center;
 }
@@ -163,11 +211,12 @@ body {
 #chartContainer {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  background-color: #f4f4f4; /* Optional background for better contrast */
+  background-color: #f4f4f4;
 }
+
 /* Ensure button does not push other elements */
 .energy-section + h1 {
-  margin-top: 50px; /* Add space above the next section */
+  margin-top: 50px;
 }
 
 /* Styling for 'Is the world far from 100% renewable energy?' button */
