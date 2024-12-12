@@ -48,17 +48,18 @@ body {
   
   /* Instruction Text Box */
   .instruction-text {
-    background-color: #f4f4f4;
-    color: #2c3e50;
-    padding: 15px 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background-color: #4e5a92; /* Dark brown background */
+    color: #ffffff; /* White text for better contrast */
+    padding: 20px;
     margin: 20px auto;
     max-width: 800px;
     font-size: 1rem;
     text-align: center;
     line-height: 1.6;
+    border-radius: 10px;
+    position: relative;
+    z-index: 10;
+    opacity: 1; /* Ensure visibility */
   }
   
   /* Fact Box Section */
@@ -103,3 +104,68 @@ body {
     }
   }
   
+
+  /* Scroll to Top Button SCRRROOOOOOOLLLL TING OG SAGER */
+  .scroll-btn {
+    display: block;            /* Ensures the button is block-level to stack below content */
+    margin: 20px auto 0;       /* Center horizontally and add space above */
+    padding: 12px 24px;        /* Button padding */
+    background-color: #007bff; /* Button background color */
+    color: #ffffff;            /* Text color */
+    font-size: 1rem;           /* Font size */
+    font-weight: bold;         /* Bold text */
+    border: none;              /* Remove border */
+    border-radius: 8px;        /* Rounded corners */
+    cursor: pointer;           /* Pointer cursor on hover */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .scroll-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight movement on hover */
+  }
+  
+  .scroll-btn:active {
+    background-color: #003f8c; /* Even darker blue on click */
+    transform: translateY(1px);
+  }
+  
+ 
+
+ /* Adjust the position of the Learn More button */
+ #scrollToEnergy {
+  margin-top: 8px; /* Adjust this value to move the button higher */
+  position: relative;
+  top: -10px; /* Moves the button closer to chartdiv */
+  left: 3.5%;
+  transform: translateX(-50%); /* Center align the button */
+}
+ /* For spacing the button below the content */
+ #scrollToComparison {
+  margin-top: 30px; /* Space between the content and the button */
+}
+ /* Adjust position of the energy section title */
+ .energy-title {
+  margin-top: -50px; /* Move the title higher */
+  text-align: center; /* Center align the title */
+  font-size: 2rem; /* Adjust font size for visibility */
+}
+
+/* Adjust position of the chart container */
+#chartContainerBox {
+  margin-top: -10px; /* Move the chart container higher */
+  padding: 20px; /* Add some padding for better spacing */
+  display: flex;
+  justify-content: center;
+}
+
+/* Optional: Add shadow for distinction */
+#chartContainer {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: #f4f4f4; /* Optional background for better contrast */
+}
+/* Ensure button does not push other elements */
+.energy-section + h1 {
+  margin-top: 50px; /* Add space above the next section */
+}
