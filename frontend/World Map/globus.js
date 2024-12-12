@@ -359,14 +359,27 @@ am5.ready(function () {
         } else {
           const countryData = await fetchCountryData(countryName);
           if (countryData) {
-            // Populate the infoContainer with the additional country data
-            chartInfo.innerHTML = `
-              <p>Current Solar Generation: ${countryData.electricity_consumption_twh} TWh</p>
-              <p>Solar Installed Capacity MW: ${countryData.electricity_consumption_kwh} GW</p>
-              <p>Solar Panels Needed: ${countryData.solar_panels_needed}</p>
-              <p>Area Needed M2: ${countryData.area_needed_m2}m2</p>
-              <p>Total Area KM2: ${countryData.total_area_km2} km2</p>
-            `;
+          // Populate the infoContainer with the additional country data
+          chartInfo.innerHTML = 
+          `<br>
+          <div style="padding: 10px; margin-bottom: 20px; background-color: rgb(255, 255, 255); border-radius: 5px;">
+            <p style="color: #007bff;">Current Solar Generation: ${countryData.electricity_consumption_twh} TWh</p>
+          </div>
+          <div style="padding: 10px; margin-bottom: 20px; background-color: rgb(255, 255, 255); border-radius: 5px;">
+            <p style="color: #28a745;">Solar Installed Capacity MW: ${countryData.electricity_consumption_kwh} GW</p>
+          </div>
+          <div style="padding: 10px; margin-bottom: 20px; background-color: rgb(255, 255, 255); border-radius: 5px;">
+            <p style="color: #dc3545;">Solar Panels Needed: ${countryData.solar_panels_needed}</p>
+          </div>
+          <div style="padding: 10px; margin-bottom: 20px; background-color: rgb(255, 255, 255); border-radius: 5px;">
+            <p style="color: #6c757d;">Area Needed M2: ${countryData.area_needed_m2} m2</p>
+          </div>
+          <div style="padding: 10px; margin-bottom: 20px; background-color: hsl(0, 0.00%, 100.00%); border-radius: 5px;">
+            <p style="color: #ffc107;">Total Area KM2: ${countryData.total_area_km2} km2</p>
+          </div>
+          `;
+          
+
 
             moreDetailsButton.innerText = "Show Chart"; //Opdatere knapteksten
           } else {
