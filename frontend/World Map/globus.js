@@ -520,8 +520,8 @@ am5.ready(function () {
   let zoomOutButton = document.createElement("button");
   zoomOutButton.innerText = "Zoom Out";
   zoomOutButton.style.position = "absolute";
-  zoomOutButton.style.bottom = "22px";
-  zoomOutButton.style.left = "400px";
+  zoomOutButton.style.top = "950px";
+  zoomOutButton.style.left = "250px";
   zoomOutButton.style.padding = "10px 15px";
   zoomOutButton.style.backgroundColor = "#007BFF";
   zoomOutButton.style.color = "#fff";
@@ -542,7 +542,7 @@ am5.ready(function () {
   infoContainer.id = "infoContainer";
   infoContainer.style.position = "absolute";
   infoContainer.style.display = "none"; // Hide the container initially
-  infoContainer.style.top = "245px";
+  infoContainer.style.top = "296px";
   infoContainer.style.borderRadius = "20px";
   infoContainer.style.right = "15px";
   infoContainer.style.width = "42.5%";
@@ -567,7 +567,7 @@ am5.ready(function () {
   // Add search bar HTML
   const searchContainer = document.createElement("div");
   searchContainer.style.position = "absolute";
-  searchContainer.style.top = "300px";
+  searchContainer.style.top = "350px";
   searchContainer.style.left = "center";
   searchContainer.style.width = "translate(-50%, -50%)";
   searchContainer.style.zIndex = "1000";
