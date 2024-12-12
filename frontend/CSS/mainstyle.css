@@ -241,3 +241,13 @@ button:hover {
     animation: popUp 0.5s ease-out forwards; /* Play the animation */
 }
   
+.crown {
+    position: absolute;
+    top: -50px; /* Adjust the distance above the podium */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px; /* Adjust size as needed */
+    height: auto;
+    z-index: 10; /* Ensure it stays on top */
+  }
+  
