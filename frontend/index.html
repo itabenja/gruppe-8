@@ -12,9 +12,13 @@
   <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/split-type"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/mainstyle.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/chartsbuttons.css">
+  <script src="https://unpkg.com/scrollreveal"></script>
+
+ 
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="CSS/mainstyle.css">
   <link rel="stylesheet" href="CSS/theme.css">
@@ -61,63 +65,83 @@
       }
     }
 
+  
+  
+
+    #section2 {
+    background: linear-gradient(to bottom, #e3f2fd, #dcecfb);
+  }
+
+  #section3 {
+    background: linear-gradient(to bottom, #dcecfb, #cde5fa);
+  }
+
+  #section4 {
+    background: linear-gradient(to bottom, #cde5fa, #bcdff9);
+  }
+
+  #section5 {
+    background: linear-gradient(to bottom, #bcdff9, #bbdefb);
+  }
 
   </style>
 </head>
-<div class="scroll-progress" id="scrollProgress"></div>
 
 <body>
- 
+
+  <div id="section1" class="Overskrift" style="width: 100%;height: 950px; text-align: center; color: #ffffff;">
   <!-- Header Section -->
-  <div class="Overskrift" animate>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   
+   
+
+  <div>
     <h1>How far is the transition to Renewable energy?</h1>
-    <p>Welcome to Our Energy Insights Platform...</p>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <button id="scrollDownBtn" class="scroll-btn">Explore More ↓</button>
+    <p>Welcome to Our Energy Insights Platform</p>
   </div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <button onclick="scrollToSection('section2')">Read more↓</button>
+</div>
 
-  <!-- Next Section -->
-  <section id="nextSection">
+  
+  <!-- Instructions for user -->
+  <div id="section2"  style="width: 100%;height: 950px; text-align: center;">
     <p class="instruction-text">
-      Click and drag to rotate the globe, and use your scroll wheel to zoom in or out. To explore energy data, simply click on a country, and detailed information about its total energy consumption and renewable energy use will appear. <br>🟥 = area covered by solar panels for 100% renewable energy
-    </p>
-  </section>
-  
-  
-</body>
-</section>
-<div id="chartdiv"></div>
-<button id="scrollToEnergy" class="scroll-btn">Learn More ↓</button>
+    To view energy data, click on a
+    country to explore detailed charts showing its total energy consumption 
+    and the balance between renewable and non-renewable energy sources.
+   </p>
 
+  <!-- World Map Section -->
+    <div id="chartdiv"></div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>  
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+   
+    <button onclick="scrollToSection('section3')">Read more↓</button>
+</div>
+<div id="section3" style="width: 100%;height: 950px; text-align: center;">
 
-
-  <h1 id="energySection">Is the world far from 100% renewable energy?</h1>
-
-  </div>
   <br>
   <br>
   <br>
@@ -137,31 +161,21 @@
   
       <p style="font-size: 1.3em; font-weight: bold; color: #007BFF; text-align: center;">Can we go further? Let’s find out.</p>
     </div>
-  
-    <!-- Button placed at the bottom -->
-    <button id="scrollToComparison" class="scroll-btn">Learn More ↓</button>
   </div>
-  
-  </div>
-  
-  
+   <br>
   <br>
   <br>
   <br>
   <br>
   <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <button onclick="scrollToSection('section4')">Read more↓</button>
+</div>
+
+<div id="section4" class="Overskrift" style="width: 100%;height: 1200px; text-align: center;">
   
   <!-- Comparison of Algeria and Iceland -->
-  <h1>Why is there so much difference in countries and their percentage of renewable energy?</h1>
+  <h2>Why is there so much difference in countries and their percentage of renewable energy?</h2>
 
-  <br>
-  <br>
-  
   <!-- Container for both charts -->
   <div class="chart-container">
     <!-- Algeria Chart -->
@@ -201,11 +215,10 @@
     </div>
   </div>
   
-  <br>
   
   <!-- Text under the Algeria and Iceland charts -->
-  <div class="chart-box" style="width: 1160px; font-family: 'Arial, sans-serif'; line-height: 1.8; background-color: #f9f9f9; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-    <p style="font-size: 1.6em; font-weight: bold; color: #333; margin-bottom: 15px;">Why Algeria and Iceland Are So Different in Renewable Energy Use</p>
+  <div class="chart-box" style=" font-family:'Arial, sans-serif'; line-height: 1.8; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <p style="font-size: 1.4em; font-weight: bold; color: #333;">Why Algeria and Iceland Are So Different in Renewable Energy Use</p>
   
     <p style="font-size: 1.2em; color: #555; line-height: 1.7;">
       <span style="font-weight: bold; color: #007BFF;">Algeria</span> and <span style="font-weight: bold; color: #007BFF;">Iceland</span> offer a fascinating contrast in their energy strategies, driven by <span style="font-weight: bold; color: #28a745;">geography</span> and <span style="font-weight: bold; color: #28a745;">resources</span>. Iceland, endowed with powerful <span style="font-weight: bold; color: #28a745;">geothermal</span> and <span style="font-weight: bold; color: #28a745;">hydropower resources</span>—thanks to its volcanic landscape and abundant freshwater—has embraced renewable energy with open arms, almost entirely eliminating its reliance on fossil fuels. Meanwhile, Algeria, located in the scorching heart of the Sahara, has had to rely on its vast fossil fuel reserves, like <span style="font-weight: bold; color: #dc3545;">oil</span> and <span style="font-weight: bold; color: #dc3545;">natural gas</span>, due to limited access to renewable resources such as <span style="font-weight: bold; color: #28a745;">hydropower</span> or <span style="font-weight: bold; color: #28a745;">geothermal energy</span>.
@@ -215,47 +228,49 @@
       This stark contrast underscores a broader, global reality: geography shapes access to renewable energy sources, like <span style="font-weight: bold; color: #28a745;">wind</span>, <span style="font-weight: bold; color: #28a745;">solar</span>, and <span style="font-weight: bold; color: #28a745;">water</span>, while economic priorities, energy infrastructure, and government policies dictate how quickly and effectively nations can transition to renewable energy. Understanding these key factors is essential to accelerating the global energy transition and achieving a <span style="font-weight: bold; color: #007BFF;">sustainable future</span> for all.
     </p>
   </div>
-  
-  
+  <br>
+  <br>
+  <br>
+  <button onclick="scrollToSection('section5')">Read more↓</button>
+  <br>
+  <br>
+</div>
 
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
+<div id="section5" class="Overskrift " style="width: 100%;height: 1200px; text-align: center;">
+ 
 
   <!-- Leaderboard Section -->
 <div class="leaderboard-container">
-  <h1>Who is furthest along in the transition to renewable energy?</h1>
-
-  <br>
-  <br>
-  <br>
-
+  <h2>Which countries are furthest along in renewable energi?</h2>
 <!-- Podium Section -->
 <div class="podium-container">
   <div class="podium-item second">
     <div class="flag-container">
+      
       <img id="second-place-flag" alt="Second Place Flag">
       <p id="second-place-percentage" class="podium-percentage"></p>
     </div>
     <div class="podium-rank">2</div>
   </div>
 
+
   <div class="podium-item first">
     <div class="flag-container">
-      <img id="crown-icon" src="vecteezy_3d-golden-crown-ai-generative_29881645.png"alt="Crown" class="crown">
+    
+      <img id="crown" src="vecteezy_3d-golden-crown-ai-generative_29881645.png"alt="Crown" class="crown">
       <img id="first-place-flag" alt="First Place Flag">
       <p id="first-place-percentage" class="podium-percentage"></p>
     </div>
     <div class="podium-rank">1</div>
   </div>
-  
+
+
 
 
   <div class="podium-item third">
     <div class="flag-container">
+     
       <img id="third-place-flag"  alt="Third Place Flag">
       <p id="third-place-percentage" class="podium-percentage"></p>
     </div>
@@ -264,7 +279,6 @@
 </div>
 
 
-</div>
 
 
   <div id="tooltip"></div>
@@ -291,7 +305,10 @@
     View More
   </button>
 
-  
+
+
+</div>
+
   <script>
   // Detect when elements are in view
   function animateOnScroll() {
@@ -351,26 +368,22 @@
         }
       );
     });
-  </script>
-  <script>
-    // Wait for the DOM to be fully loaded
-    document.addEventListener("DOMContentLoaded", () => {
-      // Initialize SplitType to split text into lines, words, and characters
-      let typeSplit = new SplitType('.Overskrift', {
-        types: 'lines, words, chars', // Specify splitting type
-        tagName: 'span'              // Wrap elements in <span>
-      });
-  
-      // Apply GSAP animation to each line
-      gsap.from('.Overskrift .line', {
-        y: '100%',               // Animate lines from 100% below their original position
-        opacity: 0,              // Start with opacity 0
-        duration: 1.5,           // Animation duration
-        ease: 'power1.out',      // Easing function for smooth transition
-        stagger: 0.1,            // Apply stagger between animations for lines
+
+    function scrollToSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  section.scrollIntoView({ behavior: 'smooth' });
+}
+
+    document.addEventListener('DOMContentLoaded', function () {
+      ScrollReveal().reveal('.chart-box, .fact-box, #chartdiv, .container, .podium-container', {
+        duration: 1000,
+        distance: '50px',
+        easing: 'ease-in-out',
+        origin: 'bottom',
+        reset: true
       });
     });
-  </script>
-  
+ 
+</script>
 </body>
 </html>
