@@ -39,9 +39,7 @@ document.getElementById("scrollDownBtn").addEventListener("click", () => {
       });
     }
   });
-
-// Register ScrollTrigger with GSAP
-gsap.registerPlugin(ScrollTrigger);
+s
 
 // Combined Animations for Heading and Button
 gsap.timeline()
@@ -64,5 +62,13 @@ gsap.to("#scrollToComparison", {
   duration: 0.1, // Quick adjustment
 });
 
-
-
+gsap.to("#scrollProgressBar", {
+  width: "100%", // Animate the width from 0% to 100%
+  ease: "none", // Linear easing for smooth transition
+  scrollTrigger: {
+    trigger: document.body, // Trigger based on the entire body
+    start: "top top", // Start at the very top
+    end: "bottom bottom", // End at the very bottom
+    scrub: 1, // Sync animation with scroll
+  },
+});

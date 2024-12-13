@@ -569,7 +569,7 @@ am5.ready(function () {
   // Add search bar HTML
   const searchContainer = document.createElement("div");
   searchContainer.style.position = "absolute";
-  searchContainer.style.top = "1150px";
+  searchContainer.style.top = "1110px";
   searchContainer.style.left = "center";
   searchContainer.style.width = "translate(-50%, -50%)";
   searchContainer.style.zIndex = "1000";
@@ -639,66 +639,4 @@ am5.ready(function () {
       return null;
     }
   };
-});
-
-// TOP OF THE SKÆRM SCROLL KNAP!!! 
-  document.getElementById("scrollDownBtn").addEventListener("click", () => {
-    // Scroll smoothly to the next section
-    document.getElementById("nextSection").scrollIntoView({ behavior: "smooth" });
-  });
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.fromTo(
-    ".instruction-text", // Target the instruction text
-    { opacity: 0, y: 50 }, // Initial state: invisible and slightly below
-    {
-      opacity: 1,
-      y: 0, // Animate to visible and original position
-      duration: 1.5, // Duration of animation in seconds
-      ease: "power2.out", // Smooth easing
-      scrollTrigger: {
-        trigger: "#nextSection", // Element to trigger the animation
-        start: "top 80%", // When the element is 80% visible
-        toggleActions: "play none none none", // Animation behavior
-      },
-    }
-  );
-  document.getElementById("scrollDownBtn").addEventListener("click", () => {
-    const nextSection = document.querySelector("#nextSection"); // Target the next section
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: "smooth" }); // Smoothly scroll to the section
-    }
-  });
-
-  // SCroool til energi section! 
-  document.getElementById("scrollToEnergy").addEventListener("click", () => {
-    const energySection = document.getElementById("energySection");
-    if (energySection) {
-      window.scrollTo({
-        top: energySection.offsetTop - 120, // Adjust the -100 value to set the desired offset
-        behavior: "smooth"
-      });
-    }
-  });
-
-  // Smooth Scroll: Energy to Comparison Section
-document.getElementById("scrollToComparison").addEventListener("click", () => {
-  const comparisonSection = document.getElementById("comparisonSection"); // Target the comparison section
-  if (comparisonSection) {
-    window.scrollTo({
-      top: comparisonSection.offsetTop - 100, // Adjust the -100 value to control spacing
-      behavior: "smooth"
-    });
-  }
-});
-
-document.getElementById("scrollToNextSection").addEventListener("click", () => {
-  const comparisonSection = document.querySelector("#comparisonSection");
-  if (comparisonSection) {
-    comparisonSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start", // Align the section to the top of the viewport
-    });
-  }
 });
