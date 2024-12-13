@@ -69,64 +69,6 @@
     opacity: 1; /* Fade in when opened */
 }
   
-/* Podium Section Styling */
-.podium-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 20px;
-    width: 100%;
-    margin: 20px 0;
-}
-  
-.podium-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #e0e0e0;
-    color: #ffffff;
-    width: 120px;
-    height: 200px;
-    position: relative;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-}
-  
-.podium-item.first {
-    background-color: #f1c40f; /* Gold */
-    height: 250px;
-}
-  
-.podium-item.second {
-    background-color: #95a5a6; /* Silver */
-    height: 220px;
-}
-  
-.podium-item.third {
-    background-color: #e67e22; /* Bronze */
-    height: 200px;
-}
-  
-.podium-percentage {
-    font-size: 1.2rem;
-    color: #ffffff;
-    font-weight: bold;
-    margin-top: 10px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-.crown {
-    position: relative;
-    top: 2px; /* Adjust the distance above the podium */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20px; /* Adjust size as needed */
-    height: auto;
-    z-index: 10; /* Ensure it stays on top */
-  }
-  
 /* Chart Container for Algeria and Iceland */
 .chart-container {
     display: flex;
@@ -147,13 +89,35 @@
     text-align: center;
 }
   
-.crown {
-    position: absolute;
-    top: -50px; /* Adjust the distance above the podium */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px; /* Adjust size as needed */
-    height: auto;
-    z-index: 10; /* Ensure it stays on top */
+/* Fact Box Section */
+.fact-box {
+    padding: 25px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: #2c3e50;
+    border-left: 5px solid #f4a261;
   }
-  
+
+/* Canvas for Charts */
+canvas {
+    width: 100%; /* Ensure the chart canvas takes up the full width of its container */
+    height: 400px; /* Maintain consistent height for all charts */
+    display: block;
+    border-radius: 8px;
+  }
+
+/* Globe Section - Chartdiv */
+#chartdiv {
+    width: 70%; /* Ensure the globe takes the full width of the container */
+    height: 700px; /* Maintain sufficient height for the globe */
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background: none; /* Preserve the background styling required for the globe */
+    border: 2px solid #ddd; /* Optional border for visual separation */
+  }

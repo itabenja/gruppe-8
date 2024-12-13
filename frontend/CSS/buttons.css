@@ -1,0 +1,45 @@
+/* General Button Styling */
+button {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #003f8c;
+  transform: translateY(1px);
+}
+
+/* View More Button */
+#show-more {
+  margin: 20px auto;
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  display: block;
+  width: 150px;
+  font-size: 1rem;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#show-more:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+
