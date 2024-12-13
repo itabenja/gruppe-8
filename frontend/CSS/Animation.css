@@ -1,0 +1,43 @@
+/* Scroll Progress Bar */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #00C851, #007BFF);
+    z-index: 9999;
+    width: 0%;
+  }
+
+  
+  .scroll-down {
+    position: absolute;
+    bottom: 20px;
+    font-size: 1.2rem;
+    color: #ffffff;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+  }
+
+  /* Animations */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0,5s ease-out;
+  }
+
+  /*Fade in til tekst og grafer*/
+  .fade-in.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /*Bounce event*/
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }

@@ -1,91 +1,67 @@
 /* General Styling */
 body {
-    background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
-    font-family: 'Georgia', serif; /* Elegant font for body text */
-    color: #2c3e50; /* Dark gray-blue for text */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    min-height: 100vh;
-  }
+  background-image: radial-gradient(circle, #e3f2fd, #bbdefb); /* Soft blue gradient */
+  font-family: 'Georgia', serif; /* Elegant font for body text */
+  color: #2c3e50; /* Dark gray-blue for text */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
   
-  /* Global Reset for Consistency */
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+/* Global Reset for Consistency */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+    
+/* Header Section - Overskrift */
+.Overskrift {
+  background-color: #1a5276;
+  color: #000000;
+  text-align: center;
+  padding: 30px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
   
-  /* Styling for All Div Containers */
-  div {
-    box-sizing: border-box;
-  }
+.Overskrift h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
   
-  /* Header Section - Overskrift */
-  .Overskrift {
-    background-color: #1a5276;
-    color: #000000;
-    text-align: center;
-    padding: 30px 20px;
-   
+.Overskrift p {
+  font-size: 1.2rem;
+  margin: 0;
+}
   
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+/* Instruction Text Box */
+.instruction-text {
+  background-color: #f4f4f4;
+  color: #2c3e50;
+  padding: 15px 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 800px;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.6;
+}
+  
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
   }
   
   .Overskrift h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-  
-  .Overskrift p {
-    font-size: 1.2rem;
-    margin: 0;
-  }
-  
-  /* Instruction Text Box */
-  .instruction-text {
-    background-color: #f4f4f4;
-    color: #2c3e50;
-    padding: 15px 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 800px;
-    font-size: 1rem;
-    text-align: center;
-    line-height: 1.6;
-  }
-  
-  /* Fact Box Section */
-  .fact-box {
-    padding: 25px;
-    background-color: #fafafa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 800px;
-    line-height: 1.8;
-    font-size: 1rem;
-    color: #2c3e50;
-    border-left: 5px solid #f4a261;
-  }
-  
-  /* General Hover Effects for Boxes */
- 
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    body {
-      padding: 10px;
-    }
-  
-    .Overskrift h1 {
-      font-size: 2rem;
+    font-size: 2rem;
   }
 
   .Overskrift p {
@@ -103,3 +79,19 @@ body {
     }
   }
   
+/*Baggrund for sektioner*/
+#section2 {
+  background: linear-gradient(to bottom, #e3f2fd, #dcecfb);
+}
+
+#section3 {
+  background: linear-gradient(to bottom, #dcecfb, #cde5fa);
+}
+
+#section4 {
+  background: linear-gradient(to bottom, #cde5fa, #bcdff9);
+}
+
+#section5 {
+  background: linear-gradient(to bottom, #bcdff9, #bbdefb);
+}
