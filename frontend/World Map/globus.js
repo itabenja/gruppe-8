@@ -101,156 +101,153 @@ am5.ready(function () {
   // Fetch country data from the backend
   async function createOverlayedGeoRectanglesOnCountry(target, countryName) {
     try {
-        console.log(`Creating overlayed geo-rectangles for country: ${countryName}`);
+      console.log(`Creating overlayed geo-rectangles for country: ${countryName}`);
 
-        // Fetch country data
-        const countryData = await fetchCountryDataFromAPI(countryName);
-        if (!countryData) {
-            console.warn(`No data available for ${countryName}`);
-            return;
-        }
+      // Fetch country data
+      const countryData = await fetchCountryDataFromAPI(countryName);
+      if (!countryData) {
+        console.warn(`No data available for ${countryName}`);
+        return;
+      }
 
-        let { area_needed_m2, total_area_km2 } = countryData;
+      let { area_needed_m2, total_area_km2 } = countryData;
 
-        if (!area_needed_m2 || isNaN(area_needed_m2) || !total_area_km2 || isNaN(total_area_km2)) {
-            console.warn(`Invalid area data for ${countryName}:`, { area_needed_m2, total_area_km2 });
-            return;
-        }
+      if (!area_needed_m2 || isNaN(area_needed_m2) || !total_area_km2 || isNaN(total_area_km2)) {
+        console.warn(`Invalid area data for ${countryName}:`, { area_needed_m2, total_area_km2 });
+        return;
+      }
 
-        // Convert area_needed_m2 to km²
-        const areaNeededKm2 = area_needed_m2 / 1_000_000;
+      // Convert area_needed_m2 to km²
+      const areaNeededKm2 = area_needed_m2 / 1_000_000;
 
-        // Validate that area_needed_m2 does not exceed total_area_km2
-        if (areaNeededKm2 > total_area_km2) {
-            console.warn(`Area needed exceeds total area for ${countryName}.`);
-            return;
-        }
+      // Validate that area_needed_m2 does not exceed total_area_km2
+      if (areaNeededKm2 > total_area_km2) {
+        console.warn(`Area needed exceeds total area for ${countryName}.`);
+        return;
+      }
 
-        // Extract geometry data
-        const geometry = target.dataItem?.dataContext?.geometry;
-        if (!geometry || !geometry.coordinates) {
-            console.warn(`Geometry data is missing for ${countryName}`);
-            return;
-        }
+      // Extract geometry data
+      const geometry = target.dataItem?.dataContext?.geometry;
+      if (!geometry || !geometry.coordinates) {
+        console.warn(`Geometry data is missing for ${countryName}`);
+        return;
+      }
 
-        const map = target.series?.chart;
-        if (!map) {
-            console.error("Map chart is undefined.");
-            return;
-        }
+      const map = target.series?.chart;
+      if (!map) {
+        console.error("Map chart is undefined.");
+        return;
+      }
 
-        // Calculate geographic bounds for the country
-        let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+      // Calculate geographic bounds for the country
+      let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
 
-        if (geometry.type === "Polygon") {
-            geometry.coordinates.forEach(polygon => {
-                polygon.forEach(([lng, lat]) => {
-                    minLng = Math.min(minLng, lng);
-                    maxLng = Math.max(maxLng, lng);
-                    minLat = Math.min(minLat, lat);
-                    maxLat = Math.max(maxLat, lat);
-                });
+      if (geometry.type === "Polygon") {
+        geometry.coordinates.forEach(polygon => {
+          polygon.forEach(([lng, lat]) => {
+            minLng = Math.min(minLng, lng);
+            maxLng = Math.max(maxLng, lng);
+            minLat = Math.min(minLat, lat);
+            maxLat = Math.max(maxLat, lat);
+          });
+        });
+      } else if (geometry.type === "MultiPolygon") {
+        geometry.coordinates.forEach(multiPolygon => {
+          multiPolygon.forEach(polygon => {
+            polygon.forEach(([lng, lat]) => {
+              minLng = Math.min(minLng, lng);
+              maxLng = Math.max(maxLng, lng);
+              minLat = Math.min(minLat, lat);
+              maxLat = Math.max(maxLat, lat);
             });
-        } else if (geometry.type === "MultiPolygon") {
-            geometry.coordinates.forEach(multiPolygon => {
-                multiPolygon.forEach(polygon => {
-                    polygon.forEach(([lng, lat]) => {
-                        minLng = Math.min(minLng, lng);
-                        maxLng = Math.max(maxLng, lng);
-                        minLat = Math.min(minLat, lat);
-                        maxLat = Math.max(maxLat, lat);
-                    });
-                });
-            });
-        }
+          });
+        });
+      }
 
-        console.log("Country Bounds:", { minLng, maxLng, minLat, maxLat });
+      console.log("Country Bounds:", { minLng, maxLng, minLat, maxLat });
 
-        // Calculate the size of the overlay rectangle as a percentage of the country's bounds
-        const areaRatio = (areaNeededKm2 / total_area_km2) * 100; // Percentage size
-        const widthScale = Math.sqrt(areaRatio / 100); // Scale for width
-        const heightScale = Math.sqrt(areaRatio / 100); // Scale for height
+      // Calculate the size of the overlay rectangle as a percentage of the country's bounds
+      const areaRatio = (areaNeededKm2 / total_area_km2) * 100; // Percentage size
+      const widthScale = Math.sqrt(areaRatio / 100); // Scale for width
+      const heightScale = Math.sqrt(areaRatio / 100); // Scale for height
 
-        const overlayTopLat = maxLat - ((maxLat - minLat) * (1 - heightScale) / 2);
-        const overlayBottomLat = minLat + ((maxLat - minLat) * (1 - heightScale) / 2);
-        const overlayRightLng = maxLng - ((maxLng - minLng) * (1 - widthScale) / 2);
-        const overlayLeftLng = minLng + ((maxLng - minLng) * (1 - widthScale) / 2);
+      const overlayTopLat = maxLat - ((maxLat - minLat) * (1 - heightScale) / 2);
+      const overlayBottomLat = minLat + ((maxLat - minLat) * (1 - heightScale) / 2);
+      const overlayRightLng = maxLng - ((maxLng - minLng) * (1 - widthScale) / 2);
+      const overlayLeftLng = minLng + ((maxLng - minLng) * (1 - widthScale) / 2);
 
-        console.log("Overlay Rectangle Bounds:", {
-            overlayTopLat,
-            overlayBottomLat,
-            overlayRightLng,
-            overlayLeftLng
+      console.log("Overlay Rectangle Bounds:", {
+        overlayTopLat,
+        overlayBottomLat,
+        overlayRightLng,
+        overlayLeftLng
+      });
+
+      if (overlayTopLat <= overlayBottomLat || overlayRightLng <= overlayLeftLng) {
+        console.error("Overlay rectangle dimensions are invalid.");
+        return;
+      }
+
+      // Add a series for the overlay rectangle
+      const rectangleSeries = map.series.push(am5map.MapPolygonSeries.new(map.root, {}));
+      rectangleSeries.mapPolygons.template.setAll({
+        stroke: am5.color("#000"),
+        strokeWidth: 1,
+        interactive: true
+      });
+
+      // Add the overlay rectangle (red)
+      const overlayPolygon = rectangleSeries.pushDataItem({
+        geometry: am5map.getGeoRectangle(
+          overlayTopLat,
+          overlayRightLng,
+          overlayBottomLat,
+          overlayLeftLng
+        )
+      }).get("mapPolygon");
+
+      if (overlayPolygon) {
+        overlayPolygon.set("fill", am5.color("#ff0000")); // Red
+        overlayPolygon.set("fillOpacity", 0.7);
+
+        // Create a tooltip
+        let tooltip;
+
+        overlayPolygon.events.on("pointerover", () => {
+          // Create and display tooltip
+          if (!tooltip) {
+            tooltip = map.seriesContainer.children.push(am5.Label.new(map.root, {
+              x: am5.p50,
+              y: am5.p50,
+              centerX: am5.p50,
+              centerY: am5.p50,
+              text: `Area Needed: ${areaNeededKm2.toFixed(2)} km²\n(${areaRatio.toFixed(2)}%)`,
+              fill: am5.color("#000000"), // Black text
+              background: am5.RoundedRectangle.new(map.root, {
+                fill: am5.color("#ffffff"),
+                fillOpacity: 0.8,
+                cornerRadius: 5,
+                stroke: am5.color("#000000"),
+                strokeOpacity: 0.5
+              })
+            }));
+          }
         });
 
-        if (
-            overlayTopLat <= overlayBottomLat ||
-            overlayRightLng <= overlayLeftLng
-        ) {
-            console.error("Overlay rectangle dimensions are invalid.");
-            return;
-        }
-
-        // Add a series for the overlay rectangle
-        const rectangleSeries = map.series.push(am5map.MapPolygonSeries.new(map.root, {}));
-        rectangleSeries.mapPolygons.template.setAll({
-            stroke: am5.color("#000"),
-            strokeWidth: 1,
-            interactive: true
+        overlayPolygon.events.on("pointerout", () => {
+          // Remove tooltip
+          if (tooltip) {
+            tooltip.dispose();
+            tooltip = null;
+          }
         });
+      }
 
-        // Add the overlay rectangle (red)
-        const overlayPolygon = rectangleSeries.pushDataItem({
-            geometry: am5map.getGeoRectangle(
-                overlayTopLat,
-                overlayRightLng,
-                overlayBottomLat,
-                overlayLeftLng
-            )
-        }).get("mapPolygon");
-
-        if (overlayPolygon) {
-            overlayPolygon.set("fill", am5.color("#ff0000")); // Red
-            overlayPolygon.set("fillOpacity", 0.7);
-
-            // Create a tooltip
-            let tooltip;
-
-            overlayPolygon.events.on("pointerover", () => {
-                // Create and display tooltip
-                if (!tooltip) {
-                    tooltip = map.seriesContainer.children.push(am5.Label.new(map.root, {
-                        x: am5.p50,
-                        y: am5.p50,
-                        centerX: am5.p50,
-                        centerY: am5.p50,
-                        text: `Area Needed: ${areaNeededKm2.toFixed(2)} km²\n(${areaRatio.toFixed(2)}%)`,
-                        fill: am5.color("#000000"), // Black text
-                        background: am5.RoundedRectangle.new(map.root, {
-                            fill: am5.color("#ffffff"),
-                            fillOpacity: 0.8,
-                            cornerRadius: 5,
-                            stroke: am5.color("#000000"),
-                            strokeOpacity: 0.5
-                        })
-                    }));
-                }
-            });
-
-            overlayPolygon.events.on("pointerout", () => {
-                // Remove tooltip
-                if (tooltip) {
-                    tooltip.dispose();
-                    tooltip = null;
-                }
-            });
-        }
-
-        console.log(`Overlay rectangle created for ${countryName} with percentage: ${areaRatio.toFixed(2)}%`);
+      console.log(`Overlay rectangle created for ${countryName} with percentage: ${areaRatio.toFixed(2)}%`);
     } catch (error) {
-        console.error(`Error creating overlay rectangle for ${countryName}:`, error);
+      console.error(`Error creating overlay rectangle for ${countryName}:`, error);
     }
-}
+  }
 
   // Event listener for polygon clicks
   polygonSeries.mapPolygons.template.on("active", async function (active, target) {
@@ -378,10 +375,8 @@ am5.ready(function () {
             <p style="color:rgb(28, 57, 3);">Total Area KM2: ${countryData.total_area_km2} km2</p>
           </div>
           `;
-          
 
-
-            moreDetailsButton.innerText = "Show Chart"; //Opdatere knapteksten
+          moreDetailsButton.innerText = "Show Chart"; //Opdatere knapteksten
           } else {
             // Display error message if data cannot be fetched
             console.error("Details not available for this country.");
@@ -556,9 +551,6 @@ am5.ready(function () {
   infoContainer.style.paddingLeft = "30px";
   infoContainer.style.paddingRight = "0px";
   
-  
-  
-
   document.body.appendChild(infoContainer);
 
   //Function to close pop-up
@@ -642,47 +634,48 @@ am5.ready(function () {
 });
 
 // TOP OF THE SKÆRM SCROLL KNAP!!! 
-  document.getElementById("scrollDownBtn").addEventListener("click", () => {
-    // Scroll smoothly to the next section
-    document.getElementById("nextSection").scrollIntoView({ behavior: "smooth" });
-  });
+document.getElementById("scrollDownBtn").addEventListener("click", () => {
+  // Scroll smoothly to the next section
+  document.getElementById("nextSection").scrollIntoView({ behavior: "smooth" });
+});
 
-  gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-  gsap.fromTo(
-    ".instruction-text", // Target the instruction text
-    { opacity: 0, y: 50 }, // Initial state: invisible and slightly below
-    {
-      opacity: 1,
-      y: 0, // Animate to visible and original position
-      duration: 1.5, // Duration of animation in seconds
-      ease: "power2.out", // Smooth easing
-      scrollTrigger: {
-        trigger: "#nextSection", // Element to trigger the animation
-        start: "top 80%", // When the element is 80% visible
-        toggleActions: "play none none none", // Animation behavior
-      },
-    }
-  );
-  document.getElementById("scrollDownBtn").addEventListener("click", () => {
-    const nextSection = document.querySelector("#nextSection"); // Target the next section
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: "smooth" }); // Smoothly scroll to the section
-    }
-  });
+gsap.fromTo(
+  ".instruction-text", // Target the instruction text
+  { opacity: 0, y: 50 }, // Initial state: invisible and slightly below
+  {
+    opacity: 1,
+    y: 0, // Animate to visible and original position
+    duration: 1.5, // Duration of animation in seconds
+    ease: "power2.out", // Smooth easing
+    scrollTrigger: {
+      trigger: "#nextSection", // Element to trigger the animation
+      start: "top 80%", // When the element is 80% visible
+      toggleActions: "play none none none", // Animation behavior
+    },
+  }
+);
 
-  // SCroool til energi section! 
-  document.getElementById("scrollToEnergy").addEventListener("click", () => {
-    const energySection = document.getElementById("energySection");
-    if (energySection) {
-      window.scrollTo({
-        top: energySection.offsetTop - 120, // Adjust the -100 value to set the desired offset
-        behavior: "smooth"
-      });
-    }
-  });
+document.getElementById("scrollDownBtn").addEventListener("click", () => {
+  const nextSection = document.querySelector("#nextSection"); // Target the next section
+  if (nextSection) {
+    nextSection.scrollIntoView({ behavior: "smooth" }); // Smoothly scroll to the section
+  }
+});
 
-  // Smooth Scroll: Energy to Comparison Section
+// SCroool til energi section! 
+document.getElementById("scrollToEnergy").addEventListener("click", () => {
+  const energySection = document.getElementById("energySection");
+  if (energySection) {
+    window.scrollTo({
+      top: energySection.offsetTop - 120, // Adjust the -100 value to set the desired offset
+      behavior: "smooth"
+    });
+  }
+});
+
+// Smooth Scroll: Energy to Comparison Section
 document.getElementById("scrollToComparison").addEventListener("click", () => {
   const comparisonSection = document.getElementById("comparisonSection"); // Target the comparison section
   if (comparisonSection) {
