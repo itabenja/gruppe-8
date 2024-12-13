@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stacked Bar Chart - Renewable vs Primary Energy</title>
 
-  <!-- External Scripts and Styles -->
+  <!-- External Scripts -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
   <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
@@ -16,13 +16,25 @@
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/chartsbuttons.css">
   <script src="https://unpkg.com/scrollreveal"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    ScrollReveal().reveal('.chart-box, .fact-box, .container, .podium-container', {
+      duration: 1000,
+      distance: '50px',
+      easing: 'ease-in-out',
+      origin: 'bottom',
+      reset: true
+    });
+  });
 
+</script>
  
-
+<!--Links for CSS and styles-->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="CSS/mainstyle.css">
   <link rel="stylesheet" href="CSS/theme.css">
   <link rel="stylesheet" href="CSS/chartsbuttons.css">
+
   <style>
     /* Scroll Progress Bar */
     .scroll-progress {
@@ -65,9 +77,6 @@
       }
     }
 
-  
-  
-
     #section2 {
     background: linear-gradient(to bottom, #e3f2fd, #dcecfb);
   }
@@ -88,10 +97,9 @@
 </head>
 
 <body>
-  <div id="scrollProgressBar"></div>
-
+<!--section 1--> 
   <div id="section1" class="Overskrift" style="width: 100%;height: 950px; text-align: center; color: #ffffff;">
-  <!-- Header Section -->
+  
    <br>
    <br>
    <br>
@@ -110,9 +118,6 @@
    <br>
    <br>
    <br>
-   
-   
-
   <div>
     <h1>How far is the transition to Renewable energy?</h1>
     <p>Welcome to Our Energy Insights Platform</p>
@@ -123,6 +128,7 @@
 <br>
 <br>
 <br>
+<!--Button to to next section-->
   <button onclick="scrollToSection('section2')">Read more↓</button>
 </div>
 
@@ -136,7 +142,7 @@
   <!-- World Map Section -->
     <div id="chartdiv"></div>
 
-   
+   <!--Button to to next section-->
     <button onclick="scrollToSection('section3')">Read more↓</button>
 </div>
 <div id="section3" style="width: 100%;height: 950px; text-align: center;">
@@ -146,6 +152,7 @@
   <br>
 
   <h1 id="comparisonSection">Why is there so much difference in countries and their percentage of renewable energy?</h1>
+  <br>
   <div class="chart-container"> 
     <!-- Renewable vs Total Energy Consumption -->
     
@@ -174,6 +181,8 @@
   
   <!-- Comparison of Algeria and Iceland -->
   <h2>Why is there so much difference in countries and their percentage of renewable energy?</h2>
+  <br>
+  
 
   <!-- Container for both charts -->
   <div class="chart-container">
@@ -216,17 +225,7 @@
   
   
   <!-- Text under the Algeria and Iceland charts -->
-  <div class="chart-box" style=" font-family:'Arial, sans-serif'; line-height: 1.8; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
-    <p style="font-size: 1.4em; font-weight: bold; color: #333;">Why Algeria and Iceland Are So Different in Renewable Energy Use</p>
-  
-     <p style="font-size: 1.2em; color: #555; line-height: 1.7;">
-       <span style="font-weight: bold; color: #007BFF;">Algeria</span> and <span style="font-weight: bold; color: #007BFF;">Iceland</span> offer a fascinating contrast in their energy strategies, driven by <span style="font-weight: bold; color: #28a745;">geography</span> and <span style="font-weight: bold; color: #28a745;">resources</span>. Iceland, endowed with powerful <span style="font-weight: bold; color: #28a745;">geothermal</span> and <span style="font-weight: bold; color: #28a745;">hydropower resources</span>—thanks to its volcanic landscape and abundant freshwater—has embraced renewable energy with open arms, almost entirely eliminating its reliance on fossil fuels. Meanwhile, Algeria, located in the scorching heart of the Sahara, has had to rely on its vast fossil fuel reserves, like <span style="font-weight: bold; color: #dc3545;">oil</span> and <span style="font-weight: bold; color: #dc3545;">natural gas</span>, due to limited access to renewable resources such as <span style="font-weight: bold; color: #28a745;">hydropower</span> or <span style="font-weight: bold; color: #28a745;">geothermal energy</span>.
-     </p>
-  
-    <p style="font-size: 1.2em; color: #555; line-height: 1.7;">
-      This stark contrast underscores a broader, global reality: geography shapes access to renewable energy sources, like <span style="font-weight: bold; color: #28a745;">wind</span>, <span style="font-weight: bold; color: #28a745;">solar</span>, and <span style="font-weight: bold; color: #28a745;">water</span>, while economic priorities, energy infrastructure, and government policies dictate how quickly and effectively nations can transition to renewable energy. Understanding these key factors is essential to accelerating the global energy transition and achieving a <span style="font-weight: bold; color: #007BFF;">sustainable future</span> for all.
-    </p>
-  </div>
+ 
   <br>
   <br>
   <br>
@@ -242,6 +241,8 @@
   <!-- Leaderboard Section -->
 <div class="leaderboard-container">
   <h2>Which countries are furthest along in renewable energi?</h2>
+  <br>
+  <br>
 <!-- Podium Section -->
 <div class="podium-container">
   <div class="podium-item second">
@@ -372,16 +373,6 @@
   const section = document.getElementById(sectionId);
   section.scrollIntoView({ behavior: 'smooth' });
 }
-
-    document.addEventListener('DOMContentLoaded', function () {
-      ScrollReveal().reveal('.chart-box, .fact-box, #chartdiv, .container, .podium-container', {
-        duration: 1000,
-        distance: '50px',
-        easing: 'ease-in-out',
-        origin: 'bottom',
-        reset: true
-      });
-    });
  
 </script>
 </body>

@@ -136,6 +136,7 @@
     margin: 10px auto;
     width: 1200px;
 } 
+}
   
 .chart-box {
     flex: 1 1 45%; /* Ensure charts take up 45% of the available width */
