@@ -9,7 +9,7 @@ async function fetchEnergyData(country) {
             throw new Error(`Error fetching data for ${country}: ${response.statusText}`);
         }
         
-        // Parse the JSON response and return it
+        // Parse the JSON response and return it, SQL=json
         const data = await response.json();
         return data;
     } catch (err) {
@@ -36,7 +36,7 @@ function processChartData(data) {
         return row ? row.non_renewable_energy || 0 : 0; // Use 0 if no data exists for the year
     });
 
-    // Return processed data in a format compatible with Chart.js
+    // Return processed data in a format compatible with Chart.js(se script fil i html)
     return {
         labels, // X-axis labels (years)
         datasets: [

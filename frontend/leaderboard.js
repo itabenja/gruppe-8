@@ -29,15 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   fetch('/api/leaderboard?year=2023') // Ensure the API call includes the year 2023 filter
   .then((response) => {
-    if (!response.ok) {
+    if (!response.ok) { // ! Hvis ikke response = Error 
       console.error(`HTTP error! Status: ${response.status}`);
-      throw new Error(`HTTP error! Status: ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`); // Stopper scriptet ved at kører videre. 
     }
     return response.json();
   })
   .then((data) => {
     console.log('Fetched leaderboard data:', data); // Debugging API data
-    if (!data || data.length < 3) {
+    if (!data || data.length < 3) { // If datalength under 3 = Error
       console.error('Not enough leaderboard data to display the podium.');
       return;
     }
@@ -47,17 +47,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update the podium flags and alt text
     // Update the podium flags and renewable percentages
-const firstFlagElement = document.getElementById('first-place-flag');
+const firstFlagElement = document.getElementById('first-place-flag'); // id in index
 const firstPercentageElement = document.getElementById('first-place-percentage');
 if (firstFlagElement && firstPercentageElement) {
-  firstFlagElement.src = getFlagUrl(firstPlace.country);
-  firstFlagElement.alt = `${firstPlace.country} Flag`;
+  firstFlagElement.src = getFlagUrl(firstPlace.country); // SRC in index 
+  firstFlagElement.alt = `${firstPlace.country} Flag`; // Finds the image in firstplace = Iceland flag. 
   firstPercentageElement.textContent = `${parseFloat(firstPlace.renewable_percentage).toFixed(2)}%`;
 } else {
   console.error('First place elements are missing!');
 }
 
-const firstPlacePodium = document.querySelector('.podium-item.first');
+const firstPlacePodium = document.querySelector('.podium-item.first'); // Finds the crown. 
 if (firstPlacePodium) {
   const crownIcon = document.createElement('img');
   crownIcon.src = 'vecteezy_3d-golden-crown-ai-generative_29881645.png'; // Path to crown image
@@ -90,14 +90,14 @@ if (thirdFlagElement && thirdPercentageElement) {
   })
   .catch((error) => console.error('Error fetching leaderboard data:', error));
 
-  // Function to load additional countries into the leaderboard table
-  function loadMoreCountries() {
-    const tableBody = document.querySelector('#leaderboard-table tbody'); // Get the table body
-    if (!tableBody) {
-      console.error('Leaderboard table body is missing.');
-      return;
-    }
-  
+    // Function to load additional countries into the leaderboard table
+    function loadMoreCountries() { // View More
+      const tableBody = document.querySelector('#leaderboard-table tbody'); // Get the table body - Class 
+      if (!tableBody) {
+        console.error('Leaderboard table body is missing.');
+        return;
+      }
+    
     const endIndex = Math.min(currentIndex + 10, fullLeaderboard.length); // Load up to 10 more countries
     for (let i = currentIndex; i < endIndex; i++) {
       const country = fullLeaderboard[i]; // Get the current country
@@ -117,10 +117,10 @@ if (thirdFlagElement && thirdPercentageElement) {
       row.addEventListener('mouseenter', (event) => showTooltip(event, country, rank));
       row.addEventListener('mouseleave', hideTooltip);
   
-      tableBody.appendChild(row); // Append the row to the table body
+      tableBody.appendChild(row); // Append the row to the table body - Line 95 
     }
   
-    currentIndex = endIndex; // Update the current index
+    currentIndex = endIndex; // Update the current index / Stops the function, when no more countries. 
   
     // Disable the "Show More" button if no more countries are available
     if (currentIndex >= fullLeaderboard.length) {
@@ -146,12 +146,12 @@ if (thirdFlagElement && thirdPercentageElement) {
   // Create a tooltip element for displaying country details
   const tooltip = document.createElement('div');
   tooltip.id = 'tooltip';
-  tooltip.style.position = 'absolute';
+  tooltip.style.position = 'absolute';  
   tooltip.style.padding = '10px';
   tooltip.style.backgroundColor = '#fff';
   tooltip.style.border = '1px solid #ccc';
   tooltip.style.borderRadius = '5px';
-  tooltip.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+  tooltip.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
   tooltip.style.display = 'none'; // Initially hidden
   document.body.appendChild(tooltip); // Add tooltip to the document
 
@@ -167,13 +167,12 @@ if (thirdFlagElement && thirdPercentageElement) {
     `; // Display country details in the tooltip
   }
   
-
   // Hide the tooltip
   function hideTooltip() {
     tooltip.style.display = 'none';
   }
 });
-
+ /* Gammel kode - Skal slettes. 
 document.addEventListener("DOMContentLoaded", function() {
   const toggleTextButton = document.getElementById("toggle-text");
   const extraText = document.getElementById("extra-text");
@@ -195,4 +194,4 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-
+*/ 
