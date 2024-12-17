@@ -7,7 +7,7 @@ am5.ready(function () {
     am5themes_Animated.new(root)
   ]);
  
-  // Create the map chart
+  // Create the map/globe chart
   var chart = root.container.children.push(am5map.MapChart.new(root, {
     panX: "rotateX",
     panY: "rotateY",
@@ -15,7 +15,7 @@ am5.ready(function () {
     paddingBottom: 20,
     paddingTop: 20,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20 
   }));
  
   // Create main polygon series for countries
@@ -58,11 +58,13 @@ am5.ready(function () {
     }
   }
       
-  var createdSquares = [];
+  
+/* fikant der er i mellem max og min coordinater - skal ikke bruges
+var createdSquares = [];
 
   // Helper function: Parse geometry and calculate center
   function calculateGeometryCenter(geometry) {
-    let minX = Infinity,
+    let minX = Infinity, 
       maxX = -Infinity,
       minY = Infinity,
       maxY = -Infinity;
@@ -89,7 +91,7 @@ am5.ready(function () {
       });
     }
 
-    // Calculate the center coordinates
+    // Calculate the center coordinates makes a sqaure 
     const centerX = (minX + maxX) / 2;
     const centerY = (minY + maxY) / 2;
     const width = maxX - minX
@@ -97,6 +99,7 @@ am5.ready(function () {
 
     return { centerX, centerY, width, height};
   }
+*/
 
   // Fetch country data from the backend
   async function createOverlayedGeoRectanglesOnCountry(target, countryName) {
@@ -121,19 +124,19 @@ am5.ready(function () {
       const areaNeededKm2 = area_needed_m2 / 1_000_000;
 
       // Validate that area_needed_m2 does not exceed total_area_km2
-      if (areaNeededKm2 > total_area_km2) {
+      /* if (areaNeededKm2 > total_area_km2) {
         console.warn(`Area needed exceeds total area for ${countryName}.`);
         return;
       }
-
-      // Extract geometry data
+     */ 
+      // Extract geometry data am5charts
       const geometry = target.dataItem?.dataContext?.geometry;
       if (!geometry || !geometry.coordinates) {
         console.warn(`Geometry data is missing for ${countryName}`);
         return;
       }
 
-      const map = target.series?.chart;
+      const map = target.series?.chart; // am5charts. 
       if (!map) {
         console.error("Map chart is undefined.");
         return;
@@ -316,7 +319,7 @@ am5.ready(function () {
       chartDiv.id = "chartInfo";
       infoContainer.appendChild(chartDiv);
 
-      //New code here!!!!
+      //moredetails button code here
       const moreDetailsButton = document.createElement("button");
       moreDetailsButton.innerText = "More Details";
       moreDetailsButton.style.position = "absolute";
@@ -332,7 +335,8 @@ am5.ready(function () {
       moreDetailsButton.style.marginRight = "50px"; 
       infoContainer.appendChild(moreDetailsButton);
 
-      let showingDetails = false;
+
+      //let showingDetails = false;
 
       moreDetailsButton.addEventListener("click", async function () {
         const chartInfo = document.getElementById("chartInfo");
@@ -389,8 +393,8 @@ am5.ready(function () {
       infoContainer.style.display = "block";  // Show the container
 
       // Center and zoom to the country
-      centerAndZoomToCountry(countryId); //This function centers and zooms into the clicked country
-      stopRotation(); //Stops the globe's auto-rotation when a country is clicked
+      //centerAndZoomToCountry(countryId); //This function centers and zooms into the clicked country
+      //stopRotation(); //Stops the globe's auto-rotation when a country is clicked
       
       // Now, fetch the energy data and create the chart as intended
       fetchEnergyData(countryName).then(data => {             
@@ -401,11 +405,11 @@ am5.ready(function () {
         }
       });
 
-    } else {
+    } /*else {
       // Hide the container when deselecting
       const infoContainer = document.getElementById("infoContainer");
       infoContainer.style.display = "none";
-    }
+    }*/
     //Set the previousPolygon to the current target to track the previously clicked polygon.
     previousPolygon = target;
   });
@@ -480,7 +484,7 @@ am5.ready(function () {
     chart.set("zoomLevel", 1); // Reset zoom level
     startRotation(); //Start rotating the globe
 
-    createdSquares.forEach(square => {
+    /*createdSquares.forEach(square => {
       square.dispose();
     });
 
@@ -488,7 +492,7 @@ am5.ready(function () {
 
     polygonSeries.mapPolygons.each(function(polygon) {
       polygon.set("active", false);
-    })
+    })*/
 
     //Close the infoContainer when zooming out
     const infoContainer = document.getElementById("infoContainer");
